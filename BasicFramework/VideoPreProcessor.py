@@ -10,6 +10,7 @@ class VideoPreProcessor:
         # load file at the file name
         capture = cv.VideoCapture(filename)
         self.frame_list = []
+
         # load video into single frames
         while capture.isOpened():
             ret, frame = capture.read()
