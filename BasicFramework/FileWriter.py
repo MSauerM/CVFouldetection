@@ -1,6 +1,13 @@
 
+class FileWriter:
 
-def writeFile():
-    file = open("testfile.txt", "w")
-    file.write("Some input here")
-    file.close()
+    _filename = "testfile.txt"
+
+    def __init__(self, filename):
+        if filename != '':
+            self._filename = filename
+
+    def writeFile(self, object):
+        file = open(self._filename, "w")
+        file.write(str(object))
+        file.close()

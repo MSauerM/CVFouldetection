@@ -43,23 +43,23 @@ class VideoFileDialogWindow(QMainWindow):
 
         selectButton = QPushButton('Select')
         selectButton.clicked.connect(self.select)
-        grid.addWidget(selectButton, 5, 1, QtCore.Qt.AlignRight)
+        grid.addWidget(selectButton, 5, 1, Qt.AlignRight)
 
         cancelButton = QPushButton('Abbrechen')
         cancelButton.clicked.connect(self.cancel)
-        grid.addWidget(cancelButton, 5, 3, QtCore.Qt.AlignRight)
+        grid.addWidget(cancelButton, 5, 3, Qt.AlignRight)
 
         processButton = QPushButton('Verarbeiten')
         processButton.clicked.connect(lambda:self.processVideo(self.fileName))
-        grid.addWidget(processButton, 5, 2, QtCore.Qt.AlignRight)
+        grid.addWidget(processButton, 5, 2, Qt.AlignRight)
 
         createVideoCheckbox = QCheckBox("Create Video")
         createVideoCheckbox.stateChanged.connect(self.createVideoCheckbox_Changed)
-        grid.addWidget(createVideoCheckbox, 6, 2, QtCore.Qt.AlignRight)
+        grid.addWidget(createVideoCheckbox, 6, 2, Qt.AlignRight)
 
         showVideoCheckBox = QCheckBox("Show Video after Processing")
         showVideoCheckBox.stateChanged.connect(self.showVideoCheckbox_Changed)
-        grid.addWidget(showVideoCheckBox, 6, 3, QtCore.Qt.AlignRight)
+        grid.addWidget(showVideoCheckBox, 6, 3, Qt.AlignRight)
 
     def select(self):
         filter = "mp4(*.mp4)"
