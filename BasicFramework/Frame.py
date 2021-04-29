@@ -8,6 +8,9 @@ class Frame():
         self._pixels = pixels
         self._framecount = framecount
 
+    def getPixels(self):
+        return self._pixels
+
     def getDimensions(self):
         return self._pixels.shape[:2] # is Width or height first?
 
