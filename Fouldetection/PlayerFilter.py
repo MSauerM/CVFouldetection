@@ -1,3 +1,4 @@
+from BasicFramework.Frame import Frame
 from Fouldetection.Filter import Filter
 import cv2 as cv
 
@@ -7,9 +8,9 @@ class PlayerFilter(Filter):
     def __init__(self):
         super().__init__()
 
-    def filter(self, frame, preprocessed_frames):
+    def filter(self, frame: Frame, preprocessed_frames):
         # canny Edge detection
-        frame_hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+        frame_hsv = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2HSV)
         #frame_thresh = cv.cvtColor(preprocessed_frames, cv.Color_gray2)
         #edges = cv.Canny(frame_hsv, 100, 200)
         cv.imshow("preprocessed frames", preprocessed_frames)
