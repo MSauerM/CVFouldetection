@@ -6,7 +6,7 @@ OpenCV and Python.
 
 ## Installation
 
-<b>Prerequisites:</b> Python 3.7 installed
+<b>Prerequisites:</b> Python 3.7 (64-bit version) installed
 
 1. Clone this repository
 2. Create a `venv` (ideally using Python 3.7) via `python3 -m venv /path/to/new/virtual/environment` and activate it with `source venv/bin/activate`
