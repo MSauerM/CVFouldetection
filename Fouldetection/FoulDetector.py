@@ -1,5 +1,6 @@
 from BasicFramework.VideoPreProcessor import VideoPreProcessor
 from BasicFramework.VideoWriter import VideoWriter
+from Fouldetection.BallFilter import BallFilter
 from Fouldetection.GrassFilter import GrassFilter
 from Fouldetection.PlayerFilter import PlayerFilter
 
@@ -12,6 +13,7 @@ class FoulDetector:
 
     frame_list = []
     foulEvents = []
+    # boundingBoxInformation
 
     def __init__(self, preProcessor: VideoPreProcessor):
         self.preProcessor = preProcessor
@@ -19,17 +21,25 @@ class FoulDetector:
     def process(self):
         print("Start processing")
         grassFilter = GrassFilter()
-        # ballFilter = BallFilter()
+        ballFilter = BallFilter()
         playerFilter = PlayerFilter()
 
+        # detect Players and Ball / extract basic game information
         for frame in self.preProcessor.frame_list:
-            grassFilteredFrame = grassFilter.filter(frame)
-            playerFilter.filter(frame, grassFilteredFrame)
+            #grassFilteredFrame = grassFilter.filter(frame)
+            #playerFilter.filter(frame, grassFilteredFrame)
+            ballFilter.filter(frame)
+           # self.frame_list.append()
 
-            self.frame_list.append()
-        # filteredGrass = grassFilter.filter(preProcessor.framelist);
-        # filteredBall = ballFilter.filter(filteredGrass);
-        # filteredPlayer = playerFilter.filter(filteredGrass);
+            # retrieve boundingBox Information on every single frame
+
+
+
+        # Aggregate frames to Contact Events
+
+
+
+
 
         print("End processing")
 
