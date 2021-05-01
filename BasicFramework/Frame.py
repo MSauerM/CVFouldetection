@@ -7,3 +7,15 @@ class Frame():
         self._timestamp = timestamp
         self._pixels = pixels
         self._framecount = framecount
+
+    def getPixels(self):
+        return self._pixels
+
+    def getDimensions(self):
+        return self._pixels.shape[:2] # is Width or height first?
+
+    def getFrameCount(self):
+        return self._framecount
+
+    def getTimestamp(self):
+        return self._timestamp
