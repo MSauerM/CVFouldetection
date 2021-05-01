@@ -1,4 +1,5 @@
 import cv2 as cv
+from datetime import datetime
 
 class VideoWriter:
 
@@ -9,8 +10,13 @@ class VideoWriter:
 
     def writeVideo(self, frames, framewidth, frameheight, fps):
         # frame list oder Video processor übergeben
-        video = cv.VideoWriter(self._video_name, cv.VideoWriter_fourcc('M', 'J', 'P', 'G'), fps, (framewidth, frameheight))
+        frames[0].shape
+        video = cv.VideoWriter(self._video_name + " " + self.getCurrentDateTimeString(), cv.VideoWriter_fourcc('M', 'J', 'P', 'G'), fps, (framewidth, frameheight))
         for frame in frames:
             video.write(frame)
         video.release()
         return video
+
+    def getCurrentDateTimeString(self):
+        currentDateTime = datetime.now()
+        return currentDateTime.strftime("%d-%m-%y_%H-%M")
