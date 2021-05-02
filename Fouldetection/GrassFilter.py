@@ -1,8 +1,10 @@
+import math
+
 from BasicFramework.Frame import Frame
 from Fouldetection.Filter import Filter
 from cv2 import cv2 as cv
 import numpy as np
-
+import CVUtility.ImageUtility as utility
 
 class GrassFilter(Filter):
 
@@ -13,13 +15,35 @@ class GrassFilter(Filter):
         #print("This is a grass filter for filtering the court of of the picture")
         # option 1 (simple): filter green color
 
-        frame_hsv = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2HSV)
-        lower_green = np.array([36, 40, 40])
-        upper_green = np.array([86, 255, 255])
+        # blurred_frame= frame.getPixels()
 
+        frame_hsv = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2HSV)
+        lower_green = np.array([40, 40, 40])
+        upper_green = np.array([90, 255, 255])
+
+        dst = cv.Canny(frame.getPixels(), 50, 200, None, 3)
+
+        #cv.imshow("Dst", dst)
+
+        #lines = cv.HoughLines(dst, 1 , np.pi/ 180, 150, None, 0, 0) # cv.HoughLinesP(dst, 1, np.pi / 180, 50, None, 50, 10) #
+        #if lines is not None:
+        #    for i in range(0, len(lines)):
+       #         rho = lines[i][0][0]
+        #        theta = lines[i][0][1]
+       #         a = math.cos(theta)
+       #         b = math.sin(theta)
+       #         x0 = a * rho
+       #         y0 = b * rho
+       #         pt1 = (int(x0 + 1000 * (-b)), int(y0 + 1000 * (a)))
+       #         pt2 = (int(x0 - 1000 * (-b)), int(y0 - 1000 * (a)))
+       #         cv.line(frame.getPixels(), pt1, pt2, (0, 0, 255), 3, cv.LINE_AA)
+
+        #cv.imshow("Lines", frame.getPixels())
+        utility.showResizedImage("Lines", frame.getPixels(), 0.4)
 
         mask = cv.inRange(frame_hsv, lower_green, upper_green)
-        cv.imshow("mask", mask)
+#        cv.imshow("mask", mask)
+        utility.showResizedImage("Mask", mask, 0.4)
 
         res = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask=mask)
         res_bgr = cv.cvtColor(res, cv.COLOR_HSV2BGR)
@@ -45,8 +69,10 @@ class GrassFilter(Filter):
        # cv.imshow("Res", res)
        # cv.imshow("White Mask", white_mask)
        # cv.imshow("White Mask Inverted", white_mask_inv)
-        cv.imshow("CVFouldetection GrassFilter", combined)
-        cv.waitKey(0)
+        utility.showResizedImage("CVFouldetection GrassFilter", combined, 0.4)
+
+#        cv.imshow("CVFouldetection GrassFilter", combined)
+ #       cv.waitKey(0)
        # return thresh
         return combined
 

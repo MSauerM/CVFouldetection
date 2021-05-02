@@ -26,9 +26,9 @@ class FoulDetector:
 
         # detect Players and Ball / extract basic game information
         for frame in self.preProcessor.frame_list:
-            #grassFilteredFrame = grassFilter.filter(frame)
+            grassFilteredFrame = grassFilter.filter(frame)
             #playerFilter.filter(frame, grassFilteredFrame)
-            ballFilter.filter(frame)
+            #ballFilter.filter(frame)
            # self.frame_list.append()
 
             # retrieve boundingBox Information on every single frame
