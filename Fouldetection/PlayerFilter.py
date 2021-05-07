@@ -1,3 +1,5 @@
+import numpy as np
+
 from BasicFramework.Frame import Frame
 from Fouldetection.Filter import Filter
 import cv2 as cv
@@ -14,6 +16,9 @@ class PlayerFilter(Filter):
         #frame_thresh = cv.cvtColor(preprocessed_frames, cv.Color_gray2)
         #edges = cv.Canny(frame_hsv, 100, 200)
 
+        kernel = np.ones( (5,5), np.uint8)
+
+        preprocessed_frames = cv.dilate(preprocessed_frames, kernel, iterations=2)
 
         (contours, hierarchy) = cv.findContours(preprocessed_frames, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
@@ -21,18 +26,21 @@ class PlayerFilter(Filter):
         player_img = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask=preprocessed_frames)
         edges = cv.Canny(player_img, 50, 150)
 
-        cv.imshow("player Image", player_img)
-        cv.waitKey(0)
+       # cv.imshow("player Image", player_img)
+       # cv.waitKey(0)
+        utility.showResizedImage("Player Image", player_img, 0.4)
         font = cv.FONT_HERSHEY_PLAIN
 
         for c in contours:
             x, y, w, h = cv.boundingRect(c)
-            if ( (w > 15 and h > 20) and (w < 200 and h < 200)):
+            if ( (w > 15 and h > 20)  and (w < 450 and h < 450)):
                 #cv.drawContours(frame, cv.boundingRect(c), -1, (255, 0, 0),3)
                 cv.rectangle(frame.getPixels(), (x, y), (x+w, y+h), (255, 0, 0), 3)
                 cv.putText(frame.getPixels(), "{w}/ {h}".format(w= w, h=h), (x-2, y-2), font, 0.8, (0, 255, 0), 2, cv.LINE_AA)
         cv.drawContours(frame.getPixels(), contours, -1, (0, 0, 255), 3)
 
-        cv.imshow("Edges", edges)
-        cv.imshow("Output", frame.getPixels())
-        cv.waitKey(0)
+        #cv.imshow("Edges", edges)
+        #cv.imshow("Output", frame.getPixels())
+        #cv.waitKey(0)
+        utility.showResizedImage("Edges", edges, 0.4)
+        utility.showResizedImage("Output", frame.getPixels(), 0.4)

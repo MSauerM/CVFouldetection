@@ -15,13 +15,14 @@ class GrassFilter(Filter):
         #print("This is a grass filter for filtering the court of of the picture")
         # option 1 (simple): filter green color
 
-        # blurred_frame= frame.getPixels()
+        blurred_image = cv.GaussianBlur(frame.getPixels(), (5,5), 0)
+        utility.showResizedImage("Blurred Image", blurred_image, 0.4)
 
-        frame_hsv = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2HSV)
-        lower_green = np.array([40, 40, 40])
+        frame_hsv = cv.cvtColor(blurred_image, cv.COLOR_BGR2HSV)
+        lower_green = np.array([30, 40, 40])
         upper_green = np.array([90, 255, 255])
 
-        dst = cv.Canny(frame.getPixels(), 50, 200, None, 3)
+        #dst = cv.Canny(frame.getPixels(), 50, 200, None, 3)
 
         #cv.imshow("Dst", dst)
 
