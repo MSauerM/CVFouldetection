@@ -5,12 +5,16 @@ from Fouldetection.GrassFilter import GrassFilter
 from Fouldetection.OpticalFlowFilter import OpticalFlowFilter
 from Fouldetection.PlayerFilter import PlayerFilter
 
+from cv2 import cv2 as cv
+
 """Obergeordnete Klasse, die den State Tracker sowie die einzenen Verarbeitungsschritte kapselt """
 class FoulDetector:
     stateTracker = None
     preProcessor = None
     grassFilter = None
     playerFilter = None
+
+    isInterrupted = False
 
     frame_list = []
     foulEvents = []
@@ -31,10 +35,14 @@ class FoulDetector:
 
         # detect Players and Ball / extract basic game information
         for frame in self.preProcessor.frame_list:
+            if self.isInterrupted:
+                break
+
             grassFilteredFrame = grassFilter.filter(frame)
             playerFilter.filter(frame, grassFilteredFrame)
             #ballFilter.filter(frame)
            # self.frame_list.append()
+
 
             # retrieve boundingBox Information on every single frame
 
@@ -55,3 +63,6 @@ class FoulDetector:
         videoWriter = VideoWriter(filename)
         videoWriter.writeVideo(frames=self.frame_list)
         
+    def interruptProcessing(self):
+        cv.destroyAllWindows()
+        self.isInterrupted = True
