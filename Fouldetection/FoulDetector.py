@@ -50,4 +50,8 @@ class FoulDetector:
     def createVideo(self):
         videoWriter = VideoWriter("FoulDetector")
         videoWriter.writeVideo(frames=self.frame_list)
+
+    def createVideo(self, filename):
+        videoWriter = VideoWriter(filename)
+        videoWriter.writeVideo(frames=self.frame_list)
         
