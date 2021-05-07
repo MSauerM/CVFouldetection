@@ -11,7 +11,7 @@ import subprocess
 
 from Fouldetection.FoulDetector import FoulDetector
 from InputGUI.VideoPlayer import VideoPlayer
-
+from cv2 import cv2 as cv
 
 class VideoFileDialogWindow(QMainWindow):
     def __init__(self, app):
@@ -47,11 +47,15 @@ class VideoFileDialogWindow(QMainWindow):
 
         cancelButton = QPushButton('Abbrechen')
         cancelButton.clicked.connect(self.cancel)
-        grid.addWidget(cancelButton, 5, 3, Qt.AlignRight)
+        grid.addWidget(cancelButton, 5, 4, Qt.AlignRight)
 
         processButton = QPushButton('Verarbeiten')
         processButton.clicked.connect(lambda:self.processVideo(self.fileName))
         grid.addWidget(processButton, 5, 2, Qt.AlignRight)
+
+        interruptProcessingButton = QPushButton('Interrupt')
+        interruptProcessingButton.clicked.connect(lambda:self.interrupt())
+        grid.addWidget(interruptProcessingButton, 5, 3, Qt.AlignRight)
 
         createVideoCheckbox = QCheckBox("Create Video")
         createVideoCheckbox.stateChanged.connect(self.createVideoCheckbox_Changed)
@@ -105,3 +109,5 @@ class VideoFileDialogWindow(QMainWindow):
                 videoPlayer = VideoPlayer()
                 videoPlayer.loadFile(filename)
 
+    def interrupt(self):
+        self.foulDetector.interruptProcessing()
