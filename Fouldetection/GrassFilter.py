@@ -66,7 +66,7 @@ class GrassFilter(Filter):
         #white_mask_xor = cv.bitwise_xor()
         white_mask_inv = cv.bitwise_not(white_mask)
         combined = cv.bitwise_and(thresh, white_mask_inv, mask=white_mask_inv)#cv.bitwise_not(thresh, mask=white_mask)
-
+        combined = cv.dilate(combined, kernel, iterations=1)#cv.morphologyEx(combined, cv.MORPH_CLOSE, kernel= kernel,iterations=5)
        # cv.imshow("Res", res)
        # cv.imshow("White Mask", white_mask)
        # cv.imshow("White Mask Inverted", white_mask_inv)
