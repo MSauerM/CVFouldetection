@@ -18,7 +18,7 @@ class PlayerFilter(Filter):
 
         kernel = np.ones( (5,5), np.uint8)
 
-        preprocessed_frames = cv.dilate(preprocessed_frames, kernel, iterations=2)
+        preprocessed_frames = cv.dilate(preprocessed_frames, kernel, iterations=3)
 
         (contours, hierarchy) = cv.findContours(preprocessed_frames, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
