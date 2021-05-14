@@ -1,9 +1,12 @@
 import numpy as np
 
 from BasicFramework.Frame import Frame
-from Fouldetection.Filter import Filter
+from CVUtility.BoundingBoxInformation import BoundingBoxInformation
+
 import cv2 as cv
 import CVUtility.ImageUtility as utility
+from Fouldetection.Filter.Filter import Filter
+
 
 class PlayerFilter(Filter):
 
@@ -26,6 +29,8 @@ class PlayerFilter(Filter):
         player_img = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask=preprocessed_frames)
         edges = cv.Canny(player_img, 50, 150)
 
+        boundingBoxInformation_list = []
+
        # cv.imshow("player Image", player_img)
        # cv.waitKey(0)
         utility.showResizedImage("Player Image", player_img, 0.4)
@@ -35,6 +40,7 @@ class PlayerFilter(Filter):
             x, y, w, h = cv.boundingRect(c)
             if ( (w > 15 and h > 20)  and (w < 450 and h < 450)):
                 #cv.drawContours(frame, cv.boundingRect(c), -1, (255, 0, 0),3)
+                boundingBoxInformation_list.append(BoundingBoxInformation(frame.getFrameCount(), x, y, w, h))
                 cv.rectangle(frame.getPixels(), (x, y), (x+w, y+h), (255, 0, 0), 3)
                 cv.putText(frame.getPixels(), "{w}/ {h}".format(w= w, h=h), (x-2, y-2), font, 0.8, (0, 255, 0), 2, cv.LINE_AA)
         cv.drawContours(frame.getPixels(), contours, -1, (0, 0, 255), 3)
@@ -44,3 +50,4 @@ class PlayerFilter(Filter):
         #cv.waitKey(0)
         utility.showResizedImage("Edges", edges, 0.4)
         utility.showResizedImage("Output", frame.getPixels(), 0.4)
+        return boundingBoxInformation_list
