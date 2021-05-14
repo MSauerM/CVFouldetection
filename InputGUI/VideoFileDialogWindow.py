@@ -10,6 +10,7 @@ from BasicFramework.VideoPreProcessor import VideoPreProcessor
 import subprocess
 
 from Fouldetection.FoulDetector import FoulDetector
+from Fouldetection.FoulDetectorThread import FoulDetectorThread
 from InputGUI.VideoPlayer import VideoPlayer
 from cv2 import cv2 as cv
 
@@ -99,15 +100,19 @@ class VideoFileDialogWindow(QMainWindow):
 
 
     def processVideo(self, filename):
-        self.preProcessor = VideoPreProcessor(filename)
-        self.foulDetector = FoulDetector(self.preProcessor)
-        self.foulDetector.process()
 
-        if self.shouldCreateVideo:
-            filename = self.foulDetector.createVideo()
-            if self.shouldShowVideo:
-                videoPlayer = VideoPlayer()
-                videoPlayer.loadFile(filename)
+        foulDetectorThread = FoulDetectorThread(filename, False)
+        foulDetectorThread.start()
+
+        #self.preProcessor = VideoPreProcessor(filename)
+       # self.foulDetector = FoulDetector(self.preProcessor)
+       # self.foulDetector.process()
+
+       # if self.shouldCreateVideo:
+       #     filename = self.foulDetector.createVideo()
+        #    if self.shouldShowVideo:
+       #         videoPlayer = VideoPlayer()
+       #         videoPlayer.loadFile(filename)
 
     def interrupt(self):
         self.foulDetector.interruptProcessing()

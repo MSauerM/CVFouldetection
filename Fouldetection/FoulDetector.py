@@ -20,13 +20,16 @@ class FoulDetector:
     foulEvents = []
     # boundingBoxInformation
 
-    def __init__(self, preProcessor: VideoPreProcessor):
-        self.preProcessor = preProcessor
+    def __init__(self, preProcessor: VideoPreProcessor = None, filename: str = None):
+        if preProcessor is not None and filename is None:
+            self.preProcessor = preProcessor
+        if preProcessor is None and filename is not None:
+            self.preProcessor = VideoPreProcessor(filename)
 
     def process(self):
         print("Start processing")
         grassFilter = GrassFilter()
-        ballFilter = BallFilter()
+        #ballFilter = BallFilter()
         playerFilter = PlayerFilter()
         opticalFlowFilter = OpticalFlowFilter(self.preProcessor.frame_list)
 
@@ -55,13 +58,13 @@ class FoulDetector:
 
         print("End processing")
 
-    def createVideo(self):
-        videoWriter = VideoWriter("FoulDetector")
-        videoWriter.writeVideo(frames=self.frame_list)
-
-    def createVideo(self, filename):
+    def createVideo(self, filename = "FoulDetector"):
         videoWriter = VideoWriter(filename)
         videoWriter.writeVideo(frames=self.frame_list)
+
+   # def createVideo(self, filename):
+   #     videoWriter = VideoWriter(filename)
+   #     videoWriter.writeVideo(frames=self.frame_list)
         
     def interruptProcessing(self):
         cv.destroyAllWindows()

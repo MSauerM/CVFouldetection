@@ -1,7 +1,8 @@
 import math
 
 from BasicFramework.Frame import Frame
-from Fouldetection.Filter import Filter
+
+from Fouldetection.Filter.Filter import Filter
 from cv2 import cv2 as cv
 import numpy as np
 import CVUtility.ImageUtility as utility

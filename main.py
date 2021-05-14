@@ -1,5 +1,6 @@
-from BasicFramework.VideoPreProcessor import VideoPreProcessor
-from Fouldetection.FoulDetector import FoulDetector
+from PyQt5.QtCore import QCoreApplication
+
+from Fouldetection.FoulDetectorThread import FoulDetectorThread
 from InputGUI.GUIMain import start_GUI
 import struct
 import argparse
@@ -16,9 +17,14 @@ if __name__ == '__main__':
     print (struct.calcsize("P")*8)
     if len(sys.argv) > 1:
         print('Console Execution')
-        preProcessor = VideoPreProcessor(args.filename)
-        foulDetector = FoulDetector(preProcessor)
-        foulDetector.process()
-        foulDetector.createVideo(args.video)
+        app = QCoreApplication([])
+        thread = FoulDetectorThread(args.filename, args.video)
+        thread.finished.connect(app.exit)
+        thread.start()
+        sys.exit(app.exec_())
+        #preProcessor = VideoPreProcessor(args.filename)
+        #foulDetector = FoulDetector(preProcessor)
+        #foulDetector.process()
+        #foulDetector.createVideo(args.video)
     else:
         start_GUI()
