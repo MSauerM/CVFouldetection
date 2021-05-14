@@ -1,9 +1,9 @@
 from BasicFramework.VideoPreProcessor import VideoPreProcessor
 from BasicFramework.VideoWriter import VideoWriter
-from Fouldetection.BallFilter import BallFilter
-from Fouldetection.GrassFilter import GrassFilter
-from Fouldetection.OpticalFlowFilter import OpticalFlowFilter
-from Fouldetection.PlayerFilter import PlayerFilter
+from Fouldetection.Filter.BallFilter import BallFilter
+from Fouldetection.Filter.GrassFilter import GrassFilter
+from Fouldetection.Filter.OpticalFlowFilter import OpticalFlowFilter
+from Fouldetection.Filter.PlayerFilter import PlayerFilter
 
 from cv2 import cv2 as cv
 
