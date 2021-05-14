@@ -2,8 +2,10 @@ from typing import List
 
 from BasicFramework.Frame import Frame
 from Fouldetection.Filter.BallFilter import BallFilter
+from Fouldetection.Filter.CourtBoundsFilter import CourtBoundsFilter
 from Fouldetection.Filter.GrassFilter import GrassFilter
 from Fouldetection.Filter.PlayerFilter import PlayerFilter
+
 
 
 class PreAnalyzer:
@@ -20,16 +22,16 @@ class PreAnalyzer:
         ballFilter = BallFilter()
         playerFilter = PlayerFilter()
         #opticalFlowFilter = OpticalFlowFilter(self.preProcessor.frame_list)
-
+        courtBoundsFilter = CourtBoundsFilter()
         # opticalFlowFilter.filter()
 
         # detect Players and Ball / extract basic game information
         for frame in frame_list:
             if self.isInterrupted:
                 break
-
+            courtBoundsFilter.filter(frame)
             grassFilteredFrame = grassFilter.filter(frame)
-            playerFilter.filter(frame, grassFilteredFrame)
+            candidateBoundingBoxes = playerFilter.filter(frame, grassFilteredFrame)
             # ballFilter.filter(frame)
         # self.frame_list.append()
 
