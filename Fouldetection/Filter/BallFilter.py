@@ -1,7 +1,9 @@
 import numpy as np
 
-from Fouldetection.Filter import Filter
 from cv2 import cv2 as cv
+
+from Fouldetection.Filter.Filter import Filter
+
 
 class BallFilter(Filter):
 

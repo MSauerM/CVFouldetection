@@ -1,5 +1,5 @@
 from BasicFramework.Frame import Frame
-from Fouldetection.Filter import Filter
+from Fouldetection.Filter.Filter import Filter
 
 
 class CourtBoundsFilter(Filter):
