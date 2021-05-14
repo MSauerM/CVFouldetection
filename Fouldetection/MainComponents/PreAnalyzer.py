@@ -32,6 +32,11 @@ class PreAnalyzer:
             courtBoundsFilter.filter(frame)
             grassFilteredFrame = grassFilter.filter(frame)
             candidateBoundingBoxes = playerFilter.filter(frame, grassFilteredFrame)
+            # analyze candidate Bounding Boxes for real players
+            # cut out the candidate Bounding Boxes out of the real image
+
+            # make a color histogram out of it
+
             # ballFilter.filter(frame)
         # self.frame_list.append()
 
