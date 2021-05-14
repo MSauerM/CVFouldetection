@@ -22,7 +22,7 @@ class PreAnalyzer:
         # opticalFlowFilter.filter()
 
         # detect Players and Ball / extract basic game information
-        for frame in self.preProcessor.frame_list:
+        for frame in frame_list:
             if self.isInterrupted:
                 break
 
@@ -31,4 +31,4 @@ class PreAnalyzer:
             # ballFilter.filter(frame)
         # self.frame_list.append()
 
-        return None # BoundingBox List
+        return None # Sequences of possible foul plays

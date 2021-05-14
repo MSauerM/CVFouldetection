@@ -7,6 +7,9 @@ from Fouldetection.Filter.PlayerFilter import PlayerFilter
 
 from cv2 import cv2 as cv
 
+from Fouldetection.MainComponents.FoulRecognizer import FoulRecognizer
+from Fouldetection.MainComponents.PreAnalyzer import PreAnalyzer
+
 """Obergeordnete Klasse, die den State Tracker sowie die einzenen Verarbeitungsschritte kapselt """
 class FoulDetector:
     stateTracker = None
@@ -28,21 +31,28 @@ class FoulDetector:
 
     def process(self):
         print("Start processing")
-        grassFilter = GrassFilter()
+        preAnalyzer = PreAnalyzer()
+        sequences = preAnalyzer.analyze(self.preProcessor.frame_list)
+
+        foulRecognizer = FoulRecognizer()
+        foulRecognizer.analyze(sequences)
+
+
+        #grassFilter = GrassFilter()
         #ballFilter = BallFilter()
-        playerFilter = PlayerFilter()
-        opticalFlowFilter = OpticalFlowFilter(self.preProcessor.frame_list)
+        #playerFilter = PlayerFilter()
+        #opticalFlowFilter = OpticalFlowFilter(self.preProcessor.frame_list)
 
 
         #opticalFlowFilter.filter()
 
         # detect Players and Ball / extract basic game information
-        for frame in self.preProcessor.frame_list:
-            if self.isInterrupted:
-                break
+        #for frame in self.preProcessor.frame_list:
+        #    if self.isInterrupted:
+        #        break
 
-            grassFilteredFrame = grassFilter.filter(frame)
-            playerFilter.filter(frame, grassFilteredFrame)
+        #    grassFilteredFrame = grassFilter.filter(frame)
+        #    playerFilter.filter(frame, grassFilteredFrame)
             #ballFilter.filter(frame)
            # self.frame_list.append()
 
