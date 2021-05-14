@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QPushButton, QGridLayout, QLab
 
 from PyQt5.QtCore import QSize, Qt
 
+import appconfig
 from BasicFramework.VideoPreProcessor import VideoPreProcessor
 
 import subprocess
@@ -101,18 +102,19 @@ class VideoFileDialogWindow(QMainWindow):
 
     def processVideo(self, filename):
 
-        foulDetectorThread = FoulDetectorThread(filename, False)
-        foulDetectorThread.start()
+        if appconfig.use_multithreading is True:
+            foulDetectorThread = FoulDetectorThread(filename, False)
+            foulDetectorThread.start()
+        else:
+            self.preProcessor = VideoPreProcessor(filename)
+            self.foulDetector = FoulDetector(self.preProcessor)
+            self.foulDetector.process()
 
-        #self.preProcessor = VideoPreProcessor(filename)
-       # self.foulDetector = FoulDetector(self.preProcessor)
-       # self.foulDetector.process()
-
-       # if self.shouldCreateVideo:
-       #     filename = self.foulDetector.createVideo()
-        #    if self.shouldShowVideo:
-       #         videoPlayer = VideoPlayer()
-       #         videoPlayer.loadFile(filename)
+            if self.shouldCreateVideo:
+                filename = self.foulDetector.createVideo()
+                if self.shouldShowVideo:
+                    videoPlayer = VideoPlayer()
+                    videoPlayer.loadFile(filename)
 
     def interrupt(self):
         self.foulDetector.interruptProcessing()

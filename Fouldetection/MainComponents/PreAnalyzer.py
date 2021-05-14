@@ -8,6 +8,8 @@ from Fouldetection.Filter.PlayerFilter import PlayerFilter
 
 class PreAnalyzer:
 
+    isInterrupted = False
+
     def __init__(self):
         print("Init PreAnalyzer")
 
