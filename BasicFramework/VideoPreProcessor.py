@@ -1,5 +1,6 @@
 import cv2 as cv
 
+import appconfig
 from BasicFramework.Frame import Frame
 
 
@@ -18,7 +19,7 @@ class VideoPreProcessor:
             timestamp = capture.get(cv.CAP_PROP_POS_MSEC)
             ret, frame = capture.read()
 
-            if not ret:
+            if not ret or appconfig.max_frame_amount < frameIndex:
                 print("Ending Processing")
                 break
 
