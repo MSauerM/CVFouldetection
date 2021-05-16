@@ -29,7 +29,7 @@ class PreAnalyzer:
         for frame in frame_list:
             if self.isInterrupted:
                 break
-            courtBoundsFilter.filter(frame)
+            #courtBoundsFilter.filter(frame)
             grassFilteredFrame = grassFilter.filter(frame)
             candidateBoundingBoxes = playerFilter.filter(frame, grassFilteredFrame)
             # analyze candidate Bounding Boxes for real players
