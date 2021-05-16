@@ -78,8 +78,34 @@ class GrassFilter(Filter):
         green_mask = cv.morphologyEx(green_mask, cv.MORPH_CLOSE, kernel= kernel, iterations=5)
         utility.showResizedImage("GrassFilter - Opened Green Mask", green_mask, 0.4)
 
+        contours, _ = cv.findContours(green_mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+        green_mask_copy = green_mask
+        hull_list = []
+        for i in range(len(contours)):
+            hull = cv.convexHull(contours[i])
+            hull_list.append(hull)
+
+        drawing = np.zeros((blurred_image.shape[0], blurred_image.shape[1], 3), dtype=np.uint8)
+        greatestArea = 0
+        greatestAreaIndex = -1
+        for i in range(len(contours)):
+            cv.drawContours(drawing, contours, i, (0, 255, 0))
+            cv.drawContours(drawing, hull_list, i, (0, 0, 255))
+            hullArea =cv.contourArea(hull_list[i])
+            if greatestArea < hullArea:
+                greatestArea = hullArea
+                greatestAreaIndex = i
+
+        fieldAreaDrawing = np.zeros((blurred_image.shape[0], blurred_image.shape[1], 3), dtype=np.uint8)
+        cv.fillPoly(fieldAreaDrawing, [hull_list[greatestAreaIndex]], (255, 255, 255))
+        utility.showResizedImage("GrassFilter - Opened Drawing - Contours", drawing, 0.4)
+        utility.showResizedImage("GrassFilter - Field Area", fieldAreaDrawing, 0.4)
+        #convert fieldAreaDrwa
+        field = cv.bitwise_and(res, fieldAreaDrawing)
+        utility.showResizedImage("GrassFilter - Field", field, 0.4)
+
         #        cv.imshow("CVFouldetection GrassFilter", combined)
- #       cv.waitKey(0)
+        #   cv.waitKey(0)
        # return thresh
         return combined
 
