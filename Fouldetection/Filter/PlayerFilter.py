@@ -15,6 +15,7 @@ class PlayerFilter(Filter):
 
     def filter(self, frame: Frame, preprocessed_frames = None):
         # canny Edge detection
+        img = frame.getPixels()
         frame_hsv = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2HSV)
         #frame_thresh = cv.cvtColor(preprocessed_frames, cv.Color_gray2)
         #edges = cv.Canny(frame_hsv, 100, 200)
@@ -41,10 +42,10 @@ class PlayerFilter(Filter):
             if ( (w > 15 and h > 20)  and (w < 450 and h < 450)):
                 #cv.drawContours(frame, cv.boundingRect(c), -1, (255, 0, 0),3)
                 boundingBoxInformation_list.append(BoundingBoxInformation(frame.getFrameCount(), x, y, w, h))
-                cv.rectangle(frame.getPixels(), (x, y), (x+w, y+h), (255, 0, 0), 3)
-                cv.putText(frame.getPixels(), "{w}/ {h}".format(w= w, h=h), (x-2, y-2), font, 0.8, (0, 255, 0), 2, cv.LINE_AA)
-        cv.drawContours(frame.getPixels(), contours, -1, (0, 0, 255), 3)
-
+                cv.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 3)
+                cv.putText(img, "{w}/ {h}".format(w= w, h=h), (x-2, y-2), font, 0.8, (0, 255, 0), 2, cv.LINE_AA)
+        cv.drawContours(img, contours, -1, (0, 0, 255), 3)
+        utility.showResizedImage("Player Filter - Result", img, 0.4)
         #cv.imshow("Edges", edges)
         #cv.imshow("Output", frame.getPixels())
         #cv.waitKey(0)

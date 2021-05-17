@@ -1,5 +1,6 @@
 from cv2 import cv2 as cv
 from matplotlib import pyplot as plt
+from CVUtility import ImageUtility as utility
 
 class ColorHistogram:
 
@@ -12,11 +13,13 @@ class ColorHistogram:
         # (up to 40x - https://docs.opencv.org/master/d1/db7/tutorial_py_histogram_begins.html)
         hsv_img = cv.cvtColor(img, cv.COLOR_BGR2HSV)
         #                   img,   channels, mask, histSize (180 for Hue), ranges
+        utility.showResizedImage("Color Histogram Test - Image", img, 0.4)
+        utility.showResizedImage("Color Histogram Test - Mask", mask, 0.4)
         self._hist = cv.calcHist([hsv_img], [0], mask, [bins], [0, range])
 
     def show_histogram(self):
         plt.plot(self._hist)
-        plt.xlim([0,180])
+        plt.xlim([0, 180])
         plt.show()
 
 
