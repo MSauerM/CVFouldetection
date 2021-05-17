@@ -5,7 +5,7 @@ from Fouldetection.Filter.BallFilter import BallFilter
 from Fouldetection.Filter.CourtBoundsFilter import CourtBoundsFilter
 from Fouldetection.Filter.GrassFilter import GrassFilter
 from Fouldetection.Filter.PlayerFilter import PlayerFilter
-
+from Fouldetection.TeamColorCalibration import TeamColorCalibration
 
 
 class PreAnalyzer:
@@ -23,6 +23,7 @@ class PreAnalyzer:
         playerFilter = PlayerFilter()
         #opticalFlowFilter = OpticalFlowFilter(self.preProcessor.frame_list)
         courtBoundsFilter = CourtBoundsFilter()
+        teamColorCalibration = TeamColorCalibration()
         # opticalFlowFilter.filter()
 
         # detect Players and Ball / extract basic game information
@@ -33,6 +34,7 @@ class PreAnalyzer:
             #ballFilter.filter(frame)
             grassFilteredFrame = grassFilter.filter(frame)
             candidateBoundingBoxes = playerFilter.filter(frame, grassFilteredFrame)
+
             # analyze candidate Bounding Boxes for real players
             # cut out the candidate Bounding Boxes out of the real image
 
