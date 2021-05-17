@@ -35,7 +35,8 @@ class PreAnalyzer:
             grassFilteredFrame, fieldMask = grassFilter.filter(frame)
             ballFilter.filter(frame, (grassFilteredFrame, fieldMask))
             candidateBoundingBoxes = playerFilter.filter(frame, grassFilteredFrame)
-
+            if not teamColorCalibration.isCalibrated:
+                teamColorCalibration.calibrate(frame.getPixels(), grassFilteredFrame)
             # analyze candidate Bounding Boxes for real players
             # cut out the candidate Bounding Boxes out of the real image
 

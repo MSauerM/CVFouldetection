@@ -98,14 +98,14 @@ class GrassFilter(Filter):
 
         fieldAreaDrawing = np.zeros((blurred_image.shape[0], blurred_image.shape[1], 3), dtype=np.uint8)
         cv.fillPoly(fieldAreaDrawing, [hull_list[greatestAreaIndex]], (255, 255, 255))
-        utility.showResizedImage("GrassFilter - Opened Drawing - Contours", drawing, 0.4)
-        utility.showResizedImage("GrassFilter - Field Area", fieldAreaDrawing, 0.4)
+        #utility.showResizedImage("GrassFilter - Opened Drawing - Contours", drawing, 0.4)
+        #utility.showResizedImage("GrassFilter - Field Area", fieldAreaDrawing, 0.4)
         #convert fieldAreaDrwa
         field = cv.bitwise_and(res, fieldAreaDrawing)
-        utility.showResizedImage("GrassFilter - Field", field, 0.4)
+        #utility.showResizedImage("GrassFilter - Field", field, 0.4)
         fieldAreaDrawing = cv.cvtColor(fieldAreaDrawing, cv.COLOR_BGR2GRAY)
         combined = cv.bitwise_and(combined, fieldAreaDrawing)
-        utility.showResizedImage("GrassFilter - Combined Final", combined, 0.4)
+        #utility.showResizedImage("GrassFilter - Combined Final", combined, 0.4)
 
         return (combined, fieldAreaDrawing)
 
