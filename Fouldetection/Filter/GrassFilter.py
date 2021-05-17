@@ -103,10 +103,10 @@ class GrassFilter(Filter):
         #convert fieldAreaDrwa
         field = cv.bitwise_and(res, fieldAreaDrawing)
         utility.showResizedImage("GrassFilter - Field", field, 0.4)
+        fieldAreaDrawing = cv.cvtColor(fieldAreaDrawing, cv.COLOR_BGR2GRAY)
+        combined = cv.bitwise_and(combined, fieldAreaDrawing)
+        utility.showResizedImage("GrassFilter - Combined Final", combined, 0.4)
 
-        #        cv.imshow("CVFouldetection GrassFilter", combined)
-        #   cv.waitKey(0)
-       # return thresh
         return combined
 
         # option 2 (complex): do it as the paper says
