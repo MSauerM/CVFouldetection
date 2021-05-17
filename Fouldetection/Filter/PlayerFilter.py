@@ -13,7 +13,7 @@ class PlayerFilter(Filter):
     def __init__(self):
         super().__init__()
 
-    def filter(self, frame: Frame, preprocessed_frames):
+    def filter(self, frame: Frame, preprocessed_frames = None):
         # canny Edge detection
         frame_hsv = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2HSV)
         #frame_thresh = cv.cvtColor(preprocessed_frames, cv.Color_gray2)
@@ -33,7 +33,7 @@ class PlayerFilter(Filter):
 
        # cv.imshow("player Image", player_img)
        # cv.waitKey(0)
-        utility.showResizedImage("Player Image", player_img, 0.4)
+        #utility.showResizedImage("Player Image", player_img, 0.4)
         font = cv.FONT_HERSHEY_PLAIN
 
         for c in contours:
@@ -48,6 +48,6 @@ class PlayerFilter(Filter):
         #cv.imshow("Edges", edges)
         #cv.imshow("Output", frame.getPixels())
         #cv.waitKey(0)
-        utility.showResizedImage("Edges", edges, 0.4)
-        utility.showResizedImage("Output", frame.getPixels(), 0.4)
+        #utility.showResizedImage("Edges", edges, 0.4)
+        #utility.showResizedImage("Output", frame.getPixels(), 0.4)
         return boundingBoxInformation_list

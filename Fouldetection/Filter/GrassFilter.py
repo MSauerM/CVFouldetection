@@ -12,7 +12,7 @@ class GrassFilter(Filter):
     def __init__(self):
         super().__init__()
 
-    def filter(self, frame: Frame):
+    def filter(self, frame: Frame, preprocessed_frames=None):
         #print("This is a grass filter for filtering the court of of the picture")
         # option 1 (simple): filter green color
 
@@ -107,6 +107,6 @@ class GrassFilter(Filter):
         combined = cv.bitwise_and(combined, fieldAreaDrawing)
         utility.showResizedImage("GrassFilter - Combined Final", combined, 0.4)
 
-        return combined
+        return (combined, fieldAreaDrawing)
 
         # option 2 (complex): do it as the paper says

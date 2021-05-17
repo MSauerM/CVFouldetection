@@ -6,7 +6,10 @@ from BasicFramework.Frame import Frame
 from Fouldetection.Filter.Filter import Filter
 from CVUtility import ImageUtility as utility
 
+
 class BallFilter(Filter):
+
+    previous_ball_positions = []
 
     def __init__(self):
         super().__init__()
@@ -20,13 +23,18 @@ class BallFilter(Filter):
 
         whiteFiltered = cv.inRange( img_hsv, lower_white, upper_white)
 
-        utility.showResizedImage("White Filtered", whiteFiltered, 0.4)
-        #cv.imshow("white filtered", whiteFiltered)
-        #cv.waitKey(0)
+        kernel = np.ones( (5,5), np.uint8)
+
+#        whiteFiltered = cv.erode(whiteFiltered, kernel, iterations=5)
+        whiteFiltered = cv.morphologyEx(whiteFiltered, cv.MORPH_CLOSE, kernel)
+        whiteFiltered = cv.bitwise_and(whiteFiltered, preprocessed_frames[1])
+        utility.showResizedImage("Ball Filter - White Filtered", whiteFiltered, 0.4)
 
         gray_img = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2GRAY)
-        #cv.imshow("Gray_Frame", gray_frame)
-        #cv.waitKey(0)
+        thresh = cv.threshold(gray_img, 150, 255, cv.THRESH_OTSU)[1]
+        utility.showResizedImage("Ball Filter - Thresh", thresh, 0.4)
+
+        ballCandidates = []
 
         circles = cv.HoughCircles(whiteFiltered, cv.HOUGH_GRADIENT, 1, 20)
         if circles is not None:
@@ -38,5 +46,14 @@ class BallFilter(Filter):
                 cv.circle(img, center, radius, (255, 0, 255), 3)
 
         utility.showResizedImage("Detected Circles", img, 0.4)
-        #cv.imshow("Detected Circles", img)
-        #cv.waitKey(0)
+
+        (contours, hierarchy) = cv.findContours(whiteFiltered, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+        for c in contours:
+            x, y, w, h = cv.boundingRect(c)
+            if( (w < 40 and h < 40) and (w > 20 and h>20)):
+                cv.rectangle(img, (x,y), (x+w,y+h), (255,0,255), 3)
+            #cv.drawContours(img, contours, -1, (0,0, 255), 3)
+
+        utility.showResizedImage("Ball Candidates", img, 0.4)
+
+        return ballCandidates
