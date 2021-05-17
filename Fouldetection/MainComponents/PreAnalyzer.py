@@ -31,8 +31,9 @@ class PreAnalyzer:
             if self.isInterrupted:
                 break
             #courtBoundsFilter.filter(frame)
-            #ballFilter.filter(frame)
-            grassFilteredFrame = grassFilter.filter(frame)
+
+            grassFilteredFrame, fieldMask = grassFilter.filter(frame)
+            ballFilter.filter(frame, (grassFilteredFrame, fieldMask))
             candidateBoundingBoxes = playerFilter.filter(frame, grassFilteredFrame)
 
             # analyze candidate Bounding Boxes for real players
