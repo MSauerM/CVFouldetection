@@ -43,7 +43,7 @@ class VideoFileDialogWindow(QMainWindow):
             self.lbls += [QLabel('---')]
             grid.addWidget(self.lbls[row], row, 2)
 
-        selectButton = QPushButton('Select')
+        selectButton = QPushButton('Auswählen')#'Select')
         selectButton.clicked.connect(self.select)
         grid.addWidget(selectButton, 5, 1, Qt.AlignRight)
 
@@ -55,15 +55,15 @@ class VideoFileDialogWindow(QMainWindow):
         processButton.clicked.connect(lambda:self.processVideo(self.fileName))
         grid.addWidget(processButton, 5, 2, Qt.AlignRight)
 
-        interruptProcessingButton = QPushButton('Interrupt')
+        interruptProcessingButton = QPushButton('Unterbrechen')#'Interrupt')
         interruptProcessingButton.clicked.connect(lambda:self.interrupt())
         grid.addWidget(interruptProcessingButton, 5, 3, Qt.AlignRight)
 
-        createVideoCheckbox = QCheckBox("Create Video")
+        createVideoCheckbox = QCheckBox("Video erzeugen")#"Create Video")
         createVideoCheckbox.stateChanged.connect(self.createVideoCheckbox_Changed)
         grid.addWidget(createVideoCheckbox, 6, 2, Qt.AlignRight)
 
-        showVideoCheckBox = QCheckBox("Show Video after Processing")
+        showVideoCheckBox = QCheckBox("Erstelltes Video anzeigen" )#"Show Video after Processing")
         showVideoCheckBox.stateChanged.connect(self.showVideoCheckbox_Changed)
         grid.addWidget(showVideoCheckBox, 6, 3, Qt.AlignRight)
 
