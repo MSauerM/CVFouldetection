@@ -97,7 +97,7 @@ class BallFilter(Filter):
 
         # remove all candidates from ballCandidates which is not in the range of the intervall regarding width height ratio
         ballCandidates = [x for x in ballCandidates if 0.25 < x[2] < 1.75]
-        print(ballCandidates)
+        #print(ballCandidates)
 
         for candidate in ballCandidates:
             cv.putText(img,
