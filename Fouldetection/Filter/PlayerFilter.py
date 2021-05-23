@@ -29,6 +29,7 @@ class PlayerFilter(Filter):
 
         player_img = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask=preprocessed_frames)
         edges = cv.Canny(player_img, 50, 150)
+        # Hough Lines on this edge detector?
 
         boundingBoxInformation_list = []
 
@@ -45,7 +46,7 @@ class PlayerFilter(Filter):
                 cv.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 3)
                 cv.putText(img, "{w}/ {h}".format(w= w, h=h), (x-2, y-2), font, 0.8, (0, 255, 0), 2, cv.LINE_AA)
         cv.drawContours(img, contours, -1, (0, 0, 255), 3)
-        utility.showResizedImage("Player Filter - Result", img, 0.4)
+       # utility.showResizedImage("Player Filter - Result", img, 0.4)
         #cv.imshow("Edges", edges)
         #cv.imshow("Output", frame.getPixels())
         #cv.waitKey(0)

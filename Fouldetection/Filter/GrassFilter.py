@@ -71,12 +71,12 @@ class GrassFilter(Filter):
        # cv.imshow("Res", res)
        # cv.imshow("White Mask", white_mask)
        # cv.imshow("White Mask Inverted", white_mask_inv)
-        utility.showResizedImage("CVFouldetection GrassFilter", combined, 0.4)
+        #utility.showResizedImage("CVFouldetection GrassFilter", combined, 0.4)
 
         green_mask = cv.erode(mask, kernel, iterations=5)
 
         green_mask = cv.morphologyEx(green_mask, cv.MORPH_CLOSE, kernel= kernel, iterations=5)
-        utility.showResizedImage("GrassFilter - Opened Green Mask", green_mask, 0.4)
+        #utility.showResizedImage("GrassFilter - Opened Green Mask", green_mask, 0.4)
 
         contours, _ = cv.findContours(green_mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
         green_mask_copy = green_mask
