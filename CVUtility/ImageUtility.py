@@ -2,6 +2,7 @@ from cv2 import cv2 as cv
 
 import appconfig
 
+#isDebugWarningAlreadyPrinted = False
 
 def showResizedImage( windowname, img, scalingFactor, waitKey=None):
     if appconfig.show_debug_windows:
@@ -12,5 +13,7 @@ def showResizedImage( windowname, img, scalingFactor, waitKey=None):
             cv.waitKey(0)
         else:
             cv.waitKey(waitKey)
-    else:
-        print("Set show_debug_windows to True for getting a window here")
+    #else:
+       # if not isDebugWarningAlreadyPrinted:
+            #print("Set show_debug_windows to True for getting a window here")
+            #nonlocal isDebugWarningAlreadyPrinted = True

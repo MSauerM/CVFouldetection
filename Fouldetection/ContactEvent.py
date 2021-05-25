@@ -1,14 +1,12 @@
+from BasicFramework.Sequence import Sequence
+
 
 class ContactEvent:
-    frameCountBegin = -1
-    frameCountEnd = -1
+    sequence: Sequence = None
     isFoul = False
-    # involved PlayerBoundingBox
-    # sequence which is the corresponding one to this event
 
-    def __init__(self, frameCountBegin, frameCountEnd):
-        self.frameCountBegin = frameCountBegin
-        self.frameCountEnd = frameCountEnd
+    def __init__(self, sequence:Sequence):
+       self.sequence = sequence
 
     def __str__(self):
         print("Here goes something with the information about a contact event")

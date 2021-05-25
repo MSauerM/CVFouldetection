@@ -1,4 +1,4 @@
-
+import numpy as np
 
 class BoundingBoxInformation:
 
@@ -15,3 +15,6 @@ class BoundingBoxInformation:
 
     def get_frame_index(self) -> int:
         return self._frame_index
+
+    def get_midpoint(self):
+        return np.array([self._x+self._w/2, self._y+ self._h/2])
