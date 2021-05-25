@@ -6,7 +6,7 @@ class Frame():
     def __init__(self, timestamp: float, pixels: ndarray, framecount: int):
         self._timestamp = timestamp
         self._pixels = pixels
-        self._framecount = framecount
+        self._framecount: int = framecount
 
     def getPixels(self):
         return self._pixels
@@ -14,7 +14,7 @@ class Frame():
     def getDimensions(self):
         return self._pixels.shape[:2] # is Width or height first?
 
-    def getFrameCount(self):
+    def getFrameCount(self) -> int:
         return self._framecount
 
     def getTimestamp(self):

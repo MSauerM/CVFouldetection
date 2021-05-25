@@ -15,7 +15,7 @@ class VideoPreProcessor:
         self.frame_list = []
         # load video into single frames
         while capture.isOpened():
-            frameIndex = capture.get(cv.CAP_PROP_POS_FRAMES)
+            frameIndex = int(capture.get(cv.CAP_PROP_POS_FRAMES))
             timestamp = capture.get(cv.CAP_PROP_POS_MSEC)
             ret, frame = capture.read()
 
