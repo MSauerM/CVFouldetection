@@ -1,6 +1,7 @@
 from typing import List
 
 from BasicFramework.Frame import Frame
+from Fouldetection.ContactBoxChecker import ContactBoxChecker
 from Fouldetection.Filter.BallFilter import BallFilter
 from Fouldetection.Filter.CourtBoundsFilter import CourtBoundsFilter
 from Fouldetection.Filter.GrassFilter import GrassFilter
@@ -25,6 +26,9 @@ class PreAnalyzer:
         courtBoundsFilter = CourtBoundsFilter()
         teamColorCalibration = TeamColorCalibration()
         # opticalFlowFilter.filter()
+        contactBoxChecker = ContactBoxChecker(teamColorCalibration)
+
+        contact_boxes = []
 
         # detect Players and Ball / extract basic game information
         for frame in frame_list:
@@ -38,8 +42,10 @@ class PreAnalyzer:
             if not teamColorCalibration.isCalibrated:
                 teamColorCalibration.calibrate(frame.getPixels(), grassFilteredFrame)
 
+
             for candidate in candidateBoundingBoxes:
-                candidate.get_frame_index()
+                if contactBoxChecker.check_for_contact(frame.getPixels(), grassFilteredFrame, candidate):
+                    contact_boxes.append(candidate)
 
             # analyze candidate Bounding Boxes for real players
             # cut out the candidate Bounding Boxes out of the real image
@@ -48,5 +54,8 @@ class PreAnalyzer:
 
             # ballFilter.filter(frame)
         # self.frame_list.append()
+        print(contact_boxes)
+        sequences = []
 
-        return None # Sequences of possible foul plays
+
+        return sequences # Sequences of possible foul plays

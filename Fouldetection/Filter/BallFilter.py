@@ -32,7 +32,7 @@ class BallFilter(Filter):
         whiteFiltered = cv.morphologyEx(whiteFiltered, cv.MORPH_CLOSE, kernel, iterations=5)
         grassFilteredMask = cv.morphologyEx(grassFilteredMask, cv.MORPH_CLOSE, kernel, iterations=5)
         whiteFiltered = cv.bitwise_and(whiteFiltered, preprocessed_frames[1])
-        utility.showResizedImage("Ball Filter - White Filtered", whiteFiltered, 0.4)
+        #utility.showResizedImage("Ball Filter - White Filtered", whiteFiltered, 0.4)
 
 
         gray_img = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2GRAY)
@@ -45,10 +45,10 @@ class BallFilter(Filter):
 
         closed_edges = cv.morphologyEx(edge, cv.MORPH_CLOSE, kernel, iterations=3)
 
-        utility.showResizedImage("Ball Filter - Closed Edges", closed_edges, 0.4)
+        #utility.showResizedImage("Ball Filter - Closed Edges", closed_edges, 0.4)
 
-        utility.showResizedImage("Ball Filter - Thresh", thresh, 0.4)
-        utility.showResizedImage("Ball Filter - GrassFiltered", grassFilteredMask, 0.4)
+        #utility.showResizedImage("Ball Filter - Thresh", thresh, 0.4)
+        #utility.showResizedImage("Ball Filter - GrassFiltered", grassFilteredMask, 0.4)
 
 
         #circles = cv.HoughCircles(closed_edges, cv.HOUGH_GRADIENT, 1.2, 50)
@@ -60,7 +60,7 @@ class BallFilter(Filter):
         #        radius = circle[2]
        #         cv.circle(img, center, radius, (255, 0, 255), 3)
 
-        utility.showResizedImage("Detected Circles", img, 0.4)
+        #utility.showResizedImage("Detected Circles", img, 0.4)
 
         ballCandidates = []
 
@@ -108,6 +108,6 @@ class BallFilter(Filter):
 
 
 
-        utility.showResizedImage("Ball Candidates", img, 0.4)
+        #utility.showResizedImage("Ball Candidates", img, 0.4)
 
         return ballCandidates

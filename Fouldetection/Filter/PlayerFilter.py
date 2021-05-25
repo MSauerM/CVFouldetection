@@ -30,7 +30,7 @@ class PlayerFilter(Filter):
         player_img = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask=preprocessed_frames)
         edges = cv.Canny(img, 50, 150)
         # Hough Lines on this edge detector?
-        utility.showResizedImage("Player Filter - Edges", edges, 0.4)
+        #utility.showResizedImage("Player Filter - Edges", edges, 0.4)
 
         boundingBoxInformation_list = []
 
