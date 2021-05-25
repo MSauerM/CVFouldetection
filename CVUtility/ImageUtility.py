@@ -1,12 +1,16 @@
 from cv2 import cv2 as cv
 
+import appconfig
+
 
 def showResizedImage( windowname, img, scalingFactor, waitKey=None):
-    height, width = img.shape[:2]
-    tmpImg = cv.resize(img, (int(width * scalingFactor), int(height * scalingFactor)))
-    cv.imshow(windowname, tmpImg)
-    if waitKey is None:
-        cv.waitKey(0)
+    if appconfig.show_debug_windows:
+        height, width = img.shape[:2]
+        tmpImg = cv.resize(img, (int(width * scalingFactor), int(height * scalingFactor)))
+        cv.imshow(windowname, tmpImg)
+        if waitKey is None:
+            cv.waitKey(0)
+        else:
+            cv.waitKey(waitKey)
     else:
-        cv.waitKey(waitKey)
-
+        print("Set show_debug_windows to True for getting a window here")
