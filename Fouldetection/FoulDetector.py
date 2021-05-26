@@ -34,6 +34,9 @@ class FoulDetector:
         preAnalyzer = PreAnalyzer()
         sequences = preAnalyzer.analyze(self.preProcessor.frame_list)
 
+        for sequence in sequences:
+            sequence.showSequence()
+
         foulRecognizer = FoulRecognizer()
         foulRecognizer.analyze(sequences)
 
