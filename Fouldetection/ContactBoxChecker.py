@@ -21,20 +21,21 @@ class ContactBoxChecker:
     :param playermask Binäre Maske der identifzierten Spieler
     :param boundingBox Bounding Box, welche zum Croppen benutzt wird
     """
-    def check_for_contact(self, img, playermask, boundingBox:BoundingBoxInformation):
+    def check_for_contact(self, img, boundingBox: BoundingBoxInformation):
+        #def check_for_contact(self, img, playermask, boundingBox:BoundingBoxInformation):
         # search for an image in the image_cache
-        cutting_image = None
-        search_item = boundingBox.get_frame_index() #[item for item in self.image_cache if boundingBox.get_frame_index() in item]
-        if self.image_cache and search_item in self.image_cache:
-            cutting_image = self.image_cache[search_item]#search_item
-        else:
-            cutting_image = cv.bitwise_and(img, img , mask=playermask)
-            #self.image_cache.add((boundingBox.get_frame_index(), tuple(cutting_image)))
-            self.image_cache[boundingBox.get_frame_index()] = cutting_image
+       # cutting_image = None
+       # search_item = boundingBox.get_frame_index() #[item for item in self.image_cache if boundingBox.get_frame_index() in item]
+       # if self.image_cache and search_item in self.image_cache:
+       #     cutting_image = self.image_cache[search_item]#search_item
+       # else:
+        #    cutting_image = cv.bitwise_and(img, img , mask=playermask)
+        #    #self.image_cache.add((boundingBox.get_frame_index(), tuple(cutting_image)))
+        #    self.image_cache[boundingBox.get_frame_index()] = cutting_image
         #getDimensions
         x, y, w, h = boundingBox.get_bounds()
         # crop img
-        img_crop = cutting_image[y:y+h, x:x+w]
+        img_crop = img[y:y+h, x:x+w] #cutting_image[y:y+h, x:x+w]
         # downsampling of img_crop (maybe for better performance)
 
         # check if all team colors are contained in the img_crop
