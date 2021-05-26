@@ -46,6 +46,8 @@ class PreAnalyzer:
                 teamColorCalibration.calibrate(frame.getPixels(), grassFilteredFrame)
 
             contact_boxes[frame.getFrameCount()] = []
+            # hier Bild schon aus frame.getPixels und grassFilteredFrame zusammensetzen,
+            # dies löst auch Problematik mit dem caching
             for candidate in candidateBoundingBoxes:
                 if contactBoxChecker.check_for_contact(frame.getPixels(), grassFilteredFrame, candidate):
                     contact_boxes[frame.getFrameCount()].append(candidate)
