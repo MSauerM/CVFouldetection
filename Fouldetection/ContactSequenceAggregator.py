@@ -33,7 +33,7 @@ class ContactSequenceAggregator:
                 # retrieve bounds
                 (x, y, w, h) = link.get_bounds()
                 # crop the image
-                img_crop = img[y:y+h, x:x+w]
+                img_crop = img.getPixels()[y:y+h, x:x+w]
 
                 cropped_frame = Frame(img.getTimestamp(), img_crop, img.getFrameCount())
                 sequence_frames.append(cropped_frame)
@@ -64,36 +64,40 @@ class ContactSequenceAggregator:
         for i in bounding_boxes_range:  # 1. Schleife
             #horizontal_layer = bounding_boxes[i]
             removal_list = []
-            for y in range(0, len(bounding_boxes[i])):
-                new_chain = BoundingBoxInformationChain()
-                starting_link = bounding_boxes[i][y]
-                new_chain.add(starting_link)
-                removal_list.append((i, y))
-                isChained = False
-                for z in range(i+1, len(bounding_boxes)):
-                    if not bounding_boxes[z]:
-                        break
-                    magnitude = 10000
-                    index = -1
-                    for x in range(0, len(bounding_boxes[z])):
-                        distanceVector = bounding_boxes[z][x].get_midpoint() - starting_link.get_midpoint()
-                        distance_magnitude = np.linalg.norm(distanceVector)
-                        if distance_magnitude < magnitude and distance_magnitude < 3:
-                            index = x
-                            magnitude = distance_magnitude
-                    if index is not -1:
-                        starting_link = bounding_boxes[z][index]
-                        new_chain.add(starting_link)
-                        removal_list.append((z, index))
-                    else:
-                        # chain is broken
-                        break
-                chains.append(new_chain)
+            max_length = len(bounding_boxes[i])
+            #for y in range(0, ):
 
-            removal_list.sort(key= lambda x: x[1], reverse=True)
-            for remove_counter in range(0, len(removal_list)):
-                remove_tuple = removal_list[remove_counter]
-                del bounding_boxes[remove_tuple[0]][remove_tuple[1]]
+            while bounding_boxes[i]:
+                chains.append(self._build_new_chain(i, 0, bounding_boxes))
+            #    new_chain = BoundingBoxInformationChain()
+            #    starting_link = bounding_boxes[i][y]
+            #    new_chain.add(starting_link)
+            #    removal_list.append((i, y))
+            #    isChained = False
+            #    for z in range(i+1, len(bounding_boxes)):
+             #       if not bounding_boxes[z]:
+             #           break
+             #       magnitude = 10000
+             #       index = -1
+             #       for x in range(0, len(bounding_boxes[z])):
+             #           distanceVector = bounding_boxes[z][x].get_midpoint() - starting_link.get_midpoint()
+             #           distance_magnitude = np.linalg.norm(distanceVector)
+             #           if distance_magnitude < magnitude and distance_magnitude < 3:
+             #               index = x
+             ##               magnitude = distance_magnitude
+             #       if index is not -1:
+              #          starting_link = bounding_boxes[z][index]
+              #          new_chain.add(starting_link)
+              #          removal_list.append((z, index))
+              #      else:
+               #         # chain is broken
+              #          break
+               # chains.append(new_chain)
+
+           # removal_list.sort(key= lambda x: x[1], reverse=True)
+           # for remove_counter in range(0, len(removal_list)):
+           #     remove_tuple = removal_list[remove_counter]
+           #     del bounding_boxes[remove_tuple[0]][remove_tuple[1]]
 
         return chains
     # Bounding Box Chaining
@@ -101,6 +105,7 @@ class ContactSequenceAggregator:
 
     def _build_new_chain(self, frame_index, list_index, bounding_boxes: dict) -> BoundingBoxInformationChain:
         chain = BoundingBoxInformationChain()
+        dictionary_length = len(bounding_boxes)
         start_bb = bounding_boxes[frame_index][list_index]
         list_for_removal = []
         list_for_removal.append((frame_index, list_index))
@@ -109,12 +114,16 @@ class ContactSequenceAggregator:
             if bounding_boxes[i]:
                 index = -1
                 magnitude = 1000.0
-                for x in range(0, len(bounding_boxes[frame_index])):
+                list_length = len(bounding_boxes[i])
+                #for x in range(0, list_range):
+                x = 0
+                while bounding_boxes[i] and x < list_length:
                     distance_vector = bounding_boxes[i][x].get_midpoint() - start_bb.get_midpoint()
                     distance = np.linalg.norm(distance_vector)
                     if distance < 50 and distance < magnitude:
                         index = x
                         magnitude = distance
+                    x += 1
                 if index != -1:
                     start_bb = bounding_boxes[i][index]
                     chain.add(start_bb)
@@ -123,6 +132,11 @@ class ContactSequenceAggregator:
                     break
             else:
                 break
+
+        list_for_removal.sort(key=lambda x:x[1], reverse=True)
+        for remove_counter in range(0, len(list_for_removal)):
+            remove_tuple = list_for_removal[remove_counter]
+            del bounding_boxes[remove_tuple[0]][remove_tuple[1]]
 
         return chain
 

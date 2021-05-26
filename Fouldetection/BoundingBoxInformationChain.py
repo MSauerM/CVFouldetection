@@ -3,8 +3,12 @@ from typing import List
 from CVUtility.BoundingBoxInformation import BoundingBoxInformation
 import numpy as np
 
+
 class BoundingBoxInformationChain:
-    chain_members: List[BoundingBoxInformation] = []
+    #chain_members: List[BoundingBoxInformation] = []
+
+    def __init__(self):
+        self.chain_members: List[BoundingBoxInformation] = []
 
     def contains(self, bbInformation: BoundingBoxInformation):
         for link in self.chain_members:
