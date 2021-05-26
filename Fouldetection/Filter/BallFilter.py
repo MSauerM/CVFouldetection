@@ -6,7 +6,7 @@ from cv2 import cv2 as cv
 from BasicFramework.Frame import Frame
 from Fouldetection.Filter.Filter import Filter
 from CVUtility import ImageUtility as utility
-
+from CVUtility.PerformanceTimer import PerformanceTimer
 
 class BallFilter(Filter):
 
@@ -14,6 +14,7 @@ class BallFilter(Filter):
 
     def __init__(self):
         super().__init__()
+        self._timer = PerformanceTimer()
 
     def filter(self, frame: Frame, preprocessed_frames=None):
         img = frame.getPixels()
@@ -64,6 +65,7 @@ class BallFilter(Filter):
 
         ballCandidates = []
 
+        self._timer.start()
         (contours, hierarchy) = cv.findContours(closed_edges, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
         for c in contours:
             circle = cv.minEnclosingCircle(c)
@@ -89,7 +91,8 @@ class BallFilter(Filter):
             #if( (w < 40 and h < 40) and (w > 20 and h>20)):
              #   cv.rectangle(img, (x,y), (x+w,y+h), (255,0,255), 3)
             #cv.drawContours(img, contours, -1, (0,0, 255), 3)
-
+        self._timer.end()
+        print(self._timer)
         # remove all candidates from ballCandidates which have not at least a certain amount of white pixels in edge
         # and remove candidates which have to much
         ballCandidates = [x for x in ballCandidates if x[1] > 150]
@@ -97,16 +100,20 @@ class BallFilter(Filter):
 
         # remove all candidates from ballCandidates which is not in the range of the intervall regarding width height ratio
         ballCandidates = [x for x in ballCandidates if 0.25 < x[2] < 1.75]
-        #print(ballCandidates)
 
+        #self._timer.end()
+        #print(self._timer) on Average 0.3
+        ###################################### Not the bottle neck
+        #self._timer.start()
         for candidate in ballCandidates:
             cv.putText(img,
                        "{w}/ {h}".format(w=candidate[0][0][0], h=candidate[0][0][1]),
                        (candidate[0][0][0] - 2, candidate[0][0][1] - 2),
                        cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2, cv.LINE_4)
             cv.circle(img, candidate[0][0], candidate[0][1], (0, 255, 255), 3)
-
-
+        #self._timer.end()
+        #print(self._timer)
+        ######################################
 
         #utility.showResizedImage("Ball Candidates", img, 0.4)
 
