@@ -35,6 +35,7 @@ class ContactBoxChecker:
         x, y, w, h = boundingBox.get_bounds()
         # crop img
         img_crop = cutting_image[y:y+h, x:x+w]
+        # downsampling of img_crop (maybe for better performance)
 
         # check if all team colors are contained in the img_crop
         first_color = self.team_color_calibration.colors_list[0]
@@ -43,6 +44,7 @@ class ContactBoxChecker:
         pixel_count_one = self.team_color_calibration.count_hue_pixel(img_crop, first_color[0], 15)
         pixel_count_two = self.team_color_calibration.count_hue_pixel(img_crop, second_color[0], 15)
 
+        #pixel values anpassen an downgesampelte pixelmenge
         if pixel_count_one > 600 and pixel_count_two > 600:
             # utility.showResizedImage("Crop", img_crop, 0.4)
             return True
