@@ -101,11 +101,11 @@ class GrassFilter(Filter):
         #utility.showResizedImage("GrassFilter - Opened Drawing - Contours", drawing, 0.4)
         #utility.showResizedImage("GrassFilter - Field Area", fieldAreaDrawing, 0.4)
         #convert fieldAreaDrwa
-        field = cv.bitwise_and(res, fieldAreaDrawing)
-        #utility.showResizedImage("GrassFilter - Field", field, 0.4)
+        field = cv.bitwise_and(frame.getPixels(), fieldAreaDrawing)
+        utility.showResizedImage("GrassFilter - Field", field, 0.4)
         fieldAreaDrawing = cv.cvtColor(fieldAreaDrawing, cv.COLOR_BGR2GRAY)
         combined = cv.bitwise_and(combined, fieldAreaDrawing)
-        #utility.showResizedImage("GrassFilter - Combined Final", combined, 0.4)
+        utility.showResizedImage("GrassFilter - Combined Final", combined, 0.4)
 
         return (combined, fieldAreaDrawing)
 
