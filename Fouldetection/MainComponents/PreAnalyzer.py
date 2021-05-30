@@ -37,7 +37,7 @@ class PreAnalyzer:
         timer = PerformanceTimer("Frame Processing")
         timer.start()
         contactCheckTimer= PerformanceTimer("ContactBoxChecker")
-        frameTimer = PerformanceTimer("Per-Frame")
+        frameTimer = PerformanceTimer("Per-Frame BallFilter")
         # detect Players and Ball / extract basic game information
         print("Start Processing of Frames")
         for frame in frame_list:
@@ -48,10 +48,10 @@ class PreAnalyzer:
             #################################################################
             grassFilteredFrame, fieldMask = grassFilter.filter(frame)  # 0.045 on average
 
-            #frameTimer.start()
+            frameTimer.start()
             ballFilter.filter(frame, (grassFilteredFrame, fieldMask)) # 0.34 on average  #### BALLFILTER IS THE BOTTLE-NECK
-            #frameTimer.end()
-            #print(frameTimer)
+            frameTimer.end()
+            print(frameTimer)
 
             candidateBoundingBoxes = playerFilter.filter(frame, grassFilteredFrame) # 0.026 on average
 

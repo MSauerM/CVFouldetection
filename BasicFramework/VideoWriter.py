@@ -10,7 +10,7 @@ class VideoWriter:
 
     def writeVideo(self, frames, framewidth, frameheight, fps):
         # frame list oder Video processor übergeben
-        frames[0].shape
+        #frames[0].shape
         video = cv.VideoWriter(self._video_name + " " + self.getCurrentDateTimeString(), cv.VideoWriter_fourcc('M', 'J', 'P', 'G'), fps, (framewidth, frameheight))
         for frame in frames:
             video.write(frame)

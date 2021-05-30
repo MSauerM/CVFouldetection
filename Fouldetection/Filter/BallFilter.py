@@ -14,7 +14,7 @@ class BallFilter(Filter):
 
     def __init__(self):
         super().__init__()
-        self._timer = PerformanceTimer()
+        self._timer = PerformanceTimer("Ball Filter")
 
     def filter(self, frame: Frame, preprocessed_frames=None):
         img = frame.getPixels()
@@ -41,12 +41,16 @@ class BallFilter(Filter):
         thresh = cv.morphologyEx(thresh, cv.MORPH_CLOSE, kernel)
 
         img = cv.GaussianBlur(img,(5,5),0)
+      #  img = cv.bitwise_and(img, img, mask=preprocessed_frames[0])
         edge = cv.Canny(img, 50, 150)
         edge = cv.bitwise_and(edge, preprocessed_frames[1])
 
-        closed_edges = cv.morphologyEx(edge, cv.MORPH_CLOSE, kernel, iterations=3)
 
-        #utility.showResizedImage("Ball Filter - Closed Edges", closed_edges, 0.4)
+        closed_edges = cv.morphologyEx(edge, cv.MORPH_CLOSE, kernel, iterations=3)
+       # closed_edges = cv.morphologyEx(closed_edges, cv.MORPH_OPEN, kernel, iterations=2)
+       # closed_edges = cv.subtract(closed_edges, preprocessed_frames[0])
+        utility.showResizedImage("Ball Filter - Closed Edges", closed_edges, 0.4)
+        utility.showResizedImage("Ball Filter - gras Filtered Frame", preprocessed_frames[0], 0.4)
 
         #utility.showResizedImage("Ball Filter - Thresh", thresh, 0.4)
         #utility.showResizedImage("Ball Filter - GrassFiltered", grassFilteredMask, 0.4)
@@ -85,14 +89,13 @@ class BallFilter(Filter):
                 # widthHeightRatio has to be near to one plus high white to dark pixel Ratio
                 ballCandidates.append([(circleCenter, circleRadius), white_pixel_amount, widthHeightRatio])
                 #utility.showResizedImage("Crop ", crop, 1)
-                #cv.circle(img, circleCenter, circleRadius, (0, 255, 255), 3)
-                #cv.drawContours(img, [box], 0, (255, 0, 255), 3)
+                cv.circle(img, circleCenter, circleRadius, (0, 255, 255), 3)
+                cv.drawContours(img, [box], 0, (255, 0, 255), 3)
             #x, y, w, h = cv.boundingRect(c)
             #if( (w < 40 and h < 40) and (w > 20 and h>20)):
              #   cv.rectangle(img, (x,y), (x+w,y+h), (255,0,255), 3)
             #cv.drawContours(img, contours, -1, (0,0, 255), 3)
-        self._timer.end()
-        print(self._timer)
+
         # remove all candidates from ballCandidates which have not at least a certain amount of white pixels in edge
         # and remove candidates which have to much
         ballCandidates = [x for x in ballCandidates if x[1] > 150]
@@ -100,7 +103,8 @@ class BallFilter(Filter):
 
         # remove all candidates from ballCandidates which is not in the range of the intervall regarding width height ratio
         ballCandidates = [x for x in ballCandidates if 0.25 < x[2] < 1.75]
-
+        self._timer.end()
+        #print(self._timer)
         #self._timer.end()
         #print(self._timer) on Average 0.3
         ###################################### Not the bottle neck
@@ -115,6 +119,6 @@ class BallFilter(Filter):
         #print(self._timer)
         ######################################
 
-        #utility.showResizedImage("Ball Candidates", img, 0.4)
+        utility.showResizedImage("Ball Candidates", img, 0.4)
 
         return ballCandidates
