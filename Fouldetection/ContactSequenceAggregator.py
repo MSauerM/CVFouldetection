@@ -1,5 +1,6 @@
 from typing import List
 
+import appconfig
 from BasicFramework.Frame import Frame
 from BasicFramework.Sequence import Sequence
 from CVUtility.BoundingBoxInformation import BoundingBoxInformation
@@ -27,18 +28,69 @@ class ContactSequenceAggregator:
 
         for chain in bounding_box_chains:
             sequence_frames = []
-            for link in chain.chain_members:
-                # find the image from the frame list
-                img = frame_list[link.get_frame_index()]
-                # retrieve bounds
-                (x, y, w, h) = link.get_bounds()
-                # crop the image
-                img_crop = img.getPixels()[y:y+h, x:x+w]
+            if appconfig.cropping_strategy is appconfig.CroppingStrategy.DYNAMIC_VARIED:
+                for link in chain.chain_members:
+                    # find the image from the frame list
+                    img = frame_list[link.get_frame_index()]
+                    # retrieve bounds
+                    (x, y, w, h) = link.get_bounds()
+                    # crop the image
+                    img_crop = img.getPixels()[y:y+h, x:x+w] # dynamic with variable size
 
-                cropped_frame = Frame(img.getTimestamp(), img_crop, img.getFrameCount())
-                sequence_frames.append(cropped_frame)
-            sequence = Sequence(sequence_frames)
-            sequences.append(sequence)
+                    cropped_frame = Frame(img.getTimestamp(), img_crop, img.getFrameCount())
+                    sequence_frames.append(cropped_frame)
+                sequence = Sequence(sequence_frames)
+                sequences.append(sequence)
+
+            if appconfig.cropping_strategy is appconfig.CroppingStrategy.DYNAMIC_FIXED:
+                fixed_size = [0, 0]
+                for link in chain.chain_members:
+                    (x, y, w, h) = link.get_bounds()
+                    if fixed_size[0] < w:
+                        fixed_size[0] = w
+                    if fixed_size[1] < h:
+                        fixed_size[1] = h
+
+                w = fixed_size[0]
+                h = fixed_size[1]
+                for link in chain.chain_members:
+                    # find the image from the frame list
+                    img = frame_list[link.get_frame_index()]
+                    # retrieve bounds
+                    midpoint = link.get_midpoint()
+                    # crop the image
+
+                    x = int(midpoint[0] - (w/2))
+                    y = int(midpoint[1] - (h/2))
+                    img_crop = img.getPixels()[y:y + h, x:x + w]  # dynamic fixed size
+
+                    cropped_frame = Frame(img.getTimestamp(), img_crop, img.getFrameCount())
+                    sequence_frames.append(cropped_frame)
+                sequence = Sequence(sequence_frames)
+                sequences.append(sequence)
+
+            if appconfig.cropping_strategy is appconfig.CroppingStrategy.STATIONARY:
+                stationary_size = [0, 0, 0, 0] # lower_x, lower_y, upper_x, upper_y
+                for link in chain.chain_members:
+                    (x, y, w, h) = link.get_bounds()
+
+                    if stationary_size[0] > x:
+                        stationary_size[0] = x
+                    if stationary_size[1] > y:
+                        stationary_size[1] = y
+                    if stationary_size[2] < (x + w):
+                        stationary_size[2] = x + w
+                    if stationary_size[3] < (y + h):
+                        stationary_size[3] = y + h
+                for link in chain.chain_members:
+                    # find the image from the frame list
+                    img = frame_list[link.get_frame_index()]
+                    img_crop = img.getPixels()[stationary_size[1]:stationary_size[3], stationary_size[0]:stationary_size[2]]  # dynamic fixed size
+
+                    cropped_frame = Frame(img.getTimestamp(), img_crop, img.getFrameCount())
+                    sequence_frames.append(cropped_frame)
+                sequence = Sequence(sequence_frames)
+                sequences.append(sequence)
 
         return sequences
 
