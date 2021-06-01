@@ -51,7 +51,7 @@ class PreAnalyzer:
             frameTimer.start()
             ballFilter.filter(frame, (grassFilteredFrame, fieldMask)) # 0.34 on average  #### BALLFILTER IS THE BOTTLE-NECK
             frameTimer.end()
-            print(frameTimer)
+            #print(frameTimer)
 
             candidateBoundingBoxes = playerFilter.filter(frame, grassFilteredFrame) # 0.026 on average
 
@@ -71,7 +71,6 @@ class PreAnalyzer:
                     contact_boxes[frame.getFrameCount()].append(candidate)
             contactCheckTimer.end()
             #print(contactCheckTimer)
-
         timer.end()
         print(timer)
             # analyze candidate Bounding Boxes for real players
