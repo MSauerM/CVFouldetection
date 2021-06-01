@@ -1,4 +1,5 @@
 from CVUtility.BoundingBoxInformation import BoundingBoxInformation
+from Fouldetection.ColorHistogram import ColorHistogram
 from Fouldetection.TeamColorCalibration import TeamColorCalibration
 
 from cv2 import cv2 as cv
@@ -21,7 +22,7 @@ class ContactBoxChecker:
     :param playermask Binäre Maske der identifzierten Spieler
     :param boundingBox Bounding Box, welche zum Croppen benutzt wird
     """
-    def check_for_contact(self, img, boundingBox: BoundingBoxInformation):
+    def check_for_contact(self, img, mask, boundingBox: BoundingBoxInformation):
         #def check_for_contact(self, img, playermask, boundingBox:BoundingBoxInformation):
         # search for an image in the image_cache
        # cutting_image = None
@@ -34,9 +35,14 @@ class ContactBoxChecker:
         #    self.image_cache[boundingBox.get_frame_index()] = cutting_image
         #getDimensions
         x, y, w, h = boundingBox.get_bounds()
-        # crop img
+        # crop img & mask
         img_crop = img[y:y+h, x:x+w] #cutting_image[y:y+h, x:x+w]
+        mask_crop = mask[y:y+h, x:x+w]
         # downsampling of img_crop (maybe for better performance)
+        #utility.showResizedImage("Crop", img_crop, 0.4)
+
+        #colorHistogram = ColorHistogram(img_crop, mask_crop)
+        #colorHistogram.show_histogram()
 
         # check if all team colors are contained in the img_crop
         first_color = self.team_color_calibration.colors_list[0]

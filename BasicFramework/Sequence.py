@@ -20,5 +20,5 @@ class Sequence():
 
     def showSequence(self):
         for frame in self.frame_list:
-            utility.showResizedImage("Sequenz", frame.getPixels(), 0.4, waitKey=0)
+            utility.showResizedImage("Sequenz", frame.getPixels(), 1.0, waitKey=0)
 

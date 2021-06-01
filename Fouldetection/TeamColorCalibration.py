@@ -21,7 +21,7 @@ class TeamColorCalibration:
 
         # 1
         histogram_colors = histogram.get_main_colors(5)
-        histogram.show_histogram()
+        #histogram.show_histogram()
         first_color = histogram_colors[0]
         second_color = histogram_colors[1]
 
@@ -31,6 +31,9 @@ class TeamColorCalibration:
         img_hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
         image_one = cv.inRange(img_hsv, np.array([first_color[0]-20, 100, 100]), np.array([first_color[0]+20, 255, 255]))
         image_two = cv.inRange(img_hsv, np.array([second_color[0]-20, 100, 100]), np.array([second_color[0]+20, 255, 255]))
+
+        utility.displayColor(first_color[0])
+        utility.displayColor(second_color[0])
 
         utility.showResizedImage("TeamColorCalibration - Image One ", image_one, 0.4)
         utility.showResizedImage("TeamColorCalibration - Image Two ", image_two, 0.4)
