@@ -70,7 +70,7 @@ class ContactSequenceAggregator:
                 sequences.append(sequence)
 
             if appconfig.cropping_strategy is appconfig.CroppingStrategy.STATIONARY:
-                stationary_size = [0, 0, 0, 0] # lower_x, lower_y, upper_x, upper_y
+                stationary_size = [20000, 20000, 0, 0] # lower_x, lower_y, upper_x, upper_y
                 for link in chain.chain_members:
                     (x, y, w, h) = link.get_bounds()
 

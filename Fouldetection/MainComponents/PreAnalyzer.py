@@ -67,7 +67,7 @@ class PreAnalyzer:
             combined_img = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask = grassFilteredFrame)
             for candidate in candidateBoundingBoxes:
                 #if contactBoxChecker.check_for_contact(frame.getPixels(), grassFilteredFrame, candidate):
-                if contactBoxChecker.check_for_contact(combined_img, candidate):
+                if contactBoxChecker.check_for_contact(combined_img, grassFilteredFrame, candidate):
                     contact_boxes[frame.getFrameCount()].append(candidate)
             contactCheckTimer.end()
             #print(contactCheckTimer)

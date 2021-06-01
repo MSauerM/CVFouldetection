@@ -1,11 +1,14 @@
+import matplotlib.pyplot as plt
 from cv2 import cv2 as cv
+from matplotlib.colors import hsv_to_rgb
+import numpy as np
 
 import appconfig
 
 #isDebugWarningAlreadyPrinted = False
 
 def showResizedImage( windowname, img, scalingFactor, waitKey=None):
-    if appconfig.show_debug_windows:
+    if appconfig.show_debug_windows and img is not None:
         height, width = img.shape[:2]
         tmpImg = cv.resize(img, (int(width * scalingFactor), int(height * scalingFactor)))
         cv.imshow(windowname, tmpImg)
@@ -17,3 +20,14 @@ def showResizedImage( windowname, img, scalingFactor, waitKey=None):
        # if not isDebugWarningAlreadyPrinted:
             #print("Set show_debug_windows to True for getting a window here")
             #nonlocal isDebugWarningAlreadyPrinted = True
+
+
+def displayColor(hue):
+    color = (hue, 255, 255)
+    #lo_square = np.full((10, 10, 3), color, dtype=np.uint8) / 255.0
+    lo_square = np.zeros((10, 10, 3))
+    lo_square[:] = (color[0]/180, color[1]/255, color[2]/255)
+    plt.subplot(1, 2, 1)
+    rgb = hsv_to_rgb(lo_square)
+    plt.imshow(rgb)
+    plt.show()
