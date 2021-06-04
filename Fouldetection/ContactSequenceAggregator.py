@@ -44,12 +44,16 @@ class ContactSequenceAggregator:
 
             if appconfig.cropping_strategy is appconfig.CroppingStrategy.DYNAMIC_FIXED:
                 fixed_size = [0, 0]
-                for link in chain.chain_members:
-                    (x, y, w, h) = link.get_bounds()
-                    if fixed_size[0] < w:
-                        fixed_size[0] = w
-                    if fixed_size[1] < h:
-                        fixed_size[1] = h
+                if appconfig.preferred_size_dynamic_fixed is not None:
+                    fixed_size[0] = appconfig.preferred_size_dynamic_fixed
+                    fixed_size[1] = appconfig.preferred_size_dynamic_fixed
+                else:
+                    for link in chain.chain_members:
+                        (x, y, w, h) = link.get_bounds()
+                        if fixed_size[0] < w:
+                            fixed_size[0] = w
+                        if fixed_size[1] < h:
+                            fixed_size[1] = h
 
                 w = fixed_size[0]
                 h = fixed_size[1]
