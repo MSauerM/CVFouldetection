@@ -10,4 +10,4 @@ team_color_calib_every_frame = False
 max_frame_amount = 2000
 show_debug_windows = True
 cropping_strategy = CroppingStrategy.DYNAMIC_FIXED #STATIONARY #DYNAMIC_FIXED # DYNAMIC_VARIED
-preferred_size_dynamic_fixed = 60 # None or int for quadratic size
+preferred_size_dynamic_fixed = 220 # None or int for quadratic size

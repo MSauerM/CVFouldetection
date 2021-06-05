@@ -31,8 +31,9 @@ class PlayerFilter(Filter):
 
         masked_img = cv.bitwise_and(img, img, mask= preprocessed_frames[1])
 
-        edges = cv.Canny(masked_img, 50, 150)
+        edges = cv.Canny(masked_img, 100, 150)
         edges = cv.morphologyEx(edges, cv.MORPH_CLOSE, kernel=kernel)
+        edges = cv.morphologyEx(edges, cv.MORPH_OPEN, kernel=kernel, iterations=2)
         # Hough Lines on this edge detector?
 
 
@@ -52,11 +53,11 @@ class PlayerFilter(Filter):
                 boundingBoxInformation_list.append(BoundingBoxInformation(frame.getFrameCount(), x, y, w, h))
                 cv.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 3)
                 cv.putText(img, "{w}/ {h}".format(w= w, h=h), (x-2, y-2), font, 0.8, (0, 255, 0), 2, cv.LINE_AA)
-        cv.drawContours(img, contours, -1, (0, 0, 255), 3)
+        #cv.drawContours(img, contours, -1, (0, 0, 255), 3)
         utility.showResizedImage("Player Filter - Result", img, 0.4)
         #cv.imshow("Edges", edges)
         #cv.imshow("Output", frame.getPixels())
         #cv.waitKey(0)
         #utility.showResizedImage("Edges", edges, 0.4)
         #utility.showResizedImage("Output", frame.getPixels(), 0.4)
-        return boundingBoxInformation_list
+        return boundingBoxInformation_list, edges
