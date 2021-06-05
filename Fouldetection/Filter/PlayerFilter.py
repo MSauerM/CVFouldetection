@@ -22,15 +22,21 @@ class PlayerFilter(Filter):
 
         kernel = np.ones( (5,5), np.uint8)
 
-        preprocessed_frames = cv.dilate(preprocessed_frames, kernel, iterations=3)
+        dilated_grassfilteredFrame = cv.dilate(preprocessed_frames[0], kernel, iterations=3)
 
-        (contours, hierarchy) = cv.findContours(preprocessed_frames, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+        (contours, hierarchy) = cv.findContours(dilated_grassfilteredFrame, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
 
-        player_img = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask=preprocessed_frames)
-        edges = cv.Canny(img, 50, 150)
+        player_img = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask=dilated_grassfilteredFrame)
+
+        masked_img = cv.bitwise_and(img, img, mask= preprocessed_frames[1])
+
+        edges = cv.Canny(masked_img, 50, 150)
+        edges = cv.morphologyEx(edges, cv.MORPH_CLOSE, kernel=kernel)
         # Hough Lines on this edge detector?
-        #utility.showResizedImage("Player Filter - Edges", edges, 0.4)
+
+
+        utility.showResizedImage("Player Filter - Edges", edges, 0.4)
 
         boundingBoxInformation_list = []
 

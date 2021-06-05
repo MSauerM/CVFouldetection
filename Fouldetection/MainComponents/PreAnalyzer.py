@@ -53,7 +53,7 @@ class PreAnalyzer:
             frameTimer.end()
             #print(frameTimer)
 
-            candidateBoundingBoxes = playerFilter.filter(frame, grassFilteredFrame) # 0.026 on average
+            candidateBoundingBoxes = playerFilter.filter(frame, (grassFilteredFrame, fieldMask)) # 0.026 on average
 
             ##################################################################
             if not teamColorCalibration.isCalibrated:
