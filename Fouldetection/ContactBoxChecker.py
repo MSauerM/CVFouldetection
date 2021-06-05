@@ -9,7 +9,7 @@ from CVUtility import ImageUtility as utility
 class ContactBoxChecker:
 
     team_color_calibration = None
-    pixel_amount_threshold = 200
+    pixel_amount_threshold = 100
     # set statt list wegen besserer Performance
     #image_cache = set()
     image_cache = dict()
