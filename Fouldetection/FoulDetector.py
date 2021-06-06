@@ -1,3 +1,4 @@
+import appconfig
 from BasicFramework.VideoPreProcessor import VideoPreProcessor
 from BasicFramework.VideoWriter import VideoWriter
 from Fouldetection.Filter.BallFilter import BallFilter
@@ -36,6 +37,11 @@ class FoulDetector:
 
         for sequence in sequences:
             sequence.showSequence()
+            if appconfig.create_video_for_sequences is True:
+                vwriter = VideoWriter("TEST")
+                vwriter.writeVideo(sequence.getFrames(),
+                                   appconfig.preferred_size_dynamic_fixed,
+                                   appconfig.preferred_size_dynamic_fixed, 25)
 
         foulRecognizer = FoulRecognizer()
         foulRecognizer.analyze(sequences)

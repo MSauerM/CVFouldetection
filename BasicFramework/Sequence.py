@@ -18,6 +18,9 @@ class Sequence():
     def getDimensions(self):
         return self.frame_list[0].getDimensions()
 
+    def getFrames(self):
+        return self.frame_list
+
     def showSequence(self):
         for frame in self.frame_list:
             utility.showResizedImage("Sequenz", frame.getPixels(), 1.0, waitKey=0)
