@@ -35,10 +35,11 @@ class FoulDetector:
         preAnalyzer = PreAnalyzer()
         sequences = preAnalyzer.analyze(self.preProcessor.frame_list)
 
-        for sequence in sequences:
+        for index, sequence in enumerate(sequences):
             sequence.showSequence()
             if appconfig.create_video_for_sequences is True:
-                vwriter = VideoWriter("TEST")
+                vwriter = VideoWriter("TEST " + str(index))
+                vwriter.set_output_directory("./output_videos/")
                 vwriter.writeVideo(sequence.getFrames(),
                                    appconfig.preferred_size_dynamic_fixed,
                                    appconfig.preferred_size_dynamic_fixed, 25)

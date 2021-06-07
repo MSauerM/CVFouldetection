@@ -66,6 +66,18 @@ class ContactSequenceAggregator:
 
                     x = int(midpoint[0] - (w/2))
                     y = int(midpoint[1] - (h/2))
+                    img_height = img.getDimensions()[0]
+                    img_width = img.getDimensions()[1]
+                    # testing if the midpoint is in the border area
+                    if x < appconfig.preferred_size_dynamic_fixed / 2:
+                        x = int(appconfig.preferred_size_dynamic_fixed / 2)
+                    if x > img_width - (appconfig.preferred_size_dynamic_fixed / 2):
+                        x = int(img_width - (appconfig.preferred_size_dynamic_fixed / 2))
+                    if y < appconfig.preferred_size_dynamic_fixed / 2:
+                        y = int(appconfig.preferred_size_dynamic_fixed / 2)
+                    if y > img_height - (appconfig.preferred_size_dynamic_fixed / 2):
+                        y = int(img_height - (appconfig.preferred_size_dynamic_fixed/2))
+
                     img_crop = img.getPixels()[y:y + h, x:x + w]  # dynamic fixed size
 
                     cropped_frame = Frame(img.getTimestamp(), img_crop, img.getFrameCount())
