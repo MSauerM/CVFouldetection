@@ -10,6 +10,7 @@ from Fouldetection.Filter.GrassFilter import GrassFilter
 from Fouldetection.Filter.PlayerFilter import PlayerFilter
 from Fouldetection.TeamColorCalibration import TeamColorCalibration
 from cv2 import cv2 as cv
+from CVUtility import ImageUtility as utility
 
 class PreAnalyzer:
 
@@ -68,8 +69,11 @@ class PreAnalyzer:
             for candidate in candidateBoundingBoxes:
                 #if contactBoxChecker.check_for_contact(frame.getPixels(), grassFilteredFrame, candidate):
                 if contactBoxChecker.check_for_contact(combined_img, player_edges, candidate):
+                    x,y,w,h = candidate.get_bounds()
+                    cv.rectangle(frame.getPixels(), (x, y), (x+w, y+h), (255, 0, 255), 3)
                     contact_boxes[frame.getFrameCount()].append(candidate)
             contactCheckTimer.end()
+            utility.showResizedImage("Relevant Boxes - Pre Analyzer", frame.getPixels(), 0.6)
             #print(contactCheckTimer)
         timer.end()
         print(timer)
