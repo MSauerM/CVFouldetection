@@ -11,6 +11,7 @@ import numpy as np
 class ContactSequenceAggregator:
 
     maximal_distance = 250
+    break_limit = 5
 
     def __init__(self):
         print("ContactSequenceAggregator")
@@ -180,6 +181,7 @@ class ContactSequenceAggregator:
         list_for_removal = []
         list_for_removal.append((frame_index, list_index))
         chain.add(start_bb)
+        break_counter = 0
         for i in range(frame_index+1, len(bounding_boxes)):
             if bounding_boxes[i]:
                 index = -1
@@ -195,13 +197,18 @@ class ContactSequenceAggregator:
                         magnitude = distance
                     x += 1
                 if index != -1:
+                    break_counter = 0
                     start_bb = bounding_boxes[i][index]
                     chain.add(start_bb)
                     list_for_removal.append((i, index))
                 else:
-                    break
+                    break_counter += 1
+                    if break_counter >= self.break_limit:
+                        break
             else:
-                break
+                break_counter += 1
+                if break_counter >= self.break_limit:
+                    break
 
         list_for_removal.sort(key=lambda x:x[1], reverse=True)
         for remove_counter in range(0, len(list_for_removal)):

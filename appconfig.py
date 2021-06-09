@@ -8,8 +8,8 @@ class CroppingStrategy(Enum):
 use_multithreading = False
 team_color_calib_every_frame = False
 max_frame_amount = 2000
-show_debug_windows = True
+show_debug_windows = False
 cropping_strategy = CroppingStrategy.DYNAMIC_FIXED #STATIONARY #DYNAMIC_FIXED # DYNAMIC_VARIED
 preferred_size_dynamic_fixed = 224 # 448 # None or int for quadratic size
 
-create_video_for_sequences = False
+create_video_for_sequences = True
