@@ -10,6 +10,8 @@ import numpy as np
 
 class ContactSequenceAggregator:
 
+    maximal_distance = 250
+
     def __init__(self):
         print("ContactSequenceAggregator")
 
@@ -188,7 +190,7 @@ class ContactSequenceAggregator:
                 while bounding_boxes[i] and x < list_length:
                     distance_vector = bounding_boxes[i][x].get_midpoint() - start_bb.get_midpoint()
                     distance = np.linalg.norm(distance_vector)
-                    if distance < 50 and distance < magnitude:
+                    if distance < self.maximal_distance and distance < magnitude: #distance < magnitude: #
                         index = x
                         magnitude = distance
                     x += 1

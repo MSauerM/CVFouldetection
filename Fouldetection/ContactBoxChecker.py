@@ -9,7 +9,7 @@ from CVUtility import ImageUtility as utility
 class ContactBoxChecker:
 
     team_color_calibration = None
-    pixel_amount_threshold = 100
+    pixel_amount_threshold = 30 #75 #100
     # set statt list wegen besserer Performance
     #image_cache = set()
     image_cache = dict()
@@ -53,7 +53,7 @@ class ContactBoxChecker:
 
         #pixel values anpassen an downgesampelte pixelmenge
         if pixel_count_one > self.pixel_amount_threshold and pixel_count_two > self.pixel_amount_threshold:
-            # utility.showResizedImage("Crop", img_crop, 0.4)
+            #utility.showResizedImage("Crop", img_crop, 0.4)
             return True
         else:
             return False
