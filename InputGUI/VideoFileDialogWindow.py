@@ -15,6 +15,8 @@ from Fouldetection.FoulDetectorThread import FoulDetectorThread
 from InputGUI.VideoPlayer import VideoPlayer
 from cv2 import cv2 as cv
 
+from BasicFramework.Executor import Executor
+
 class VideoFileDialogWindow(QMainWindow):
     def __init__(self, app):
         global txts
@@ -26,6 +28,7 @@ class VideoFileDialogWindow(QMainWindow):
         self.shouldShowVideo = False
 
         self.app = app
+        self.executor = Executor()
 
         wid = QWidget()
         self.setCentralWidget(wid)
@@ -101,20 +104,29 @@ class VideoFileDialogWindow(QMainWindow):
 
 
     def processVideo(self, filename):
+        options = dict()
+        options["video_preprocessor"] = VideoPreProcessor(filename)
+        options["video_fname"] = filename
+        options["fouldetector"] = dict()
+        options["fouldetector"]["create_video"] = self.shouldCreateVideo
+        options["fouldetector"]["show_video"] = self.shouldShowVideo
 
-        if appconfig.use_multithreading is True:
-            foulDetectorThread = FoulDetectorThread(filename, False)
-            foulDetectorThread.start()
-        else:
-            self.preProcessor = VideoPreProcessor(filename)
-            self.foulDetector = FoulDetector(self.preProcessor)
-            self.foulDetector.process()
+        self.executor.execute(options)
 
-            if self.shouldCreateVideo:
-                filename = self.foulDetector.createVideo()
-                if self.shouldShowVideo:
-                    videoPlayer = VideoPlayer()
-                    videoPlayer.loadFile(filename)
+        #if appconfig.use_multithreading is True:
+        #    foulDetectorThread = FoulDetectorThread(filename, False)
+        #    foulDetectorThread.start()
+        #else:
+        #    self.preProcessor = VideoPreProcessor(filename)
+        #    self.foulDetector = FoulDetector(self.preProcessor)
+        #    self.foulDetector.process()
+
+        #    if self.shouldCreateVideo:
+        #        filename = self.foulDetector.createVideo()
+        #        if self.shouldShowVideo:
+        #            videoPlayer = VideoPlayer()
+        #            videoPlayer.loadFile(filename)
 
     def interrupt(self):
-        self.foulDetector.interruptProcessing()
+        self.executor.interrupt()
+        #self.foulDetector.interruptProcessing()
