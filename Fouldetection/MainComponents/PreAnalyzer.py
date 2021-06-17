@@ -70,7 +70,7 @@ class PreAnalyzer:
                 #if contactBoxChecker.check_for_contact(frame.getPixels(), grassFilteredFrame, candidate):
                 if contactBoxChecker.check_for_contact(combined_img, player_edges, candidate):
                     x,y,w,h = candidate.get_bounds()
-                    cv.rectangle(frame.getPixels(), (x, y), (x+w, y+h), (255, 0, 255), 3)
+                    #cv.rectangle(frame.getPixels(), (x, y), (x+w, y+h), (255, 0, 255), 3)
                     contact_boxes[frame.getFrameCount()].append(candidate)
             contactCheckTimer.end()
             utility.showResizedImage("Relevant Boxes - Pre Analyzer", frame.getPixels(), 0.6)
