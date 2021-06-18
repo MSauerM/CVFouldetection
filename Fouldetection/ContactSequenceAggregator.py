@@ -111,7 +111,7 @@ class ContactSequenceAggregator:
                 sequence = Sequence(sequence_frames)
                 sequences.append(sequence)
 
-        return sequences
+        return sequences, bounding_box_chains
 
     # split bounding box by index reorders the list of bounding boxes to a dictionary where the key contains a list as value
     # and in this list there are the bounding Boxes of the frame

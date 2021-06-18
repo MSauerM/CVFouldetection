@@ -3,6 +3,7 @@ from typing import List
 from BasicFramework.Frame import Frame
 from CVUtility.PerformanceTimer import PerformanceTimer
 from Fouldetection.ContactBoxChecker import ContactBoxChecker
+from Fouldetection.ContactEvent import ContactEvent
 from Fouldetection.ContactSequenceAggregator import ContactSequenceAggregator
 from Fouldetection.Filter.BallFilter import BallFilter
 from Fouldetection.Filter.CourtBoundsFilter import CourtBoundsFilter
@@ -88,5 +89,8 @@ class PreAnalyzer:
             # ballFilter.filter(frame)
         # self.frame_list.append()
         print(contact_boxes)
-        sequences = contactSequenceAggregator.aggregate(frame_list, contact_boxes)
-        return sequences # Sequences of possible foul plays
+        sequences, bounding_box_chains = contactSequenceAggregator.aggregate(frame_list, contact_boxes)
+        contact_events = []
+        for i in range(0, len(sequences)):
+            contact_events.append(ContactEvent(sequences[i], bounding_box_chains[i]))
+        return sequences, contact_events # Sequences of possible foul plays

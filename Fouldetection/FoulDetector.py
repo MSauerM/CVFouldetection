@@ -33,7 +33,7 @@ class FoulDetector:
     def process(self):
         print("Start processing")
         preAnalyzer = PreAnalyzer()
-        sequences = preAnalyzer.analyze(self.preProcessor.frame_list)
+        sequences, contact_events = preAnalyzer.analyze(self.preProcessor.frame_list)
 
         for index, sequence in enumerate(sequences):
             sequence.showSequence()
@@ -45,7 +45,7 @@ class FoulDetector:
                                    appconfig.preferred_size_dynamic_fixed, 25)
 
         foulRecognizer = FoulRecognizer()
-        foulRecognizer.analyze(sequences)
+        foulRecognizer.analyze(contact_events)
 
 
         #grassFilter = GrassFilter()
