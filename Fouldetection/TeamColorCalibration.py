@@ -17,6 +17,7 @@ class TeamColorCalibration:
         histogram = ColorHistogram(img, mask)
         # eventuell noch ein Opening laufen lassen?()
         # höchste Hue Peaks ausgeben lassen
+        utility.showResizedImage("TeamColorCalibration - Fusion", cv.bitwise_and(img, img, mask= mask), 0.4)
 
 
         # 1
@@ -29,8 +30,8 @@ class TeamColorCalibration:
         self.colors_list.append(second_color)
 
         img_hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
-        image_one = cv.inRange(img_hsv, np.array([first_color[0]-20, 100, 100]), np.array([first_color[0]+20, 255, 255]))
-        image_two = cv.inRange(img_hsv, np.array([second_color[0]-20, 100, 100]), np.array([second_color[0]+20, 255, 255]))
+        image_one = cv.inRange(img_hsv, np.array([first_color[0]-15, 100, 100]), np.array([first_color[0]+15, 255, 255]))
+        image_two = cv.inRange(img_hsv, np.array([second_color[0]-15, 100, 100]), np.array([second_color[0]+15, 255, 255]))
 
         utility.displayColor(first_color[0])
         utility.displayColor(second_color[0])
@@ -40,7 +41,6 @@ class TeamColorCalibration:
 
         #utility.showResizedImage("TeamColorCalibration - Image", img, 0.4)
         #utility.showResizedImage("TeamColorCalibration - Mask", mask, 0.4)
-        utility.showResizedImage("TeamColorCalibration - Fusion", cv.bitwise_and(img, img, mask= mask), 0.4)
         self.isCalibrated = True
 
     def count_hue_pixel(self, img, hue, offset):

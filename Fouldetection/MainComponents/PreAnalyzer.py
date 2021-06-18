@@ -49,9 +49,9 @@ class PreAnalyzer:
             #################################################################
             grassFilteredFrame, fieldMask = grassFilter.filter(frame)  # 0.045 on average
 
-            frameTimer.start()
-            ballFilter.filter(frame, (grassFilteredFrame, fieldMask)) # 0.34 on average  #### BALLFILTER IS THE BOTTLE-NECK
-            frameTimer.end()
+            #frameTimer.start()
+            #ballFilter.filter(frame, (grassFilteredFrame, fieldMask)) # 0.34 on average  #### BALLFILTER IS THE BOTTLE-NECK
+            #frameTimer.end()
             #print(frameTimer)
 
             candidateBoundingBoxes, player_edges = playerFilter.filter(frame, (grassFilteredFrame, fieldMask)) # 0.026 on average

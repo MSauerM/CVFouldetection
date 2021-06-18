@@ -32,7 +32,7 @@ class PlayerFilter(Filter):
         masked_img = cv.bitwise_and(img, img, mask= preprocessed_frames[1])
 
         edges = cv.Canny(masked_img, 100, 150)
-        edges = cv.morphologyEx(edges, cv.MORPH_CLOSE, kernel=kernel)
+        edges = cv.morphologyEx(edges, cv.MORPH_CLOSE, kernel=kernel, iterations=2)
         edges = cv.morphologyEx(edges, cv.MORPH_OPEN, kernel=kernel, iterations=2)
         # Hough Lines on this edge detector?
 
