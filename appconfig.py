@@ -13,3 +13,7 @@ cropping_strategy = CroppingStrategy.DYNAMIC_FIXED #STATIONARY #DYNAMIC_FIXED # 
 preferred_size_dynamic_fixed = 224 # 448 # None or int for quadratic size
 
 create_video_for_sequences = False
+
+####### CNN networks
+use_action_recognition = False
+use_human_pose_estimation = False

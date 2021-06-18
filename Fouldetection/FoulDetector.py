@@ -8,6 +8,7 @@ from Fouldetection.Filter.PlayerFilter import PlayerFilter
 
 from cv2 import cv2 as cv
 
+from Fouldetection.FoulFrameAggregator import FoulFrameAggregator
 from Fouldetection.MainComponents.FoulRecognizer import FoulRecognizer
 from Fouldetection.MainComponents.PreAnalyzer import PreAnalyzer
 
@@ -45,8 +46,10 @@ class FoulDetector:
                                    appconfig.preferred_size_dynamic_fixed, 25)
 
         foulRecognizer = FoulRecognizer()
-        foulRecognizer.analyze(contact_events)
+        evaluated_contact_events = foulRecognizer.analyze(contact_events)
 
+        foulFrameAggregator = FoulFrameAggregator()
+        self.frame_list = foulFrameAggregator.aggregate(evaluated_contact_events, frames=self.preProcessor.frame_list)
 
         #grassFilter = GrassFilter()
         #ballFilter = BallFilter()
@@ -80,7 +83,10 @@ class FoulDetector:
 
     def createVideo(self, filename = "FoulDetector"):
         videoWriter = VideoWriter(filename)
-        videoWriter.writeVideo(frames=self.frame_list)
+        dimensions = self.frame_list[0].getDimensions()
+        frame_height = dimensions[0]
+        frame_width = dimensions[1]
+        videoWriter.writeVideo(self.frame_list, frame_width, frame_height, 25)
 
    # def createVideo(self, filename):
    #     videoWriter = VideoWriter(filename)
