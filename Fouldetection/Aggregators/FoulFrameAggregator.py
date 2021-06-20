@@ -1,7 +1,7 @@
 from typing import List
 
 from BasicFramework.Frame import Frame
-from Fouldetection.ContactEvent import ContactEvent
+from Fouldetection.DataStructures.ContactEvent import ContactEvent
 
 
 class FoulFrameAggregator:
@@ -15,6 +15,6 @@ class FoulFrameAggregator:
                 print("T")
                 # draw on frames
             if event.isFoul is False:
-                print("T")
+                print("F")
                 # draw on frames
         return frames

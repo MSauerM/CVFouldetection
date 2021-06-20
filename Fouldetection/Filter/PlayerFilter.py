@@ -1,7 +1,7 @@
 import numpy as np
 
 from BasicFramework.Frame import Frame
-from CVUtility.BoundingBoxInformation import BoundingBoxInformation
+from Fouldetection.DataStructures.BoundingBoxInformation import BoundingBoxInformation
 
 import cv2 as cv
 import CVUtility.ImageUtility as utility

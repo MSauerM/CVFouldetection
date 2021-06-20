@@ -1,9 +1,5 @@
-from CVUtility.BoundingBoxInformation import BoundingBoxInformation
-from Fouldetection.ColorHistogram import ColorHistogram
-from Fouldetection.TeamColorCalibration import TeamColorCalibration
-
-from cv2 import cv2 as cv
-from CVUtility import ImageUtility as utility
+from Fouldetection.DataStructures.BoundingBoxInformation import BoundingBoxInformation
+from Fouldetection.Analyzers.TeamColorCalibration import TeamColorCalibration
 
 
 class ContactBoxChecker:

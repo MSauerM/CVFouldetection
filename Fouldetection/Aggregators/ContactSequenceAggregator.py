@@ -3,8 +3,8 @@ from typing import List
 import appconfig
 from BasicFramework.Frame import Frame
 from BasicFramework.Sequence import Sequence
-from CVUtility.BoundingBoxInformation import BoundingBoxInformation
-from Fouldetection.BoundingBoxInformationChain import BoundingBoxInformationChain
+from Fouldetection.DataStructures.BoundingBoxInformation import BoundingBoxInformation
+from Fouldetection.DataStructures.BoundingBoxInformationChain import BoundingBoxInformationChain
 import numpy as np
 
 

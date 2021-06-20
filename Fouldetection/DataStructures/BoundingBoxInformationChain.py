@@ -1,6 +1,6 @@
 from typing import List
 
-from CVUtility.BoundingBoxInformation import BoundingBoxInformation
+from Fouldetection.DataStructures.BoundingBoxInformation import BoundingBoxInformation
 import numpy as np
 
 

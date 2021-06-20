@@ -8,7 +8,7 @@ from Fouldetection.Filter.PlayerFilter import PlayerFilter
 
 from cv2 import cv2 as cv
 
-from Fouldetection.FoulFrameAggregator import FoulFrameAggregator
+from Fouldetection.Aggregators.FoulFrameAggregator import FoulFrameAggregator
 from Fouldetection.MainComponents.FoulRecognizer import FoulRecognizer
 from Fouldetection.MainComponents.PreAnalyzer import PreAnalyzer
 

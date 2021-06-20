@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 
-from Fouldetection.ColorHistogram import ColorHistogram
+from Fouldetection.DataStructures.ColorHistogram import ColorHistogram
 from CVUtility import ImageUtility as utility
 
 class TeamColorCalibration:

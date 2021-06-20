@@ -2,14 +2,14 @@ from typing import List
 
 from BasicFramework.Frame import Frame
 from CVUtility.PerformanceTimer import PerformanceTimer
-from Fouldetection.ContactBoxChecker import ContactBoxChecker
-from Fouldetection.ContactEvent import ContactEvent
-from Fouldetection.ContactSequenceAggregator import ContactSequenceAggregator
+from Fouldetection.Analyzers.ContactBoxChecker import ContactBoxChecker
+from Fouldetection.DataStructures.ContactEvent import ContactEvent
+from Fouldetection.Aggregators.ContactSequenceAggregator import ContactSequenceAggregator
 from Fouldetection.Filter.BallFilter import BallFilter
 from Fouldetection.Filter.CourtBoundsFilter import CourtBoundsFilter
 from Fouldetection.Filter.GrassFilter import GrassFilter
 from Fouldetection.Filter.PlayerFilter import PlayerFilter
-from Fouldetection.TeamColorCalibration import TeamColorCalibration
+from Fouldetection.Analyzers.TeamColorCalibration import TeamColorCalibration
 from cv2 import cv2 as cv
 from CVUtility import ImageUtility as utility
 
