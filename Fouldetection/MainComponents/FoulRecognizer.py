@@ -23,7 +23,7 @@ class FoulRecognizer:
                 sequence = event.sequence
                 joints_dict = dict()
                 for frame in sequence.frame_list:
-                    joints_dict[index] = human_pose_estimator.estimate(frame)
+                    joints_dict[index] = human_pose_estimator.process_image(frame.getPixels())
                 joints_dict_list.append(joints_dict)
 
             for joints in joints_dict_list:
