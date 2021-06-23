@@ -81,8 +81,9 @@ class FoulDetector:
 
         print("End processing")
 
-    def createVideo(self, filename = "FoulDetector"):
+    def createVideo(self, filename = "FoulDetector_out"):
         videoWriter = VideoWriter(filename)
+        videoWriter.set_output_directory("./output_videos/")
         dimensions = self.frame_list[0].getDimensions()
         frame_height = dimensions[0]
         frame_width = dimensions[1]
