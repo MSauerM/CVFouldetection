@@ -28,9 +28,9 @@ class PreAnalyzer:
         playerFilter = PlayerFilter()
         #opticalFlowFilter = OpticalFlowFilter(self.preProcessor.frame_list)
         courtBoundsFilter = CourtBoundsFilter()
-        teamColorCalibration = TeamColorCalibration()
+        self.teamColorCalibration = TeamColorCalibration()
         # opticalFlowFilter.filter()
-        contactBoxChecker = ContactBoxChecker(teamColorCalibration)
+        contactBoxChecker = ContactBoxChecker(self.teamColorCalibration)
         contactSequenceAggregator = ContactSequenceAggregator()
 
 
@@ -58,8 +58,8 @@ class PreAnalyzer:
             candidateBoundingBoxes, player_edges = playerFilter.filter(frame, (grassFilteredFrame, fieldMask)) # 0.026 on average
 
             ##################################################################
-            if not teamColorCalibration.isCalibrated:
-                teamColorCalibration.calibrate(frame.getPixels(), player_edges)
+            if not self.teamColorCalibration.isCalibrated:
+                self.teamColorCalibration.calibrate(frame.getPixels(), player_edges)
 
             contact_boxes[frame.getFrameCount()] = []
             # hier Bild schon aus frame.getPixels und grassFilteredFrame zusammensetzen,

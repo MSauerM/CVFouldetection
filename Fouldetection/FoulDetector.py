@@ -1,4 +1,5 @@
 import appconfig
+from BasicFramework.FileWriter import FileWriter
 from BasicFramework.VideoPreProcessor import VideoPreProcessor
 from BasicFramework.VideoWriter import VideoWriter
 from Fouldetection.Filter.BallFilter import BallFilter
@@ -77,8 +78,10 @@ class FoulDetector:
 
 
 
-
-
+       # test = str(self)
+        fileWriter = FileWriter("Fouldetector_txt_out")
+        fileWriter.set_output_directory("./output_info/")
+        fileWriter.writeFile(self)
         print("End processing")
 
     def createVideo(self, filename = "FoulDetector_out"):
@@ -97,3 +100,10 @@ class FoulDetector:
     def interruptProcessing(self):
         cv.destroyAllWindows()
         self.isInterrupted = True
+
+    def __str__(self):
+        return "TES\n" \
+               "sdfs\n" \
+               "sfds\n" \
+               "sdfs\n" \
+               "sdfs\n"
