@@ -88,6 +88,7 @@ class FoulDetector:
         frame_height = dimensions[0]
         frame_width = dimensions[1]
         videoWriter.writeVideo(self.frame_list, frame_width, frame_height, 25)
+        return videoWriter.get_full_path()
 
    # def createVideo(self, filename):
    #     videoWriter = VideoWriter(filename)
