@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 
+import appconfig
 from Fouldetection.DataStructures.ColorHistogram import ColorHistogram
 from CVUtility import ImageUtility as utility
 
@@ -25,7 +26,8 @@ class TeamColorCalibration:
         #histogram.show_histogram()
         first_color = histogram_colors[0]
         second_color = histogram_colors[1]
-
+        # theoretically there have also be an adapted form for team_color_calib_every_frame
+        self.colors_list = []
         self.colors_list.append(first_color)
         self.colors_list.append(second_color)
 

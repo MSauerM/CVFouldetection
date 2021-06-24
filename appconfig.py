@@ -17,3 +17,25 @@ create_video_for_sequences = False
 ####### CNN networks
 use_action_recognition = False
 use_human_pose_estimation = False
+
+def get_config_string():
+    return """ use_multithreading: {use_multithreading}
+     team_color_calib_every_frame: {team_color_calib_every_frame}
+     max_frame_amount: {max_frame_amount}
+     show_debug_windows: {show_debug_windows}
+     cropping_strategy: {cropping_strategy}
+     preferred_size_dynamic_fixed: {preferred_size_dynamic_fixed}
+     create_video_for_sequences: {create_video_for_sequences}
+     use_action_recognition: {use_action_recognition}
+     use_human_pose_estimation: {use_human_pose_estimation}
+    
+    """.format(use_multithreading= use_multithreading,
+               team_color_calib_every_frame= team_color_calib_every_frame,
+               max_frame_amount = max_frame_amount,
+               show_debug_windows= show_debug_windows,
+               cropping_strategy = cropping_strategy,
+               preferred_size_dynamic_fixed = preferred_size_dynamic_fixed,
+               create_video_for_sequences = create_video_for_sequences,
+               use_action_recognition = use_action_recognition,
+               use_human_pose_estimation = use_human_pose_estimation
+               )

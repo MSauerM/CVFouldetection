@@ -47,10 +47,10 @@ class FoulDetector:
                                    appconfig.preferred_size_dynamic_fixed, 25)
 
         foulRecognizer = FoulRecognizer()
-        evaluated_contact_events = foulRecognizer.analyze(contact_events)
+        self.evaluated_contact_events = foulRecognizer.analyze(contact_events)
 
         foulFrameAggregator = FoulFrameAggregator()
-        self.frame_list = foulFrameAggregator.aggregate(evaluated_contact_events, frames=self.preProcessor.frame_list)
+        self.frame_list = foulFrameAggregator.aggregate(self.evaluated_contact_events, frames=self.preProcessor.frame_list)
 
         #grassFilter = GrassFilter()
         #ballFilter = BallFilter()
@@ -102,8 +102,49 @@ class FoulDetector:
         self.isInterrupted = True
 
     def __str__(self):
-        return "TES\n" \
-               "sdfs\n" \
-               "sfds\n" \
-               "sdfs\n" \
-               "sdfs\n"
+        return """Overall Information:
+        Execution start:{exec_start}
+        Amount of Frames: {frame_count}
+        
+        ###############################
+        Fouldetector specifics:
+        
+        Identified Team colors: {team_colors}
+        Amount of relevant contact boxes: {amount_relevant_contact_boxes}
+        Amount of aggregated sequences: {amount_aggregated_sequences}
+        Amount of recognized fouls: {amount_recognized_fouls}
+        
+        Sequence information: 
+        {sequences_info}
+        
+        Processing time for fouldetection: {fouldetection_processing_time} s
+        
+        ###############################
+        Overall performance:
+        
+        Preprocessing time: {preprocessing_time} s
+        Overall time: {overall_time} s
+        
+        ###############################
+        
+        App configuration:
+        {app_config}
+        
+        """.format(exec_start= "nichts",
+                   frame_count = 0,
+                   team_colors = None,
+                   amount_relevant_contact_boxes = 0,
+                   amount_aggregated_sequences = 0,
+                   amount_recognized_fouls = 0, #len([event for events in self.evaluated_contact_events if e])
+                   sequences_info= None,
+                   fouldetection_processing_time = None,
+                   preprocessing_time= None,
+                   overall_time = None,
+                   app_config = appconfig.get_config_string())
+        #return "Overall Information: \n" \
+        #       "Execution start: \n" \
+        #       "sfds\n" \
+        #       "sdfs\n" \
+        #       "\n" \
+        #       "sdfs\n"\
+        #    .format()

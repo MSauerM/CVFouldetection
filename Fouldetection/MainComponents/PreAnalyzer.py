@@ -1,5 +1,6 @@
 from typing import List
 
+import appconfig
 from BasicFramework.Frame import Frame
 from CVUtility.PerformanceTimer import PerformanceTimer
 from Fouldetection.Analyzers.ContactBoxChecker import ContactBoxChecker
@@ -58,8 +59,11 @@ class PreAnalyzer:
             candidateBoundingBoxes, player_edges = playerFilter.filter(frame, (grassFilteredFrame, fieldMask)) # 0.026 on average
 
             ##################################################################
-            if not self.teamColorCalibration.isCalibrated:
+            if appconfig.team_color_calib_every_frame:
                 self.teamColorCalibration.calibrate(frame.getPixels(), player_edges)
+            else:
+                if not self.teamColorCalibration.isCalibrated:
+                    self.teamColorCalibration.calibrate(frame.getPixels(), player_edges)
 
             contact_boxes[frame.getFrameCount()] = []
             # hier Bild schon aus frame.getPixels und grassFilteredFrame zusammensetzen,
