@@ -7,10 +7,12 @@ from BasicFramework.Frame import Frame
 class VideoPreProcessor:
 
     frame_list = []
+    filepath = None
 
     def __init__(self, filename: str):
         print("Initialize VideoPreProcessor")
         # load file at the file name
+        self.filepath = filename
         capture = cv.VideoCapture(filename)
         self.frame_list = []
         # load video into single frames

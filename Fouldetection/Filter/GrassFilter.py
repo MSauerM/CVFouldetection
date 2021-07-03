@@ -89,8 +89,8 @@ class GrassFilter(Filter):
         greatestArea = 0
         greatestAreaIndex = -1
         for i in range(len(contours)):
-            cv.drawContours(drawing, contours, i, (0, 255, 0))
-            cv.drawContours(drawing, hull_list, i, (0, 0, 255))
+            cv.drawContours(drawing, contours, i, (0, 255, 0), 2)
+            cv.drawContours(drawing, hull_list, i, (0, 0, 255), 2)
             hullArea =cv.contourArea(hull_list[i])
             if greatestArea < hullArea:
                 greatestArea = hullArea
@@ -98,8 +98,8 @@ class GrassFilter(Filter):
 
         fieldAreaDrawing = np.zeros((blurred_image.shape[0], blurred_image.shape[1], 3), dtype=np.uint8)
         cv.fillPoly(fieldAreaDrawing, [hull_list[greatestAreaIndex]], (255, 255, 255))
-        #utility.showResizedImage("GrassFilter - Opened Drawing - Contours", drawing, 0.4)
-        #utility.showResizedImage("GrassFilter - Field Area", fieldAreaDrawing, 0.4)
+        utility.showResizedImage("GrassFilter - Opened Drawing - Contours", drawing, 0.4)
+        utility.showResizedImage("GrassFilter - Field Area", fieldAreaDrawing, 0.4)
         #convert fieldAreaDrwa
         field = cv.bitwise_and(frame.getPixels(), fieldAreaDrawing)
         utility.showResizedImage("GrassFilter - Field", field, 0.4)

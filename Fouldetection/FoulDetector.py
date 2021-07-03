@@ -8,12 +8,13 @@ from Fouldetection.Filter.OpticalFlowFilter import OpticalFlowFilter
 from Fouldetection.Filter.PlayerFilter import PlayerFilter
 
 from cv2 import cv2 as cv
+from datetime import datetime
 
 from Fouldetection.Aggregators.FoulFrameAggregator import FoulFrameAggregator
 from Fouldetection.MainComponents.FoulRecognizer import FoulRecognizer
 from Fouldetection.MainComponents.PreAnalyzer import PreAnalyzer
 
-"""Obergeordnete Klasse, die den State Tracker sowie die einzenen Verarbeitungsschritte kapselt """
+"""Class, which controls the action flow of the foul detection"""
 class FoulDetector:
     stateTracker = None
     preProcessor = None
@@ -26,6 +27,8 @@ class FoulDetector:
     foulEvents = []
     # boundingBoxInformation
 
+    execution_start = None
+
     def __init__(self, preProcessor: VideoPreProcessor = None, filename: str = None):
         if preProcessor is not None and filename is None:
             self.preProcessor = preProcessor
@@ -33,6 +36,7 @@ class FoulDetector:
             self.preProcessor = VideoPreProcessor(filename)
 
     def process(self):
+        self.execution_start = datetime.now()
         print("Start processing")
         preAnalyzer = PreAnalyzer()
         sequences, contact_events = preAnalyzer.analyze(self.preProcessor.frame_list)
@@ -102,8 +106,10 @@ class FoulDetector:
         self.isInterrupted = True
 
     def __str__(self):
-        return """Overall Information:
-        Execution start:{exec_start}
+        return """
+    Overall Information:
+        File Path: {file_path}
+        Execution start: {exec_start}
         Amount of Frames: {frame_count}
         
         ###############################
@@ -130,12 +136,13 @@ class FoulDetector:
         App configuration:
         {app_config}
         
-        """.format(exec_start= "nichts",
-                   frame_count = 0,
+        """.format(exec_start= self.execution_start,
+                   file_path= self.preProcessor.filepath,
+                   frame_count = len(self.preProcessor.frame_list),
                    team_colors = None,
                    amount_relevant_contact_boxes = 0,
                    amount_aggregated_sequences = 0,
-                   amount_recognized_fouls = 0, #len([event for events in self.evaluated_contact_events if e])
+                   amount_recognized_fouls = len([x for x in self.evaluated_contact_events if x.isFoul]),
                    sequences_info= None,
                    fouldetection_processing_time = None,
                    preprocessing_time= None,
