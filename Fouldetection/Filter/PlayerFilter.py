@@ -23,6 +23,7 @@ class PlayerFilter(Filter):
         kernel = np.ones( (5,5), np.uint8)
 
         dilated_grassfilteredFrame = cv.dilate(preprocessed_frames[0], kernel, iterations=3)
+        utility.showResizedImage("Player Filter - Dilated Grass Filtered", dilated_grassfilteredFrame, 0.4)
 
         (contours, hierarchy) = cv.findContours(dilated_grassfilteredFrame, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
