@@ -48,7 +48,7 @@ class PlayerFilter(Filter):
 
         for c in contours:
             x, y, w, h = cv.boundingRect(c)
-            if ( (w > 15 and h > 20)  and (w < 450 and h < 450)):
+            if ( (w > 20 and h > 20)  and (w < 450 and h < 450)):
                 #cv.drawContours(frame, cv.boundingRect(c), -1, (255, 0, 0),3)
                 boundingBoxInformation_list.append(BoundingBoxInformation(frame.getFrameCount(), x, y, w, h))
                 #cv.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 3)
