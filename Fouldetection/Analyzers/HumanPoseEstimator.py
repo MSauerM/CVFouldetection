@@ -31,18 +31,22 @@ class HumanPoseEstimator:
         input_img = mx.nd.array(cv2.cvtColor(input_img, cv2.COLOR_BGR2RGB)).astype('uint8')
         x, img = gcv.data.transforms.presets.ssd.transform_test(input_img, short=512, max_size=350)
         x = x.as_in_context(self.ctx)
-        print("Shape of pre-processed image: ", x.shape)
+        #print("Shape of pre-processed image: ", x.shape)
 
         class_IDs, scores, bounding_boxs= self.detector(x)
         pose_input, upscale_bbox = detector_to_alpha_pose(img, class_IDs, scores, bounding_boxs) # alternativ auch simplePose
 
-        predicted_heatmap = self.pose_net(pose_input)
-        pred_coords, confidence = heatmap_to_coord_alpha_pose(predicted_heatmap, upscale_bbox)
-        print("Coordinates: ", pred_coords)
-        ax = utils.viz.plot_keypoints(img, pred_coords, confidence, class_IDs, bounding_boxs, scores, box_thresh=0.5, keypoint_thresh=0.2)
+        if pose_input is not None:
+            predicted_heatmap = self.pose_net(pose_input) # error is caused here
+            # ValueError: In HybridBlock, there must be one NDArray or one Symbol in the input
+            pred_coords, confidence = heatmap_to_coord_alpha_pose(predicted_heatmap, upscale_bbox)
+            #print("Coordinates: ", pred_coords)
+            #ax = utils.viz.plot_keypoints(img, pred_coords, confidence, class_IDs, bounding_boxs, scores, box_thresh=0.5, keypoint_thresh=0.2)
 
-        plt.show()
-        return pred_coords, confidence
+            # plt.show()
+            return pred_coords, confidence
+        return None
+
 
 if __name__ == '__main__':
     poseEstimator = HumanPoseEstimator()
