@@ -34,7 +34,10 @@ class FoulRecognizer:
             print("Use action recognition for foul recognition")
             for index, event in enumerate(contact_events):
                 sequence = event.sequence
-                self.foul_analyzer.analyze_action(sequence) # should deliver boolean or some datatype with probabilities for foul or not foul
-                event.isFoul = True
+                event.foul_probabilities = self.foul_analyzer.analyze_action(sequence) # should deliver boolean or some datatype with probabilities for foul or not foul
+                if event.foul_probabilities is not None and event.foul_probabilities[1] > event.foul_probabilities[0] and event.foul_probabilities[1] > 0.75:
+                    event.isFoul = True
+                else:
+                    event.isFoul = False
 
         return contact_events
