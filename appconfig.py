@@ -15,8 +15,8 @@ preferred_size_dynamic_fixed = 448#224 # 448 # None or int for quadratic size
 create_video_for_sequences = False
 
 ####### CNN networks
-use_action_recognition = True
-use_human_pose_estimation = False
+use_action_recognition = False
+use_human_pose_estimation = True
 
 def get_config_string():
     return """ 
