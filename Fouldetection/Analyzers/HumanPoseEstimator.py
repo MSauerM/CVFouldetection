@@ -44,7 +44,7 @@ class HumanPoseEstimator:
             #ax = utils.viz.plot_keypoints(img, pred_coords, confidence, class_IDs, bounding_boxs, scores, box_thresh=0.5, keypoint_thresh=0.2)
 
             # plt.show()
-            return pred_coords, confidence
+            return pred_coords.asnumpy(), confidence
         return None
 
 

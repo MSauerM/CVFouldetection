@@ -19,10 +19,10 @@ class FoulRecognizer:
             joints_dict_list = []
             human_pose_estimator = HumanPoseEstimator()
             ### Analyze loop
-            for index, event in enumerate(contact_events):
+            for _, event in enumerate(contact_events):
                 sequence = event.sequence
                 joints_dict = dict()
-                for frame in sequence.frame_list:
+                for index, frame in enumerate(sequence.frame_list):
                     joints_dict[index] = human_pose_estimator.process_image(frame.getPixels())
                 joints_dict_list.append(joints_dict)
 
