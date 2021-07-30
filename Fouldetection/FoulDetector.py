@@ -14,6 +14,8 @@ from Fouldetection.Aggregators.FoulFrameAggregator import FoulFrameAggregator
 from Fouldetection.MainComponents.FoulRecognizer import FoulRecognizer
 from Fouldetection.MainComponents.PreAnalyzer import PreAnalyzer
 
+from CVUtility.PerformanceTimer import PerformanceTimer
+
 """Class, which controls the action flow of the foul detection"""
 class FoulDetector:
     stateTracker = None
@@ -28,18 +30,28 @@ class FoulDetector:
     # boundingBoxInformation
 
     execution_start = None
+    overall_time=None
 
     def __init__(self, preProcessor: VideoPreProcessor = None, filename: str = None):
+        self.preanalyzer_timer = PerformanceTimer()
+        self.foulrecognition_timer = PerformanceTimer()
+        self.fouldetection_timer = PerformanceTimer()
+
         if preProcessor is not None and filename is None:
             self.preProcessor = preProcessor
         if preProcessor is None and filename is not None:
             self.preProcessor = VideoPreProcessor(filename)
 
     def process(self):
+
+        self.fouldetection_timer.start()
+
         self.execution_start = datetime.now()
         print("Start processing")
-        preAnalyzer = PreAnalyzer()
-        sequences, contact_events = preAnalyzer.analyze(self.preProcessor.frame_list)
+        self.preanalyzer_timer.start()
+        self.preAnalyzer = PreAnalyzer()
+        sequences, self.contact_events = self.preAnalyzer.analyze(self.preProcessor.frame_list)
+        self.preanalyzer_timer.end()
 
         for index, sequence in enumerate(sequences):
             sequence.showSequence()
@@ -50,8 +62,10 @@ class FoulDetector:
                                    appconfig.preferred_size_dynamic_fixed,
                                    appconfig.preferred_size_dynamic_fixed, 25)
 
-        foulRecognizer = FoulRecognizer()
-        self.evaluated_contact_events = foulRecognizer.analyze(contact_events)
+        self.foulrecognition_timer.start()
+        self.foulRecognizer = FoulRecognizer()
+        self.evaluated_contact_events = self.foulRecognizer.analyze(self.contact_events)
+        self.foulrecognition_timer.end()
 
         foulFrameAggregator = FoulFrameAggregator()
         self.frame_list = foulFrameAggregator.aggregate(self.evaluated_contact_events, frames=self.preProcessor.frame_list)
@@ -80,12 +94,10 @@ class FoulDetector:
 
         # Aggregate frames to Contact Events
 
-
+        self.fouldetection_timer.end()
 
        # test = str(self)
-        fileWriter = FileWriter("Fouldetector_txt_out")
-        fileWriter.set_output_directory("./output_info/")
-        fileWriter.writeFile(self)
+
         print("End processing")
 
     def createVideo(self, filename = "FoulDetector_out"):
@@ -123,6 +135,8 @@ class FoulDetector:
         Sequence information: 
         {sequences_info}
         
+        Processing time for pre analyzer: {pre_analyzer_time} s
+        Processing time for foul recognition: {foul_recognition_processing_time} s
         Processing time for fouldetection: {fouldetection_processing_time} s
         
         ###############################
@@ -139,14 +153,16 @@ class FoulDetector:
         """.format(exec_start= self.execution_start,
                    file_path= self.preProcessor.filepath,
                    frame_count = len(self.preProcessor.frame_list),
-                   team_colors = None,
-                   amount_relevant_contact_boxes = 0,
-                   amount_aggregated_sequences = 0,
+                   team_colors = self.preAnalyzer.teamColorCalibration.colors_list[:2],
+                   amount_relevant_contact_boxes = self.preAnalyzer.candidate_box_amount,
+                   amount_aggregated_sequences = len(self.contact_events),
                    amount_recognized_fouls = len([x for x in self.evaluated_contact_events if x.isFoul]),
-                   sequences_info= None,
-                   fouldetection_processing_time = None,
-                   preprocessing_time= None,
-                   overall_time = None,
+                   sequences_info= str(self.contact_events),
+                   pre_analyzer_time= self.preanalyzer_timer.get_time(),
+                   foul_recognition_processing_time = self.foulrecognition_timer.get_time(),
+                   fouldetection_processing_time = self.fouldetection_timer.get_time(),
+                   preprocessing_time= self.preProcessor.timer.get_time(),
+                   overall_time = self.overall_time,
                    app_config = appconfig.get_config_string())
         #return "Overall Information: \n" \
         #       "Execution start: \n" \

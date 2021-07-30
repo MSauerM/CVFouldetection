@@ -17,6 +17,7 @@ from CVUtility import ImageUtility as utility
 class PreAnalyzer:
 
     isInterrupted = False
+    candidate_box_amount = 0
 
     def __init__(self):
         print("Init PreAnalyzer")
@@ -77,6 +78,7 @@ class PreAnalyzer:
                     x,y,w,h = candidate.get_bounds()
                     #cv.rectangle(frame.getPixels(), (x, y), (x+w, y+h), (255, 0, 255), 3)
                     contact_boxes[frame.getFrameCount()].append(candidate)
+                    self.candidate_box_amount += 1
                 else:
                     x, y, w, h = candidate.get_bounds()
                     #cv.rectangle(frame.getPixels(), (x, y), (x + w, y + h), (0, 0, 255), 3)

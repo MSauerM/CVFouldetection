@@ -2,6 +2,7 @@ import cv2 as cv
 
 import appconfig
 from BasicFramework.Frame import Frame
+from CVUtility.PerformanceTimer import PerformanceTimer
 
 
 class VideoPreProcessor:
@@ -10,6 +11,8 @@ class VideoPreProcessor:
     filepath = None
 
     def __init__(self, filename: str):
+        self.timer = PerformanceTimer()
+        self.timer.start()
         print("Initialize VideoPreProcessor")
         # load file at the file name
         self.filepath = filename
@@ -30,4 +33,5 @@ class VideoPreProcessor:
 
         print("Framecount: {count}".format(count=len(self.frame_list)))
         capture.release()
+        self.timer.end()
         #cv.destroyAllWindows()
