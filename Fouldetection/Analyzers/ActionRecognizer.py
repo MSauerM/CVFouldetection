@@ -25,14 +25,100 @@ from BasicFramework.Sequence import Sequence
 
 class ActionRecognizer:
 
-    def __init__(self, param_file):
+    def __init__(self, param_file=None):
         print("Init Action Recognizer")
         self.ctx = [mx.cpu()]
         self.net = get_model(name='i3d_resnet50_v1_kinetics400', nclass=2)
+        now = datetime.now()
+        nowstring = now.strftime("%d-%m-%y_%H-%M")
+        self.train_file_name = "i3d {now}.params".format(now=nowstring)
         if param_file is not None:
             self.net.load_parameters(param_file, ctx = self.ctx)
 
-# maybe renaming it to get probabilities or something like that
+    def train(self):
+        print("Train")
+        num_gpus = 1
+        # ctx = [mx.gpu(0)] #for i in range(num_gpus)]
+        ctx = [mx.cpu()]
+        transform_train = video.VideoGroupTrainTransform(size=(224, 224), scale_ratios=[1.0, 0.8],
+                                                         mean=[0.485, 0.456, 0.406], std=[0.299, 0.224, 0.255])
+        per_device_batch_size = 5
+        num_workers = 0
+        batch_size = per_device_batch_size * num_gpus
+
+        train_dataset = VideoClsCustom(root=os.path.expanduser('../Dataset_great'),
+                                       setting=os.path.expanduser('../train_great 2 _ trim 3.txt'),
+                                       train=True,
+                                       new_length=32,
+                                       video_loader=True,
+                                       use_decord=True,
+                                       transform=transform_train)
+        print('Load %d training samples.' % len(train_dataset))
+        train_data = gluon.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+        # i3d_resnet50_v1_kinetics400
+        # net = get_model(name='i3d_resnet50_v1_custom', nclass=2)
+        net = get_model(name='i3d_resnet50_v1_kinetics400', nclass=2)
+        net.collect_params().reset_ctx(ctx)
+        print(net)
+
+        lr_decay = 0.1
+        lr_decay_epoch = [40, 80, 100]
+        optimizer = 'sgd'
+        optimizer_params = {'learning_rate': 0.001, 'wd': 0.0001, 'momentum': 0.9}
+        trainer = gluon.Trainer(net.collect_params(), optimizer, optimizer_params)
+
+        loss_fn = gluon.loss.SoftmaxCrossEntropyLoss()
+
+        train_metric = mx.metric.Accuracy()
+        train_history = TrainingHistory(['training-acc'])
+
+        epochs = 9  # 6#3
+        lr_decay_count = 0
+
+        for epoch in range(epochs):
+            tic = time.time()
+            train_metric.reset()
+            train_loss = 0
+
+            if epoch == lr_decay_epoch[lr_decay_count]:
+                trainer.set_learning_rate(trainer.learning_rate * lr_decay)
+                lr_decay_count += 1
+
+            for i, batch in enumerate(train_data):
+                data = split_and_load(batch[0], ctx_list=ctx, batch_axis=0)
+                label = split_and_load(batch[1], ctx_list=ctx, batch_axis=0)
+
+                with ag.record():
+                    output = []
+                    for _, X in enumerate(data):
+                        X = X.reshape((-1,) + X.shape[2:])
+                        pred = net(X)
+                        output.append(pred)
+                    loss = [loss_fn(yhat, y) for yhat, y in zip(output, label)]
+
+                for l in loss:
+                    l.backward()
+
+                trainer.step(batch_size)
+
+                train_loss += sum([l.mean().asscalar() for l in loss])
+                train_metric.update(label, output)
+
+                if i == 100:
+                    break
+
+            name, acc = train_metric.get()
+
+            train_history.update([acc])
+            print('[Epoch %d] train=%f loss=%f time: %f' %
+                  (epoch, acc, train_loss / (i + 1), time.time() - tic))
+        train_history.plot()
+
+        net.save_parameters(self.train_file_name)
+
+    # https://mxnet.apache.org/versions/1.8.0/api/python/docs/tutorials/packages/gluon/blocks/save_load_params.html
+
+    # maybe renaming it to get probabilities or something like that
     def classify(self, sequence: Sequence, frame_multiplier = 1):
         frame_id_list = range(0, 32 * frame_multiplier, 1 *frame_multiplier)
 
@@ -85,3 +171,28 @@ class ActionRecognizer:
                 print("ValueError")
         else:
             return None
+
+    def test(self, params_filename, location, test_filename):
+        test_file= open(test_filename, 'r')
+        lines = test_file.readlines()
+        validation_values = []
+        correct_results_counter = 0
+        for line in lines:
+            file_split = line.split()
+            result = self.classify(params_filename, location + file_split[0], frame_multiplier=1)
+            validation_values.append([int(file_split[2]), result])
+
+        for values in validation_values:
+            if values[0] == values[1]:
+                correct_results_counter += 1
+        print("Number of Samples: {sample_number} ".format(sample_number=len(lines)))
+        print("Correct Results: {correct_results}".format(correct_results = correct_results_counter))
+        print("Validation Accuracy: {val_accuracy}".format(val_accuracy = correct_results_counter/len(lines)))
+
+
+if __name__ == '__main__':
+    actionrecognizer = ActionRecognizer()
+    #actionrecognizer.train()
+    actionrecognizer.classify("i3d 27-06-21_12-02.params", "../Dataset/foul_012.mp4", frame_multiplier=1)#"../Dataset_great/fair_054.mp4")#foul_092_Trim.mp4") #fair_054
+    #actionrecognizer.test("i3d 27-06-21_12-02.params", "../Dataset_great/", "../test_final.txt") # 0.555 Validation
+
