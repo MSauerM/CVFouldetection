@@ -19,21 +19,23 @@ class FoulAnalyzer:
         print(joints)
         # change nd array to normal array
         distance_matrix_list = []
-        angle_skeleton_list = []
+        #angle_skeleton_list = []
+        skeleton_info_dict = dict()
         for key in joints:
             # print(joints[key][0]) Skelettebene
             # joints[key][1] confidences für jeweiliges Skelett
             print(joints[key][0].shape[0])
             distance_matrix = np.empty((joints[key][0].shape[0], joints[key][0].shape[0]))
+            skeleton_info_dict[key] = []
             if joints[key][0].shape[0] > 1: # Anzahl der Skelette muss höher als 1 sein
                 # Berechnung des Nähekoeffizienten
-
                 for z in range(0, joints[key][0].shape[0]-1):
                     box = cv.minAreaRect(joints[key][0][z])
                     box_points = cv.boxPoints(box)
                     box_angle = box[2]
                     box_points = np.int0(box_points)
-                    angle_skeleton_list.append([z, box_angle, box[0], box_points])
+                    #angle_skeleton_list.append([z, box_angle, box[0], box_points])
+                    skeleton_info_dict[key].append([z, box_angle, box[0], box_points]) # index, angle, center, points
                     for d in range (1, joints[key][0].shape[0]):
                         #skelett 1
                         skeleton1 = joints[key][0][z]
@@ -48,8 +50,8 @@ class FoulAnalyzer:
                         for a in skeleton1:
                             for b in skeleton2:
                                 # Differenzen quadrieren
-                                print(a)
-                                print(b)
+                                #print(a)
+                                #print(b)
                                 # Magnitude bilden
                                 e = a - b
                                 distance += np.sqrt(e.dot(e))
@@ -59,11 +61,19 @@ class FoulAnalyzer:
                 distance_matrix_list.append(distance_matrix)
             else:
                 distance_matrix_list.append(None) # evtl. []
-                angle_skeleton_list.append(None) # evtl. []
+                skeleton_info_dict[key] = None # evtl. []
             print("Test")
 
-        # Verketten der Skeletons
-
+        # Verketten der Skeletons, um Listen aus Angles zu erhalten
+        for index in skeleton_info_dict:
+            if skeleton_info_dict[index] is not None:
+                for i in range(0, len(skeleton_info_dict[index])):
+                    angle_list = []
+                    angle_list.append(skeleton_info_dict[index][i][1])
+                    for walk_index in range(index + 1, len(skeleton_info_dict)):
+                        if skeleton_info_dict[walk_index] is None:
+                            break
+                        skeleton_info_dict[walk_index].c
         # Testen ob bei diesem Skeletons eine Winkeländerung größer als Threshold auftritt
 
 
