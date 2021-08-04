@@ -36,11 +36,27 @@ class ActionRecognizer:
     def classify(self, sequence: Sequence, frame_multiplier = 1):
         frame_id_list = range(0, 32 * frame_multiplier, 1 *frame_multiplier)
 
-        if len(sequence.frame_list) <32:
+        if len(sequence.frame_list) < 32:
             for i in range(len(sequence.frame_list), 32):
                 sequence.frame_list.append(sequence.frame_list[-1])
 
-        if len(sequence.frame_list) >= 32:
+        if len(sequence.frame_list) > 32:
+            seq_frame_range = range(0, len(sequence.frame_list), 32)
+            probabilities = {0: 0.0, 1: 0.0}
+            for i in seq_frame_range:
+                if i+32 < len(sequence.frame_list):
+                    tmp_sequence = Sequence(sequence.frame_list[i:i + 32])
+                    tmp_probabilities = self.classify(tmp_sequence)
+                    if tmp_probabilities[1] > probabilities[1]:
+                        probabilities = tmp_probabilities
+                else:
+                    last_sequence_count = len(sequence.frame_list) - i
+                    tmp_sequence = Sequence(sequence.frame_list[i:i + last_sequence_count])
+                    tmp_probabilities = self.classify(tmp_sequence)
+                    if tmp_probabilities[1] > probabilities[1]:
+                        probabilities = tmp_probabilities
+
+        if len(sequence.frame_list) == 32:
             try:
                 clip_input = [sequence.frame_list[vid].getPixels() for vid, _ in enumerate(frame_id_list)]
 
