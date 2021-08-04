@@ -65,17 +65,44 @@ class FoulAnalyzer:
             print("Test")
 
         # Verketten der Skeletons, um Listen aus Angles zu erhalten
+        chain_dict_list = []
         for index in skeleton_info_dict:
             if skeleton_info_dict[index] is not None:
                 for i in range(0, len(skeleton_info_dict[index])):
-                    angle_list = []
-                    angle_list.append(skeleton_info_dict[index][i][1])
+                    #angle_list = []
+                    #angle_list.append([index, i, skeleton_info_dict[index][i][1]])
+                    chain_dict = dict()
+                    chain_dict[index] = i
+                    last_chain = [index, i] # frame, skelett index
+                    #skeleton_info_dict = None
                     for walk_index in range(index + 1, len(skeleton_info_dict)):
                         if skeleton_info_dict[walk_index] is None:
                             break
-                        skeleton_info_dict[walk_index].c
+                        next_index = -1
+                        min_distance = 100000
+                        for z in range(0, len(skeleton_info_dict[walk_index])):
+                            distance_vector = skeleton_info_dict[walk_index][z][2] - skeleton_info_dict[last_chain[0]][last_chain[1]][2]
+                            distance_magnitude = 0 ##### TODO: Implement vector magnitude here
+                            if distance_magnitude < min_distance and distance_magnitude <20:
+                                next_index = z
+                                min_distance = distance_magnitude
+                        if next_index == -1:
+                            break
+                        else:
+                            chain_dict[walk_index] = next_index
+                            last_chain = [walk_index, next_index]
+                    chain_dict_list.append(chain_dict)
+
         # Testen ob bei diesem Skeletons eine Winkeländerung größer als Threshold auftritt
 
+        for chain_dictionary in chain_dict_list:
+            # info for this dictionary
+            # TODO: analyze the given information in the chained dictionaries
+            for item in chain_dictionary:
+                # access distance matrix at certain frame
+                distance_matrix = distance_matrix_list[item][chain_dictionary[item]]
+                # access skeleton_info_dict for angles
+                skeleton_info = skeleton_info_dict[item][chain_dictionary[item]]
 
 
     def analyze_action(self, sequence):
