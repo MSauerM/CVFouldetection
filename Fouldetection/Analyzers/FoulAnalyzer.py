@@ -82,7 +82,7 @@ class FoulAnalyzer:
                         min_distance = 100000
                         for z in range(0, len(skeleton_info_dict[walk_index])):
                             distance_vector = skeleton_info_dict[walk_index][z][2] - skeleton_info_dict[last_chain[0]][last_chain[1]][2]
-                            distance_magnitude = 0 ##### TODO: Implement vector magnitude here
+                            distance_magnitude = np.sqrt(distance_vector.dot(distance_vector))#0 ##### TODO: Implement vector magnitude here
                             if distance_magnitude < min_distance and distance_magnitude <20:
                                 next_index = z
                                 min_distance = distance_magnitude
@@ -100,7 +100,7 @@ class FoulAnalyzer:
             # TODO: analyze the given information in the chained dictionaries
             for item in chain_dictionary:
                 # access distance matrix at certain frame
-                distance_matrix = distance_matrix_list[item][chain_dictionary[item]]
+                distance_matrix_cut = distance_matrix_list[item][chain_dictionary[item]]
                 # access skeleton_info_dict for angles
                 skeleton_info = skeleton_info_dict[item][chain_dictionary[item]]
 
