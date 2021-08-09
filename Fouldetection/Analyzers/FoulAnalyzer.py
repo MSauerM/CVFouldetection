@@ -57,6 +57,7 @@ class FoulAnalyzer:
                                 distance += np.sqrt(e.dot(e))
                                 distance_counter += 1
                         distance_matrix[z][z+d] = distance / distance_counter
+                        distance_matrix[z+d][z] = distance / distance_counter
                 #for i in range(z, joints[key][0].shape[1]):
                 distance_matrix_list.append(distance_matrix)
             else:
@@ -98,11 +99,33 @@ class FoulAnalyzer:
         for chain_dictionary in chain_dict_list:
             # info for this dictionary
             # TODO: analyze the given information in the chained dictionaries
+            angle_list = []
+            isCloseEnough = False
+            isFalling = False
             for item in chain_dictionary:
                 # access distance matrix at certain frame
                 distance_matrix_cut = distance_matrix_list[item][chain_dictionary[item]]
+
+                for element in distance_matrix_cut:
+                    if element < 50:
+                        isCloseEnough = True
+                        break
+
                 # access skeleton_info_dict for angles
                 skeleton_info = skeleton_info_dict[item][chain_dictionary[item]]
+                angle_list.append(skeleton_info[1])
+
+
+            for index in range(0, len(angle_list)-1):
+                if angle_list[index] - angle_list[index + 1] > 30: # potential error here
+                    isFalling = True
+                    break
+
+
+            if isFalling and isCloseEnough:
+                return {0: 0.00, 1: 1.00}
+
+        return {0: 1.00, 1: 0.00}
 
 
     def analyze_action(self, sequence):
