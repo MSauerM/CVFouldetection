@@ -24,46 +24,50 @@ class FoulAnalyzer:
         for key in joints:
             # print(joints[key][0]) Skelettebene
             # joints[key][1] confidences für jeweiliges Skelett
-            print(joints[key][0].shape[0])
-            distance_matrix = np.empty((joints[key][0].shape[0], joints[key][0].shape[0]))
-            skeleton_info_dict[key] = []
-            if joints[key][0].shape[0] > 1: # Anzahl der Skelette muss höher als 1 sein
-                # Berechnung des Nähekoeffizienten
-                for z in range(0, joints[key][0].shape[0]-1):
-                    box = cv.minAreaRect(joints[key][0][z])
-                    box_points = cv.boxPoints(box)
-                    box_angle = box[2]
-                    box_points = np.int0(box_points)
-                    #angle_skeleton_list.append([z, box_angle, box[0], box_points])
-                    skeleton_info_dict[key].append([z, box_angle, box[0], box_points]) # index, angle, center, points
-                    for d in range (1, joints[key][0].shape[0]):
-                        #skelett 1
-                        skeleton1 = joints[key][0][z]
-                        #skelett 2
-                        skeleton2 = joints[key][0][z+d]
-                        #box2 = cv.minAreaRect(skeleton2)
-                        #box2_angle = box2[2]
-                        #box2_points = cv.boxPoints(box2)
-                        #box2_points = np.int0(box2_points)
-                        distance = 0.0
-                        distance_counter = 0
-                        for a in skeleton1:
-                            for b in skeleton2:
-                                # Differenzen quadrieren
-                                #print(a)
-                                #print(b)
-                                # Magnitude bilden
-                                e = a - b
-                                distance += np.sqrt(e.dot(e))
-                                distance_counter += 1
-                        distance_matrix[z][z+d] = distance / distance_counter
-                        distance_matrix[z+d][z] = distance / distance_counter
-                #for i in range(z, joints[key][0].shape[1]):
-                distance_matrix_list.append(distance_matrix)
+            if joints[key] is not None:
+                print(joints[key][0].shape[0])
+                distance_matrix = np.empty((joints[key][0].shape[0], joints[key][0].shape[0]))
+                skeleton_info_dict[key] = []
+                if joints[key][0].shape[0] > 1: # Anzahl der Skelette muss höher als 1 sein
+                    # Berechnung des Nähekoeffizienten
+                    for z in range(0, joints[key][0].shape[0]-1):
+                        box = cv.minAreaRect(joints[key][0][z])
+                        box_points = cv.boxPoints(box)
+                        box_angle = box[2]
+                        box_points = np.int0(box_points)
+                        #angle_skeleton_list.append([z, box_angle, box[0], box_points])
+                        skeleton_info_dict[key].append([z, box_angle, np.array([box[0][0], box[0][1]]), box_points]) # index, angle, center, points
+                        for d in range (z, joints[key][0].shape[0]):
+                            #skelett 1
+                            skeleton1 = joints[key][0][z]
+                            #skelett 2
+                            skeleton2 = joints[key][0][d]
+                            #box2 = cv.minAreaRect(skeleton2)
+                            #box2_angle = box2[2]
+                            #box2_points = cv.boxPoints(box2)
+                            #box2_points = np.int0(box2_points)
+                            distance = 0.0
+                            distance_counter = 0
+                            for a in skeleton1:
+                                for b in skeleton2:
+                                    # Differenzen quadrieren
+                                    #print(a)
+                                    #print(b)
+                                    # Magnitude bilden
+                                    e = a - b
+                                    distance += np.sqrt(e.dot(e))
+                                    distance_counter += 1
+                            distance_matrix[z][d] = distance / distance_counter
+                            distance_matrix[d][z] = distance / distance_counter
+                    #for i in range(z, joints[key][0].shape[1]):
+                    distance_matrix_list.append(distance_matrix)
+                else:
+                    distance_matrix_list.append(None) # evtl. []
+                    skeleton_info_dict[key] = None # evtl. []
+                print("Test")
             else:
-                distance_matrix_list.append(None) # evtl. []
-                skeleton_info_dict[key] = None # evtl. []
-            print("Test")
+                distance_matrix_list.append(None)
+                skeleton_info_dict[key] = None
 
         # Verketten der Skeletons, um Listen aus Angles zu erhalten
         chain_dict_list = []
@@ -82,7 +86,7 @@ class FoulAnalyzer:
                         next_index = -1
                         min_distance = 100000
                         for z in range(0, len(skeleton_info_dict[walk_index])):
-                            distance_vector = skeleton_info_dict[walk_index][z][2] - skeleton_info_dict[last_chain[0]][last_chain[1]][2]
+                            distance_vector = skeleton_info_dict[walk_index][z][2] - skeleton_info_dict[last_chain[0]][last_chain[1]][2] # error here because of - for tuples
                             distance_magnitude = np.sqrt(distance_vector.dot(distance_vector))#0 ##### TODO: Implement vector magnitude here
                             if distance_magnitude < min_distance and distance_magnitude <20:
                                 next_index = z
