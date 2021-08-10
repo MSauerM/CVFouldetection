@@ -26,8 +26,12 @@ class FoulRecognizer:
                     joints_dict[index] = human_pose_estimator.process_image(frame.getPixels())
                 joints_dict_list.append(joints_dict)
 
-            for joints in joints_dict_list:
-                self.foul_analyzer.analyze_human_pose(joints)
+            for index, joints in enumerate(joints_dict_list):
+                probabilities = self.foul_analyzer.analyze_human_pose(joints)
+                if probabilities[1] > 0.75:
+                    contact_events[index].isFoul = True
+                else:
+                    contact_events[index].isFoul = False
 
 
         if appconfig.use_action_recognition:
