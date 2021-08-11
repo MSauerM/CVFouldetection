@@ -1,5 +1,7 @@
 from PyQt5.QtCore import QCoreApplication
 
+from BasicFramework.Executor import Executor
+from BasicFramework.VideoPreProcessor import VideoPreProcessor
 from Fouldetection.FoulDetectorThread import FoulDetectorThread
 from InputGUI.GUIMain import start_GUI
 import struct
@@ -17,11 +19,22 @@ if __name__ == '__main__':
     print (struct.calcsize("P")*8)
     if len(sys.argv) > 1:
         print('Console Execution')
-        app = QCoreApplication([])
-        thread = FoulDetectorThread(args.filename, args.video)
-        thread.finished.connect(app.exit)
-        thread.start()
-        sys.exit(app.exec_())  # Konsolensteuerung funktioniert derzeit nicht mit Executor
+        options = dict()
+        options["video_preprocessor"] = VideoPreProcessor(args.filename)
+        options["video_fname"] = args.filename
+        options["fouldetector"] = dict()
+        if args.video is not None:
+            options["fouldetector"]["create_video"] = True
+        else:
+            options["fouldetector"]["create_video"] = False
+        #options["fouldetector"]["show_video"] = self.shouldShowVideo
+        executor = Executor()
+        executor.execute(options)
+        #app = QCoreApplication([])
+        #thread = FoulDetectorThread(args.filename, args.video)
+        #thread.finished.connect(app.exit)
+        #thread.start()
+        #sys.exit(app.exec_())  # Konsolensteuerung funktioniert derzeit nicht mit Executor
         #preProcessor = VideoPreProcessor(args.filename)
         #foulDetector = FoulDetector(preProcessor)
         #foulDetector.process()

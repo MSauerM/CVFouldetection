@@ -35,7 +35,7 @@ class ActionRecognizer:
         if param_file is not None:
             self.net.load_parameters(param_file, ctx = self.ctx)
 
-    def train(self):
+    def train(self, dataset_location:str = '../Dataset_great', training_file:str = '../train_great 2 _ trim 3.txt'):
         print("Train")
         num_gpus = 1
         # ctx = [mx.gpu(0)] #for i in range(num_gpus)]
@@ -46,8 +46,8 @@ class ActionRecognizer:
         num_workers = 0
         batch_size = per_device_batch_size * num_gpus
 
-        train_dataset = VideoClsCustom(root=os.path.expanduser('../Dataset_great'),
-                                       setting=os.path.expanduser('../train_great 2 _ trim 3.txt'),
+        train_dataset = VideoClsCustom(root=os.path.expanduser(dataset_location),
+                                       setting=os.path.expanduser(training_file),
                                        train=True,
                                        new_length=32,
                                        video_loader=True,
@@ -192,7 +192,7 @@ class ActionRecognizer:
 
 if __name__ == '__main__':
     actionrecognizer = ActionRecognizer()
-    #actionrecognizer.train()
-    actionrecognizer.classify("i3d 27-06-21_12-02.params", "../Dataset/foul_012.mp4", frame_multiplier=1)#"../Dataset_great/fair_054.mp4")#foul_092_Trim.mp4") #fair_054
+    actionrecognizer.train(dataset_location='D:/SOCCER_FOUL_DATA/Dataset_master', training_file='D:/SOCCER_FOUL_DATA/Dataset_master/train_1.txt')
+    #actionrecognizer.classify("i3d 27-06-21_12-02.params", "../Dataset/foul_012.mp4", frame_multiplier=1)#"../Dataset_great/fair_054.mp4")#foul_092_Trim.mp4") #fair_054
     #actionrecognizer.test("i3d 27-06-21_12-02.params", "../Dataset_great/", "../test_final.txt") # 0.555 Validation
 
