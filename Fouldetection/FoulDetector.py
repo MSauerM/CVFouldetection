@@ -54,11 +54,11 @@ class FoulDetector:
         self.preanalyzer_timer.end()
 
         for index, sequence in enumerate(sequences):
-            sequence.showSequence()
+            sequence.show_sequence()
             if appconfig.create_video_for_sequences is True:
                 vwriter = VideoWriter("TEST " + str(index))
                 vwriter.set_output_directory("./output_videos/")
-                vwriter.writeVideo(sequence.getFrames(),
+                vwriter.writeVideo(sequence.get_frames(),
                                    appconfig.preferred_size_dynamic_fixed,
                                    appconfig.preferred_size_dynamic_fixed, 25)
 
@@ -103,7 +103,7 @@ class FoulDetector:
     def createVideo(self, filename = "FoulDetector_out"):
         videoWriter = VideoWriter(filename)
         videoWriter.set_output_directory("./output_videos/")
-        dimensions = self.frame_list[0].getDimensions()
+        dimensions = self.frame_list[0].get_dimensions()
         frame_height = dimensions[0]
         frame_width = dimensions[1]
         videoWriter.writeVideo(self.frame_list, frame_width, frame_height, 25)
@@ -157,7 +157,7 @@ class FoulDetector:
                    amount_relevant_contact_boxes = self.preAnalyzer.candidate_box_amount,
                    amount_aggregated_sequences = len(self.contact_events),
                    amount_recognized_fouls = len([x for x in self.evaluated_contact_events if x.isFoul]),
-                   sequences_info= str(self.contact_events),
+                   sequences_info= str(self.evaluated_contact_events),
                    pre_analyzer_time= self.preanalyzer_timer.get_time(),
                    foul_recognition_processing_time = self.foulrecognition_timer.get_time(),
                    fouldetection_processing_time = self.fouldetection_timer.get_time(),

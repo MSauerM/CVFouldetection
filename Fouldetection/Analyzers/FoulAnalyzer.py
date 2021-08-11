@@ -64,7 +64,7 @@ class FoulAnalyzer:
                 else:
                     distance_matrix_list.append(None) # evtl. []
                     skeleton_info_dict[key] = None # evtl. []
-                print("Test")
+                #print("Test")
             else:
                 distance_matrix_list.append(None)
                 skeleton_info_dict[key] = None
@@ -102,7 +102,6 @@ class FoulAnalyzer:
 
         for chain_dictionary in chain_dict_list:
             # info for this dictionary
-            # TODO: analyze the given information in the chained dictionaries
             angle_list = []
             isCloseEnough = False
             isFalling = False
@@ -121,7 +120,7 @@ class FoulAnalyzer:
 
 
             for index in range(0, len(angle_list)-1):
-                if angle_list[index] - angle_list[index + 1] > 30: # potential error here
+                if angle_list[index] - angle_list[index + 1] > 60: # potential error here
                     isFalling = True
                     break
 

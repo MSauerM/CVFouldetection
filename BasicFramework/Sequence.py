@@ -11,17 +11,19 @@ class Sequence():
     def __init__(self, frame_list):
         self.frame_list = frame_list
 
-    def getFrameCount(self):
+    def get_frame_count(self):
         return len(self.frame_list)
 
-
-    def getDimensions(self):
+    def get_dimensions(self):
         return self.frame_list[0].getDimensions()
 
-    def getFrames(self):
+    def get_frames(self):
         return self.frame_list
 
-    def showSequence(self):
+    def show_sequence(self):
         for frame in self.frame_list:
             utility.showResizedImage("Sequenz", frame.getPixels(), 1.0, waitKey=0)
 
+    def __str__(self):
+        return """len: {length}, first:{first}, last:{last} \n"""\
+            .format(length= self.get_frame_count(), first = self.frame_list[0], last=self.frame_list[-1])
