@@ -2,7 +2,7 @@ from __future__ import division
 
 import argparse, time, logging, os, sys, math
 
-#import decord
+import decord
 import numpy as np
 import mxnet as mx
 import gluoncv as gcv
@@ -35,7 +35,7 @@ class ActionRecognizer:
         if param_file is not None:
             self.net.load_parameters(param_file, ctx = self.ctx)
 
-    def train(self, dataset_location:str = '../Dataset_great', training_file:str = '../train_great 2 _ trim 3.txt'):
+    def train(self, dataset_location:str = '../Dataset_great', training_file:str = '../train_great 2 _ trim 3.txt', train_epochs: int = 5):
         print("Train")
         num_gpus = 1
         # ctx = [mx.gpu(0)] #for i in range(num_gpus)]
@@ -72,7 +72,7 @@ class ActionRecognizer:
         train_metric = mx.metric.Accuracy()
         train_history = TrainingHistory(['training-acc'])
 
-        epochs = 9  # 6#3
+        epochs = train_epochs  # 6#3
         lr_decay_count = 0
 
         for epoch in range(epochs):
@@ -192,7 +192,7 @@ class ActionRecognizer:
 
 if __name__ == '__main__':
     actionrecognizer = ActionRecognizer()
-    actionrecognizer.train(dataset_location='D:/SOCCER_FOUL_DATA/Dataset_master', training_file='D:/SOCCER_FOUL_DATA/Dataset_master/train_1.txt')
+    actionrecognizer.train(dataset_location='D:/SOCCER_FOUL_DATA/Dataset_master', training_file='D:/SOCCER_FOUL_DATA/Dataset_master/train_1.txt', train_epochs=5)
     #actionrecognizer.classify("i3d 27-06-21_12-02.params", "../Dataset/foul_012.mp4", frame_multiplier=1)#"../Dataset_great/fair_054.mp4")#foul_092_Trim.mp4") #fair_054
     #actionrecognizer.test("i3d 27-06-21_12-02.params", "../Dataset_great/", "../test_final.txt") # 0.555 Validation
 
