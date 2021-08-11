@@ -22,8 +22,8 @@ class Sequence():
 
     def show_sequence(self):
         for frame in self.frame_list:
-            utility.showResizedImage("Sequenz", frame.getPixels(), 1.0, waitKey=0)
+            utility.showResizedImage("Sequenz", frame.get_pixels(), 1.0, waitKey=0)
 
     def __str__(self):
-        return """len: {length}, first:{first}, last:{last} \n"""\
+        return "len: {length}, first:{first}, last:{last}"\
             .format(length= self.get_frame_count(), first = self.frame_list[0], last=self.frame_list[-1])

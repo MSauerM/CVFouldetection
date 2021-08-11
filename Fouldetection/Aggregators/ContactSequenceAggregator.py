@@ -38,9 +38,9 @@ class ContactSequenceAggregator:
                     # retrieve bounds
                     (x, y, w, h) = link.get_bounds()
                     # crop the image
-                    img_crop = img.getPixels()[y:y+h, x:x+w] # dynamic with variable size
+                    img_crop = img.get_pixels()[y:y + h, x:x + w] # dynamic with variable size
 
-                    cropped_frame = Frame(img.getTimestamp(), img_crop, img.getFrameCount())
+                    cropped_frame = Frame(img.get_timestamp(), img_crop, img.get_frame_index())
                     sequence_frames.append(cropped_frame)
                 sequence = Sequence(sequence_frames)
                 sequences.append(sequence)
@@ -69,8 +69,8 @@ class ContactSequenceAggregator:
 
                     x = int(midpoint[0] - (w/2))
                     y = int(midpoint[1] - (h/2))
-                    img_height = img.getDimensions()[0]
-                    img_width = img.getDimensions()[1]
+                    img_height = img.get_dimensions()[0]
+                    img_width = img.get_dimensions()[1]
                     # testing if the midpoint is in the border area
                     if x < appconfig.preferred_size_dynamic_fixed / 2:
                         x = int(appconfig.preferred_size_dynamic_fixed / 2)
@@ -81,9 +81,9 @@ class ContactSequenceAggregator:
                     if y > img_height - (appconfig.preferred_size_dynamic_fixed / 2):
                         y = int(img_height - (appconfig.preferred_size_dynamic_fixed/2))
 
-                    img_crop = img.getPixels()[y:y + h, x:x + w]  # dynamic fixed size
+                    img_crop = img.get_pixels()[y:y + h, x:x + w]  # dynamic fixed size
 
-                    cropped_frame = Frame(img.getTimestamp(), img_crop, img.getFrameCount())
+                    cropped_frame = Frame(img.get_timestamp(), img_crop, img.get_frame_index())
                     sequence_frames.append(cropped_frame)
                 sequence = Sequence(sequence_frames)
                 sequences.append(sequence)
@@ -104,9 +104,9 @@ class ContactSequenceAggregator:
                 for link in chain.chain_members:
                     # find the image from the frame list
                     img = frame_list[link.get_frame_index()]
-                    img_crop = img.getPixels()[stationary_size[1]:stationary_size[3], stationary_size[0]:stationary_size[2]]  # dynamic fixed size
+                    img_crop = img.get_pixels()[stationary_size[1]:stationary_size[3], stationary_size[0]:stationary_size[2]]  # dynamic fixed size
 
-                    cropped_frame = Frame(img.getTimestamp(), img_crop, img.getFrameCount())
+                    cropped_frame = Frame(img.get_timestamp(), img_crop, img.get_frame_index())
                     sequence_frames.append(cropped_frame)
                 sequence = Sequence(sequence_frames)
                 sequences.append(sequence)

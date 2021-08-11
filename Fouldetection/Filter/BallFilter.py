@@ -17,8 +17,8 @@ class BallFilter(Filter):
         self._timer = PerformanceTimer("Ball Filter")
 
     def filter(self, frame: Frame, preprocessed_frames=None):
-        img = frame.getPixels()
-        img_hsv = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2HSV)
+        img = frame.get_pixels()
+        img_hsv = cv.cvtColor(frame.get_pixels(), cv.COLOR_BGR2HSV)
         # weißFilter
         lower_white = np.array([0, 0, 160])# np.array([60, 0, 120])
         upper_white = np.array([255, 255, 255])# np.array([130, 25, 255])
@@ -36,7 +36,7 @@ class BallFilter(Filter):
         #utility.showResizedImage("Ball Filter - White Filtered", whiteFiltered, 0.4)
 
 
-        gray_img = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2GRAY)
+        gray_img = cv.cvtColor(frame.get_pixels(), cv.COLOR_BGR2GRAY)
         thresh = cv.threshold(gray_img, 150, 255, cv.THRESH_BINARY)[1]
         thresh = cv.morphologyEx(thresh, cv.MORPH_CLOSE, kernel)
 

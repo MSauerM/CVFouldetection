@@ -14,7 +14,7 @@ class FoulFrameAggregator:
         for index, event in enumerate(events):
             for chain_member in event.bounding_box_chain.chain_members:
                 x, y, w, h = chain_member.get_bounds()
-                img = frames[chain_member.get_frame_index()].getPixels()
+                img = frames[chain_member.get_frame_index()].get_pixels()
                 color = None
                 text = "ChainIndex: {chain_index}/ Foul: {foul_decision}"
                 if event.isFoul is True:

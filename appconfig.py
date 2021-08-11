@@ -16,7 +16,7 @@ create_video_for_sequences = False
 
 ####### CNN networks
 use_action_recognition = False
-use_human_pose_estimation = True
+use_human_pose_estimation = False#True
 
 def get_config_string():
     return """ 

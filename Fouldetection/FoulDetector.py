@@ -132,7 +132,7 @@ class FoulDetector:
         Amount of aggregated sequences: {amount_aggregated_sequences}
         Amount of recognized fouls: {amount_recognized_fouls}
         
-        Sequence information: 
+        Contact event information: 
         {sequences_info}
         
         Processing time for pre analyzer: {pre_analyzer_time} s

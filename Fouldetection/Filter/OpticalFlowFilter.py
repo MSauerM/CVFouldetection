@@ -18,8 +18,8 @@ class OpticalFlowFilter:
 
         flow_image_list = []
         for i in range(0, len(self.frame_list)-1):
-            current = self.frame_list[i].getPixels()
-            next = self.frame_list[i+1].getPixels()
+            current = self.frame_list[i].get_pixels()
+            next = self.frame_list[i+1].get_pixels()
 
             hsv = np.zeros_like(current)
             hsv[..., 1] = 255

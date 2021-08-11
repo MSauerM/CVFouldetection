@@ -27,7 +27,7 @@ class VideoWriter:
         self._full_path = self._output_path + self._video_name + " " + self.getCurrentDateTimeString()+".mp4"
         video = cv.VideoWriter(self._output_path + self._video_name + " " + self.getCurrentDateTimeString()+".mp4", fourcc, fps, (framewidth, frameheight))
         for frame in frames:
-            video.write(frame.getPixels())
+            video.write(frame.get_pixels())
         video.release()
         return video
 

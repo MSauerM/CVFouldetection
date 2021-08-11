@@ -15,8 +15,8 @@ class PlayerFilter(Filter):
 
     def filter(self, frame: Frame, preprocessed_frames = None):
         # canny Edge detection
-        img = frame.getPixels()
-        frame_hsv = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2HSV)
+        img = frame.get_pixels()
+        frame_hsv = cv.cvtColor(frame.get_pixels(), cv.COLOR_BGR2HSV)
         #frame_thresh = cv.cvtColor(preprocessed_frames, cv.Color_gray2)
         #edges = cv.Canny(frame_hsv, 100, 200)
 
@@ -28,7 +28,7 @@ class PlayerFilter(Filter):
         (contours, hierarchy) = cv.findContours(dilated_grassfilteredFrame, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
 
-        player_img = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask=dilated_grassfilteredFrame)
+        player_img = cv.bitwise_and(frame.get_pixels(), frame.get_pixels(), mask=dilated_grassfilteredFrame)
 
         masked_img = cv.bitwise_and(img, img, mask= preprocessed_frames[1])
 
@@ -51,7 +51,7 @@ class PlayerFilter(Filter):
             x, y, w, h = cv.boundingRect(c)
             if ( (w > 20 and h > 20)  and (w < 450 and h < 450)):
                 #cv.drawContours(frame, cv.boundingRect(c), -1, (255, 0, 0),3)
-                boundingBoxInformation_list.append(BoundingBoxInformation(frame.getFrameCount(), x, y, w, h))
+                boundingBoxInformation_list.append(BoundingBoxInformation(frame.get_frame_index(), x, y, w, h))
                 #cv.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 3)
                 #cv.putText(img, "{w}/ {h} ({frame})".format(w= w, h=h, frame=frame.getFrameCount()), (x-2, y-2), font, 0.8, (0, 255, 0), 1, cv.LINE_AA)
 

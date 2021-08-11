@@ -14,7 +14,7 @@ class CourtBoundsFilter(Filter):
         print("courtBounds")
 
     def filter(self, frame: Frame):
-        gray_img = cv.cvtColor(frame.getPixels(), cv.COLOR_BGR2GRAY)
+        gray_img = cv.cvtColor(frame.get_pixels(), cv.COLOR_BGR2GRAY)
 
         edges = cv2.Canny(gray_img, 50, 150, apertureSize=3)
 

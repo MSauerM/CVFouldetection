@@ -28,7 +28,7 @@ class VideoPreProcessor:
                 print("Ending Processing")
                 break
 
-            preproc_frame = Frame(pixels=frame, timestamp=timestamp, framecount= frameIndex)
+            preproc_frame = Frame(pixels=frame, timestamp=timestamp, frameindex= frameIndex)
             self.frame_list.append(preproc_frame)
 
         print("Framecount: {count}".format(count=len(self.frame_list)))

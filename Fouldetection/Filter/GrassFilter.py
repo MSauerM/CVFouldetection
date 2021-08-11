@@ -16,7 +16,7 @@ class GrassFilter(Filter):
         #print("This is a grass filter for filtering the court of of the picture")
         # option 1 (simple): filter green color
 
-        blurred_image = cv.GaussianBlur(frame.getPixels(), (5,5), 0)
+        blurred_image = cv.GaussianBlur(frame.get_pixels(), (5, 5), 0)
         utility.showResizedImage("Blurred Image", blurred_image, 0.4)
 
         frame_hsv = cv.cvtColor(blurred_image, cv.COLOR_BGR2HSV)
@@ -41,13 +41,13 @@ class GrassFilter(Filter):
        #         cv.line(frame.getPixels(), pt1, pt2, (0, 0, 255), 3, cv.LINE_AA)
 
         #cv.imshow("Lines", frame.getPixels())
-        utility.showResizedImage("Lines", frame.getPixels(), 0.4)
+        utility.showResizedImage("Lines", frame.get_pixels(), 0.4)
 
         mask = cv.inRange(frame_hsv, lower_green, upper_green)
 #        cv.imshow("mask", mask)
         utility.showResizedImage("Mask", mask, 0.4)
 
-        res = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask=mask)
+        res = cv.bitwise_and(frame.get_pixels(), frame.get_pixels(), mask=mask)
         res_bgr = cv.cvtColor(res, cv.COLOR_HSV2BGR)
         res_gray = cv.cvtColor(res_bgr, cv.COLOR_BGR2GRAY)
 
@@ -101,7 +101,7 @@ class GrassFilter(Filter):
         utility.showResizedImage("GrassFilter - Opened Drawing - Contours", drawing, 0.4)
         utility.showResizedImage("GrassFilter - Field Area", fieldAreaDrawing, 0.4)
         #convert fieldAreaDrwa
-        field = cv.bitwise_and(frame.getPixels(), fieldAreaDrawing)
+        field = cv.bitwise_and(frame.get_pixels(), fieldAreaDrawing)
         utility.showResizedImage("GrassFilter - Field", field, 0.4)
         fieldAreaDrawing = cv.cvtColor(fieldAreaDrawing, cv.COLOR_BGR2GRAY)
         combined = cv.bitwise_and(combined, fieldAreaDrawing)

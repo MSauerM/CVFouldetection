@@ -144,7 +144,7 @@ class ActionRecognizer:
 
         if len(sequence.frame_list) == 32:
             try:
-                clip_input = [sequence.frame_list[vid].getPixels() for vid, _ in enumerate(frame_id_list)]
+                clip_input = [sequence.frame_list[vid].get_pixels() for vid, _ in enumerate(frame_id_list)]
 
                 transform_fn = video.VideoGroupValTransform(size=224, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
                 clip_input = transform_fn(clip_input)

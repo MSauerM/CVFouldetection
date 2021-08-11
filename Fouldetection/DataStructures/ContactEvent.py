@@ -21,7 +21,7 @@ class ContactEvent:
         sequence_info = {info}
         isFoul= {isFoul}
         Wahrscheinlichkeiten = {foul_probabilities}
-        \n""".format(info= str(self.sequence),isFoul=self.isFoul, foul_probabilities = self.foul_probabilities)
+        """.format(info= str(self.sequence),isFoul=self.isFoul, foul_probabilities = self.foul_probabilities)
 
     def __repr__(self):
         return self.__str__()

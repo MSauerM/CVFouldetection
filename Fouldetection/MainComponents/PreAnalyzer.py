@@ -61,29 +61,29 @@ class PreAnalyzer:
 
             ##################################################################
             if appconfig.team_color_calib_every_frame:
-                self.teamColorCalibration.calibrate(frame.getPixels(), player_edges)
+                self.teamColorCalibration.calibrate(frame.get_pixels(), player_edges)
             else:
                 if not self.teamColorCalibration.isCalibrated:
-                    self.teamColorCalibration.calibrate(frame.getPixels(), player_edges)
+                    self.teamColorCalibration.calibrate(frame.get_pixels(), player_edges)
 
-            contact_boxes[frame.getFrameCount()] = []
+            contact_boxes[frame.get_frame_index()] = []
             # hier Bild schon aus frame.getPixels und grassFilteredFrame zusammensetzen,
             # dies löst auch Problematik mit dem caching
 
             contactCheckTimer.start()
-            combined_img = cv.bitwise_and(frame.getPixels(), frame.getPixels(), mask = player_edges)
+            combined_img = cv.bitwise_and(frame.get_pixels(), frame.get_pixels(), mask = player_edges)
             for candidate in candidateBoundingBoxes:
                 #if contactBoxChecker.check_for_contact(frame.getPixels(), grassFilteredFrame, candidate):
                 if contactBoxChecker.check_for_contact(combined_img, player_edges, candidate):
                     x,y,w,h = candidate.get_bounds()
                     #cv.rectangle(frame.getPixels(), (x, y), (x+w, y+h), (255, 0, 255), 3)
-                    contact_boxes[frame.getFrameCount()].append(candidate)
+                    contact_boxes[frame.get_frame_index()].append(candidate)
                     self.candidate_box_amount += 1
                 else:
                     x, y, w, h = candidate.get_bounds()
                     #cv.rectangle(frame.getPixels(), (x, y), (x + w, y + h), (0, 0, 255), 3)
             contactCheckTimer.end()
-            utility.showResizedImage("Relevant Boxes - Pre Analyzer", frame.getPixels(), 0.6)
+            utility.showResizedImage("Relevant Boxes - Pre Analyzer", frame.get_pixels(), 0.6)
             #print(contactCheckTimer)
         timer.end()
         print(timer)
