@@ -39,7 +39,7 @@ class ActionRecognizer:
         print("Train")
         num_gpus = 1
         # ctx = [mx.gpu(0)] #for i in range(num_gpus)]
-        ctx = [mx.cpu()]
+        #ctx = [mx.cpu()]
         transform_train = video.VideoGroupTrainTransform(size=(224, 224), scale_ratios=[1.0, 0.8],
                                                          mean=[0.485, 0.456, 0.406], std=[0.299, 0.224, 0.255])
         per_device_batch_size = 5
@@ -57,15 +57,15 @@ class ActionRecognizer:
         train_data = gluon.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
         # i3d_resnet50_v1_kinetics400
         # net = get_model(name='i3d_resnet50_v1_custom', nclass=2)
-        net = get_model(name='i3d_resnet50_v1_kinetics400', nclass=2)
-        net.collect_params().reset_ctx(ctx)
-        print(net)
+        #net = get_model(name='i3d_resnet50_v1_kinetics400', nclass=2) # not necessary, because init
+        self.net.collect_params().reset_ctx(self.ctx)  # self here
+        print(self.net)
 
         lr_decay = 0.1
         lr_decay_epoch = [40, 80, 100]
         optimizer = 'sgd'
         optimizer_params = {'learning_rate': 0.001, 'wd': 0.0001, 'momentum': 0.9}
-        trainer = gluon.Trainer(net.collect_params(), optimizer, optimizer_params)
+        trainer = gluon.Trainer(self.net.collect_params(), optimizer, optimizer_params) # self
 
         loss_fn = gluon.loss.SoftmaxCrossEntropyLoss()
 
@@ -85,14 +85,14 @@ class ActionRecognizer:
                 lr_decay_count += 1
 
             for i, batch in enumerate(train_data):
-                data = split_and_load(batch[0], ctx_list=ctx, batch_axis=0)
-                label = split_and_load(batch[1], ctx_list=ctx, batch_axis=0)
+                data = split_and_load(batch[0], ctx_list=self.ctx, batch_axis=0)
+                label = split_and_load(batch[1], ctx_list=self.ctx, batch_axis=0)
 
                 with ag.record():
                     output = []
                     for _, X in enumerate(data):
                         X = X.reshape((-1,) + X.shape[2:])
-                        pred = net(X)
+                        pred = self.net(X) # self.....
                         output.append(pred)
                     loss = [loss_fn(yhat, y) for yhat, y in zip(output, label)]
 
@@ -114,7 +114,7 @@ class ActionRecognizer:
                   (epoch, acc, train_loss / (i + 1), time.time() - tic))
         train_history.plot()
 
-        net.save_parameters(self.train_file_name)
+        self.net.save_parameters(self.train_file_name) # self....
 
     # https://mxnet.apache.org/versions/1.8.0/api/python/docs/tutorials/packages/gluon/blocks/save_load_params.html
 
@@ -172,14 +172,47 @@ class ActionRecognizer:
         else:
             return None
 
-    def test(self, params_filename, location, test_filename):
+    def classify_test(self, video_filename, frame_multiplier = 1):
+        #ctx = [mx.cpu()]
+        vr = decord.VideoReader(video_filename)
+        frame_id_list = range(0, 32 * frame_multiplier, 1*frame_multiplier) # range(0, 32, 1)
+
+        video_data = vr.get_batch(frame_id_list).asnumpy()
+
+        clip_input = [video_data[vid, :, :, :] for vid, _ in enumerate(frame_id_list)]
+
+
+        transform_fn = video.VideoGroupValTransform(size=224, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+
+
+        clip_input = transform_fn(clip_input)
+        clip_input = np.stack(clip_input, axis=0)
+        clip_input = clip_input.reshape((-1,) + (32, 3, 224, 224))
+        clip_input = np.transpose(clip_input, (0, 2, 1, 3, 4))
+        #net = get_model(name='i3d_resnet50_v1_custom', nclass=2)
+        #net = get_model(name='i3d_resnet50_v1_kinetics400', nclass=2)
+        #net.load_parameters(params_filename, ctx=ctx)
+        net_input = nd.array(clip_input)
+
+        pred = self.net(net_input)
+
+        classes = ['No Foul', 'Foul']
+        topK = 2
+        ind = nd.topk(pred, k=topK)[0].astype('int')
+        print('The input video clip is classified to be')
+        for i in range(topK):
+            print('\t[%s], with probability %.3f.' %
+                 (classes[ind[i].asscalar()], nd.softmax(pred)[0][ind[i]].asscalar()))
+        return ind[0].asscalar()
+
+    def test(self, location, test_filename):
         test_file= open(test_filename, 'r')
         lines = test_file.readlines()
         validation_values = []
         correct_results_counter = 0
         for line in lines:
             file_split = line.split()
-            result = self.classify(params_filename, location + file_split[0], frame_multiplier=1)
+            result = self.classify_test(location + file_split[0]+".mp4", frame_multiplier=1)
             validation_values.append([int(file_split[2]), result])
 
         for values in validation_values:
@@ -191,8 +224,10 @@ class ActionRecognizer:
 
 
 if __name__ == '__main__':
-    actionrecognizer = ActionRecognizer()
-    actionrecognizer.train(dataset_location='D:/SOCCER_FOUL_DATA/Dataset_master', training_file='D:/SOCCER_FOUL_DATA/Dataset_master/train_1.txt', train_epochs=5)
+    actionrecognizer = ActionRecognizer("i3d 12-08-21_11-04.params")
+    #actionrecognizer.train(dataset_location='D:/SOCCER_FOUL_DATA/Dataset_master', training_file='D:/SOCCER_FOUL_DATA/Dataset_master/train_1.txt', train_epochs=5)
     #actionrecognizer.classify("i3d 27-06-21_12-02.params", "../Dataset/foul_012.mp4", frame_multiplier=1)#"../Dataset_great/fair_054.mp4")#foul_092_Trim.mp4") #fair_054
-    #actionrecognizer.test("i3d 27-06-21_12-02.params", "../Dataset_great/", "../test_final.txt") # 0.555 Validation
+    #actionrecognizer.classify_test("i3d 12-08-21_11-04.params", "fair_271.mp4")
+    actionrecognizer.test("D:\SOCCER_FOUL_DATA\Dataset_master/", "D:/SOCCER_FOUL_DATA/Dataset_master/test_1.txt") # 0.555 Validation
+    #actionrecognizer.test("i3d 12-08-21_11-04.params", "../../../Dataset/", "../../../Dataset/test_1.txt") # 0.555 Validation
 
