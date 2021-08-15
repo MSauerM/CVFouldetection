@@ -64,7 +64,7 @@ class PreAnalyzer:
                 self.teamColorCalibration.calibrate(frame.get_pixels(), player_edges)
             else:
                 if not self.teamColorCalibration.isCalibrated:
-                    self.teamColorCalibration.calibrate(frame.get_pixels(), player_edges)
+                    self.teamColorCalibration.calibrate(frame.get_pixels(), grassFilteredFrame)#player_edges)
 
             contact_boxes[frame.get_frame_index()] = []
             # hier Bild schon aus frame.getPixels und grassFilteredFrame zusammensetzen,

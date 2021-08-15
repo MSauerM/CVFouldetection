@@ -21,6 +21,7 @@ class PlayerFilter(Filter):
         #edges = cv.Canny(frame_hsv, 100, 200)
 
         kernel = np.ones( (5,5), np.uint8)
+        greater_kernel = np.ones((11,11), np.uint8)
 
         dilated_grassfilteredFrame = cv.dilate(preprocessed_frames[0], kernel, iterations=3)
         utility.showResizedImage("Player Filter - Dilated Grass Filtered", dilated_grassfilteredFrame, 0.4)
@@ -32,11 +33,9 @@ class PlayerFilter(Filter):
 
         masked_img = cv.bitwise_and(img, img, mask= preprocessed_frames[1])
 
-        edges = cv.Canny(masked_img, 100, 150)
+        edges = cv.Canny(masked_img, 150, 200)
         edges = cv.morphologyEx(edges, cv.MORPH_CLOSE, kernel=kernel, iterations=1)
-        edges = cv.morphologyEx(edges, cv.MORPH_OPEN, kernel=kernel, iterations=2)
-        # Hough Lines on this edge detector?
-
+        edges = cv.morphologyEx(edges, cv.MORPH_OPEN, kernel=kernel, iterations=3)
 
         utility.showResizedImage("Player Filter - Edges", edges, 0.4)
 
