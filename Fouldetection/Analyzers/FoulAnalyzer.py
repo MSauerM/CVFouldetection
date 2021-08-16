@@ -10,7 +10,7 @@ class FoulAnalyzer:
     def __init__(self):
         print("Init FoulAnalyzer")
         if appconfig.use_action_recognition:
-            self.action_recognizer = ActionRecognizer("./Fouldetection/Analyzers/i3d 27-06-21_12-02.params")
+            self.action_recognizer = ActionRecognizer("./Fouldetection/Analyzers/i3d 12-08-21_11-04.params")
 
     def analyze_human_pose(self, joints: dict):
         print("Analyze Foul based on Human Pose")

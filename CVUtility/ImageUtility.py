@@ -23,11 +23,12 @@ def showResizedImage( windowname, img, scalingFactor, waitKey=None):
 
 
 def displayColor(hue):
-    color = (hue, 255, 255)
-    #lo_square = np.full((10, 10, 3), color, dtype=np.uint8) / 255.0
-    lo_square = np.zeros((10, 10, 3))
-    lo_square[:] = (color[0]/180, color[1]/255, color[2]/255)
-    plt.subplot(1, 2, 1)
-    rgb = hsv_to_rgb(lo_square)
-    plt.imshow(rgb)
-    plt.show()
+    if appconfig.show_debug_plots:
+        color = (hue, 255, 255)
+        #lo_square = np.full((10, 10, 3), color, dtype=np.uint8) / 255.0
+        lo_square = np.zeros((10, 10, 3))
+        lo_square[:] = (color[0]/180, color[1]/255, color[2]/255)
+        plt.subplot(1, 2, 1)
+        rgb = hsv_to_rgb(lo_square)
+        plt.imshow(rgb)
+        plt.show()

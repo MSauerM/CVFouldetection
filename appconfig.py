@@ -9,6 +9,7 @@ use_multithreading = False
 team_color_calib_every_frame = False
 max_frame_amount = 2000
 show_debug_windows = False
+show_debug_plots = False
 cropping_strategy = CroppingStrategy.DYNAMIC_FIXED #STATIONARY #DYNAMIC_FIXED # DYNAMIC_VARIED
 preferred_size_dynamic_fixed = 448#224 # 448 # None or int for quadratic size
 
@@ -24,6 +25,7 @@ def get_config_string():
      team_color_calib_every_frame: {team_color_calib_every_frame}
      max_frame_amount: {max_frame_amount}
      show_debug_windows: {show_debug_windows}
+     show_debug_plots: {show_debug_plots}
      cropping_strategy: {cropping_strategy}
      preferred_size_dynamic_fixed: {preferred_size_dynamic_fixed}
      create_video_for_sequences: {create_video_for_sequences}
@@ -34,6 +36,7 @@ def get_config_string():
                team_color_calib_every_frame= team_color_calib_every_frame,
                max_frame_amount = max_frame_amount,
                show_debug_windows= show_debug_windows,
+               show_debug_plots= show_debug_plots,
                cropping_strategy = cropping_strategy,
                preferred_size_dynamic_fixed = preferred_size_dynamic_fixed,
                create_video_for_sequences = create_video_for_sequences,
