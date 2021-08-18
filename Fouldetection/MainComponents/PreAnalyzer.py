@@ -72,6 +72,7 @@ class PreAnalyzer:
 
             contactCheckTimer.start()
             combined_img = cv.bitwise_and(frame.get_pixels(), frame.get_pixels(), mask = player_edges)
+            utility.showResizedImage("Test - Combined Image", combined_img, 0.4)
             for candidate in candidateBoundingBoxes:
                 #if contactBoxChecker.check_for_contact(frame.getPixels(), grassFilteredFrame, candidate):
                 if contactBoxChecker.check_for_contact(combined_img, player_edges, candidate):

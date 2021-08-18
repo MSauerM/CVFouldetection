@@ -27,7 +27,7 @@ class Executor:
                 self.foulDetector.process()
 
                 if options["fouldetector"]["create_video"] is True:
-                    if options["fouldetector"]["video_output_name"] is not None:
+                    if options["fouldetector"].get("video_output_name") is not None:
                         filename = self.foulDetector.createVideo(options["fouldetector"]["video_output_name"])
                     else:
                         filename = self.foulDetector.createVideo()
@@ -44,7 +44,7 @@ class Executor:
         self.timer.end()
         if options["fouldetector"] is not None:
             self.foulDetector.overall_time = self.timer.get_time()
-            if options["fouldetector"]["text_output_name"] is not None:
+            if options["fouldetector"].get("text_output_name") is not None:
                 fileWriter = FileWriter(options["fouldetector"]["text_output_name"])
             else:
                 fileWriter = FileWriter("Fouldetector_txt_out")

@@ -1,7 +1,7 @@
 import os
 import sys
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QWidget, QPushButton, QGridLayout, QLabel, QFileDialog, QCheckBox
+from PyQt5.QtWidgets import QMainWindow, QWidget, QPushButton, QGridLayout, QLabel, QFileDialog, QCheckBox, QRadioButton
 
 from PyQt5.QtCore import QSize, Qt
 
@@ -44,7 +44,7 @@ class VideoFileDialogWindow(QMainWindow):
 
         for row in range(3):
             self.lbls += [QLabel('---')]
-            grid.addWidget(self.lbls[row], row, 2)
+            grid.addWidget(self.lbls[row], row, 2, 1, 3)
 
         selectButton = QPushButton('Auswählen')#'Select')
         selectButton.clicked.connect(self.select)
@@ -68,7 +68,17 @@ class VideoFileDialogWindow(QMainWindow):
 
         showVideoCheckBox = QCheckBox("Erstelltes Video anzeigen" )#"Show Video after Processing")
         showVideoCheckBox.stateChanged.connect(self.showVideoCheckbox_Changed)
-        grid.addWidget(showVideoCheckBox, 6, 3, Qt.AlignRight)
+        #grid.addWidget(showVideoCheckBox, 6, 3, Qt.AlignRight)
+
+        action_recognition_RadioButton = QRadioButton("Action Recognition")
+        action_recognition_RadioButton.setChecked(True)
+        action_recognition_RadioButton.toggled.connect(lambda:self.processingType_State(action_recognition_RadioButton))
+        grid.addWidget(action_recognition_RadioButton, 6, 3, Qt.AlignRight)
+
+        human_pose_estimation_RadioButton = QRadioButton("Human Pose Estimation")
+        human_pose_estimation_RadioButton.setChecked(False)
+        human_pose_estimation_RadioButton.toggled.connect(lambda: self.processingType_State(human_pose_estimation_RadioButton))
+        grid.addWidget(human_pose_estimation_RadioButton, 6, 4, Qt.AlignRight)
 
     def select(self):
         filter = "mp4(*.mp4)"
@@ -102,6 +112,15 @@ class VideoFileDialogWindow(QMainWindow):
     def showVideoCheckbox_Changed(self, state):
         self.shouldShowVideo = (state == Qt.Checked)
 
+    def processingType_State(self, b):
+        if b.text() == "Action Recognition":
+            if b.isChecked() == True:
+                appconfig.use_action_recognition = True
+                appconfig.use_human_pose_estimation = False
+        if b.text() == "Human Pose Estimation":
+            if b.isChecked() == True:
+                appconfig.use_action_recognition = False
+                appconfig.use_human_pose_estimation = True
 
     def processVideo(self, filename):
         options = dict()
