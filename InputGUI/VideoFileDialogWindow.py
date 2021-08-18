@@ -71,8 +71,8 @@ class VideoFileDialogWindow(QMainWindow):
         #grid.addWidget(showVideoCheckBox, 6, 3, Qt.AlignRight)
 
         action_recognition_RadioButton = QRadioButton("Action Recognition")
-        action_recognition_RadioButton.setChecked(True)
         action_recognition_RadioButton.toggled.connect(lambda:self.processingType_State(action_recognition_RadioButton))
+        action_recognition_RadioButton.setChecked(True)
         grid.addWidget(action_recognition_RadioButton, 6, 3, Qt.AlignRight)
 
         human_pose_estimation_RadioButton = QRadioButton("Human Pose Estimation")
