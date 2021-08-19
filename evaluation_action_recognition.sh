@@ -20,3 +20,4 @@ python main.py -f ../Evaluationsszenen/No_Fouls/'No_Foul_002 Schwalbe Dortmund -
 python main.py -f ../Evaluationsszenen/No_Fouls/'No_Foul_003 Schwalbe Dortmund - Frankfurt.mp4' -v 'No_Foul_S_003_are' -o 'No_Foul_S_003_are' --action_recognition True
 python main.py -f ../Evaluationsszenen/No_Fouls/'No_Foul_004 Schwalbe Dortmund - Frankfurt.mp4' -v 'No_Foul_S_004_are' -o 'No_Foul_S_004_are' --action_recognition True
 python main.py -f ../Evaluationsszenen/No_Fouls/'No_Foul_005 Schwalbe Dortmund - Frankfurt.mp4' -v 'No_Foul_S_005_are' -o 'No_Foul_S_005_are' --action_recognition True
+/bin/bash
