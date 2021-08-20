@@ -34,9 +34,13 @@ class FoulAnalyzer:
                         box = cv.minAreaRect(joints[key][0][z])
                         box_points = cv.boxPoints(box)
                         box_angle = box[2]
+                        if box[1][0] < box[1][1]:
+                            box_angle += 180
+                        else:
+                            box_angle += 90
                         box_points = np.int0(box_points)
                         #angle_skeleton_list.append([z, box_angle, box[0], box_points])
-                        skeleton_info_dict[key].append([z, box_angle, np.array([box[0][0], box[0][1]]), box_points]) # index, angle, center, points
+                        skeleton_info_dict[key].append([z, box_angle, np.array([box[0][0], box[0][1]]), box_points]) # index, angle, center, points, (width, height)
                         for d in range (z, joints[key][0].shape[0]):
                             #skelett 1
                             skeleton1 = joints[key][0][z]
@@ -103,6 +107,7 @@ class FoulAnalyzer:
         for chain_dictionary in chain_dict_list:
             # info for this dictionary
             angle_list = []
+            width_height_list =[]
             isCloseEnough = False
             isFalling = False
             for item in chain_dictionary:
@@ -120,10 +125,13 @@ class FoulAnalyzer:
 
 
             for index in range(0, len(angle_list)-1):
-                if angle_list[index] - angle_list[index + 1] > 60: # potential error here
+                if abs(angle_list[index] - angle_list[index + 1]) > 60: # potential error here
                     isFalling = True
                     break
-
+            #for index in range(0, len(width_height_list)-1):
+            #    if abs(width_height_list[index][0] - width_height_list[index+1][0]) > 30 or  abs(width_height_list[index][1] - width_height_list[index+1][1]) > 30:
+            #        isFalling = True
+            #        break
 
             if isFalling and isCloseEnough:
                 return {0: 0.00, 1: 1.00}

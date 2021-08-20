@@ -5,7 +5,7 @@ from Fouldetection.Analyzers.TeamColorCalibration import TeamColorCalibration
 class ContactBoxChecker:
 
     team_color_calibration = None
-    pixel_amount_threshold = 200#100 #200
+    pixel_amount_threshold = 100#100 #200
     # set statt list wegen besserer Performance
     #image_cache = set()
     image_cache = dict()
