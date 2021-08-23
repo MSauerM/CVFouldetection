@@ -18,6 +18,9 @@ from gluoncv.model_zoo import get_model
 from gluoncv.data.transforms.pose import detector_to_simple_pose, heatmap_to_coord
 from gluoncv.utils.viz import cv_plot_image, cv_plot_keypoints
 
+import appconfig
+
+
 class HumanPoseEstimator:
 
     def __init__(self):
@@ -41,9 +44,9 @@ class HumanPoseEstimator:
             # ValueError: In HybridBlock, there must be one NDArray or one Symbol in the input
             pred_coords, confidence = heatmap_to_coord_alpha_pose(predicted_heatmap, upscale_bbox)
             #print("Coordinates: ", pred_coords)
-            #ax = utils.viz.plot_keypoints(img, pred_coords, confidence, class_IDs, bounding_boxs, scores, box_thresh=0.5, keypoint_thresh=0.2)
-
-            # plt.show()
+            if appconfig.show_debug_plots:
+                ax = utils.viz.plot_keypoints(img, pred_coords, confidence, class_IDs, bounding_boxs, scores, box_thresh=0.5, keypoint_thresh=0.2)
+                plt.show()
             return pred_coords.asnumpy(), confidence
         return None
 
