@@ -58,9 +58,9 @@ class FoulDetector:
             if appconfig.create_video_for_sequences is True:
                 vwriter = VideoWriter("TEST " + str(index))
                 vwriter.set_output_directory("./output_videos/")
-                vwriter.writeVideo(sequence.get_frames(),
-                                   appconfig.preferred_size_dynamic_fixed,
-                                   appconfig.preferred_size_dynamic_fixed, 25)
+                vwriter.write_video(sequence.get_frames(),
+                                    appconfig.preferred_size_dynamic_fixed,
+                                    appconfig.preferred_size_dynamic_fixed, 25)
 
         self.foulrecognition_timer.start()
         self.foulRecognizer = FoulRecognizer()
@@ -106,7 +106,7 @@ class FoulDetector:
         dimensions = self.frame_list[0].get_dimensions()
         frame_height = dimensions[0]
         frame_width = dimensions[1]
-        videoWriter.writeVideo(self.frame_list, frame_width, frame_height, 25)
+        videoWriter.write_video(self.frame_list, frame_width, frame_height, 25)
         return videoWriter.get_full_path()
 
    # def createVideo(self, filename):

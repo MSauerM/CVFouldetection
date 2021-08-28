@@ -13,12 +13,12 @@ class FileWriter:
     def set_output_directory(self, path: str):
         self._output_path = path
 
-    def writeFile(self, write_object):
-        self._full_path = self._output_path + self._filename + self.getCurrentDateTimeString() + ".txt"
+    def write_file(self, write_object):
+        self._full_path = self._output_path + self._filename + self.get_current_date_time_string() + ".txt"
         file = open(self._full_path, "w")
         file.write(str(write_object))
         file.close()
 
-    def getCurrentDateTimeString(self):
+    def get_current_date_time_string(self):
         currentDateTime = datetime.now()
         return currentDateTime.strftime("%d-%m-%y_%H-%M")

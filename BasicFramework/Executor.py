@@ -49,7 +49,7 @@ class Executor:
             else:
                 fileWriter = FileWriter("Fouldetector_txt_out")
             fileWriter.set_output_directory("./output_info/")
-            fileWriter.writeFile(self.foulDetector)
+            fileWriter.write_file(self.foulDetector)
 
     def interrupt(self):
         if self.foulDetector is not None:

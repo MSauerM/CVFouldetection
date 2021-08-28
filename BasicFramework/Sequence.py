@@ -15,7 +15,7 @@ class Sequence():
         return len(self.frame_list)
 
     def get_dimensions(self):
-        return self.frame_list[0].getDimensions()
+        return self.frame_list[0].get_dimensions()
 
     def get_frames(self):
         return self.frame_list
