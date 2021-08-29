@@ -11,9 +11,13 @@ class VideoPreProcessor:
     filepath = None
 
     def __init__(self, filename: str):
+        print("Initialize VideoPreProcessor")
+        self.preprocess(filename)
+        #cv.destroyAllWindows()
+
+    def preprocess(self, filename:str):
         self.timer = PerformanceTimer()
         self.timer.start()
-        print("Initialize VideoPreProcessor")
         # load file at the file name
         self.filepath = filename
         capture = cv.VideoCapture(filename)
@@ -28,10 +32,9 @@ class VideoPreProcessor:
                 print("Ending Processing")
                 break
 
-            preproc_frame = Frame(pixels=frame, timestamp=timestamp, frameindex= frameIndex)
+            preproc_frame = Frame(pixels=frame, timestamp=timestamp, frameindex=frameIndex)
             self.frame_list.append(preproc_frame)
 
         print("Framecount: {count}".format(count=len(self.frame_list)))
         capture.release()
         self.timer.end()
-        #cv.destroyAllWindows()
