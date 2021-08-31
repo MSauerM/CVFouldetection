@@ -1,7 +1,20 @@
 from numpy import ndarray
 
 
-class Frame():
+class Frame:
+    """
+    Class for ....
+    ......
+
+    Attributes
+    -----------------
+
+
+
+    Methods
+    -----------------
+
+    """
 
     def __init__(self, timestamp: float, pixels: ndarray, frameindex: int):
         self._timestamp = timestamp

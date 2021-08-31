@@ -5,7 +5,6 @@ import numpy as np
 
 import appconfig
 
-#isDebugWarningAlreadyPrinted = False
 
 def showResizedImage( windowname, img, scalingFactor, waitKey=None):
     if appconfig.show_debug_windows and img is not None:
@@ -16,16 +15,11 @@ def showResizedImage( windowname, img, scalingFactor, waitKey=None):
             cv.waitKey(0)
         else:
             cv.waitKey(waitKey)
-    #else:
-       # if not isDebugWarningAlreadyPrinted:
-            #print("Set show_debug_windows to True for getting a window here")
-            #nonlocal isDebugWarningAlreadyPrinted = True
 
 
 def displayColor(hue):
     if appconfig.show_debug_plots:
         color = (hue, 255, 255)
-        #lo_square = np.full((10, 10, 3), color, dtype=np.uint8) / 255.0
         lo_square = np.zeros((10, 10, 3))
         lo_square[:] = (color[0]/180, color[1]/255, color[2]/255)
         plt.subplot(1, 2, 1)

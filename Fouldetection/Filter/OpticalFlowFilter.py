@@ -8,7 +8,9 @@ import CVUtility.ImageUtility as utility
 from cv2 import cv2 as cv
 
 class OpticalFlowFilter:
-
+    """
+    deprecated
+    """
 
     def __init__(self, frame_list: List[Frame]):
         self.frame_list = frame_list

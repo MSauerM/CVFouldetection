@@ -6,19 +6,30 @@ from CVUtility.PerformanceTimer import PerformanceTimer
 
 
 class VideoPreProcessor:
+    """
+        Class for ....
+        ......
 
+        Attributes
+        -----------------
+
+
+
+        Methods
+        -----------------
+
+        """
     frame_list = []
     filepath = None
 
     def __init__(self, filename: str):
         print("Initialize VideoPreProcessor")
         self.preprocess(filename)
-        #cv.destroyAllWindows()
 
     def preprocess(self, filename:str):
         self.timer = PerformanceTimer()
         self.timer.start()
-        # load file at the file name
+        # load file with the file name
         self.filepath = filename
         capture = cv.VideoCapture(filename)
         self.frame_list = []

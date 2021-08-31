@@ -16,8 +16,21 @@ from Fouldetection.MainComponents.PreAnalyzer import PreAnalyzer
 
 from CVUtility.PerformanceTimer import PerformanceTimer
 
-"""Class, which controls the action flow of the foul detection"""
+
 class FoulDetector:
+    """
+        Class, which controls the action flow of the foul detection
+        ......
+
+        Attributes
+        -----------------
+
+
+
+        Methods
+        -----------------
+
+        """
     stateTracker = None
     preProcessor = None
     grassFilter = None
@@ -27,7 +40,7 @@ class FoulDetector:
 
     frame_list = []
     foulEvents = []
-    # boundingBoxInformation
+
 
     execution_start = None
     overall_time=None
@@ -70,33 +83,7 @@ class FoulDetector:
         foulFrameAggregator = FoulFrameAggregator()
         self.frame_list = foulFrameAggregator.aggregate(self.evaluated_contact_events, frames=self.preProcessor.frame_list)
 
-        #grassFilter = GrassFilter()
-        #ballFilter = BallFilter()
-        #playerFilter = PlayerFilter()
-        #opticalFlowFilter = OpticalFlowFilter(self.preProcessor.frame_list)
-
-
-        #opticalFlowFilter.filter()
-
-        # detect Players and Ball / extract basic game information
-        #for frame in self.preProcessor.frame_list:
-        #    if self.isInterrupted:
-        #        break
-
-        #    grassFilteredFrame = grassFilter.filter(frame)
-        #    playerFilter.filter(frame, grassFilteredFrame)
-            #ballFilter.filter(frame)
-           # self.frame_list.append()
-
-
-            # retrieve boundingBox Information on every single frame
-
-
-        # Aggregate frames to Contact Events
-
         self.fouldetection_timer.end()
-
-       # test = str(self)
 
         print("End processing")
 
@@ -108,10 +95,6 @@ class FoulDetector:
         frame_width = dimensions[1]
         videoWriter.write_video(self.frame_list, frame_width, frame_height, 25)
         return videoWriter.get_full_path()
-
-   # def createVideo(self, filename):
-   #     videoWriter = VideoWriter(filename)
-   #     videoWriter.writeVideo(frames=self.frame_list)
         
     def interruptProcessing(self):
         cv.destroyAllWindows()
@@ -150,24 +133,18 @@ class FoulDetector:
         App configuration:
         {app_config}
         
-        """.format(exec_start= self.execution_start,
-                   file_path= self.preProcessor.filepath,
-                   frame_count = len(self.preProcessor.frame_list),
-                   team_colors = self.preAnalyzer.teamColorCalibration.colors_list[:2],
-                   amount_relevant_contact_boxes = self.preAnalyzer.candidate_box_amount,
-                   amount_aggregated_sequences = len(self.contact_events),
-                   amount_recognized_fouls = len([x for x in self.evaluated_contact_events if x.isFoul]),
-                   sequences_info= str(self.evaluated_contact_events),
-                   pre_analyzer_time= self.preanalyzer_timer.get_time(),
-                   foul_recognition_processing_time = self.foulrecognition_timer.get_time(),
-                   fouldetection_processing_time = self.fouldetection_timer.get_time(),
-                   preprocessing_time= self.preProcessor.timer.get_time(),
-                   overall_time = self.overall_time,
-                   app_config = appconfig.get_config_string())
-        #return "Overall Information: \n" \
-        #       "Execution start: \n" \
-        #       "sfds\n" \
-        #       "sdfs\n" \
-        #       "\n" \
-        #       "sdfs\n"\
-        #    .format()
+        """.format(exec_start=self.execution_start,
+                   file_path=self.preProcessor.filepath,
+                   frame_count=len(self.preProcessor.frame_list),
+                   team_colors=self.preAnalyzer.teamColorCalibration.colors_list[:2],
+                   amount_relevant_contact_boxes=self.preAnalyzer.candidate_box_amount,
+                   amount_aggregated_sequences=len(self.contact_events),
+                   amount_recognized_fouls=len([x for x in self.evaluated_contact_events if x.isFoul]),
+                   sequences_info=str(self.evaluated_contact_events),
+                   pre_analyzer_time=self.preanalyzer_timer.get_time(),
+                   foul_recognition_processing_time=self.foulrecognition_timer.get_time(),
+                   fouldetection_processing_time=self.fouldetection_timer.get_time(),
+                   preprocessing_time=self.preProcessor.timer.get_time(),
+                   overall_time=self.overall_time,
+                   app_config=appconfig.get_config_string())
+

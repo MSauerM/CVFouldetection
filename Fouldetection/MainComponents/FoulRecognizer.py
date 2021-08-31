@@ -7,7 +7,19 @@ from Fouldetection.Analyzers.HumanPoseEstimator import HumanPoseEstimator
 
 
 class FoulRecognizer:
+    """
+        Class for ....
+        ......
 
+        Attributes
+        -----------------
+
+
+
+        Methods
+        -----------------
+
+        """
     def __init__(self):
         print("FoulRecognizer")
         self.foul_analyzer = FoulAnalyzer()

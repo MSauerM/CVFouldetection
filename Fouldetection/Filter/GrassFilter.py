@@ -7,8 +7,21 @@ from cv2 import cv2 as cv
 import numpy as np
 import CVUtility.ImageUtility as utility
 
-class GrassFilter(Filter):
 
+class GrassFilter(Filter):
+    """
+        Class for ....
+        ......
+
+        Attributes
+        -----------------
+
+
+
+        Methods
+        -----------------
+
+        """
     def __init__(self):
         super().__init__()
 

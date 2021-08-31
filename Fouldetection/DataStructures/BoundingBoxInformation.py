@@ -1,9 +1,21 @@
 import numpy as np
 
-class BoundingBoxInformation:
 
+class BoundingBoxInformation:
+    """
+        Data structure for ....
+        ......
+
+        Attributes
+        -----------------
+
+
+
+        Methods
+        -----------------
+
+        """
     def __init__(self, frame_index: int, x, y, w, h):
-        #print("Bounding Box")
         self._frame_index: int = frame_index
         self._x = x
         self._y = y

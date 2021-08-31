@@ -132,20 +132,5 @@ class VideoFileDialogWindow(QMainWindow):
 
         self.executor.execute(options)
 
-        #if appconfig.use_multithreading is True:
-        #    foulDetectorThread = FoulDetectorThread(filename, False)
-        #    foulDetectorThread.start()
-        #else:
-        #    self.preProcessor = VideoPreProcessor(filename)
-        #    self.foulDetector = FoulDetector(self.preProcessor)
-        #    self.foulDetector.process()
-
-        #    if self.shouldCreateVideo:
-        #        filename = self.foulDetector.createVideo()
-        #        if self.shouldShowVideo:
-        #            videoPlayer = VideoPlayer()
-        #            videoPlayer.loadFile(filename)
-
     def interrupt(self):
         self.executor.interrupt()
-        #self.foulDetector.interruptProcessing()

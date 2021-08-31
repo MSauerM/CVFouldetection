@@ -5,7 +5,19 @@ import numpy as np
 
 
 class BoundingBoxInformationChain:
-    #chain_members: List[BoundingBoxInformation] = []
+    """
+        Class for ....
+        ......
+
+        Attributes
+        -----------------
+
+
+
+        Methods
+        -----------------
+
+        """
 
     def __init__(self):
         self.chain_members: List[BoundingBoxInformation] = []

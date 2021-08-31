@@ -2,12 +2,23 @@ from timeit import default_timer as timer
 
 
 class PerformanceTimer:
+    """
+        Class for ....
+        ......
 
+        Attributes
+        -----------------
+
+
+
+        Methods
+        -----------------
+
+        """
     def __init__(self, usage_label: str = None):
         self._startTime = None
         self._endTime = None
         self._usage_label = usage_label
-
 
     def start(self):
         self._startTime = timer()

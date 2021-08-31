@@ -6,9 +6,22 @@ from Fouldetection.DataStructures.ContactEvent import ContactEvent
 from cv2 import cv2 as cv
 
 class FoulFrameAggregator:
+    """
+    Class for ....
+    ......
+
+    Attributes
+    -----------------
+
+
+
+    Methods
+    -----------------
+
+    """
 
     def __init__(self):
-        print("T")
+        pass
 
     def aggregate(self, events: List[ContactEvent], frames: List[Frame]):
         for index, event in enumerate(events):

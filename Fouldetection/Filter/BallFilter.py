@@ -8,8 +8,11 @@ from Fouldetection.Filter.Filter import Filter
 from CVUtility import ImageUtility as utility
 from CVUtility.PerformanceTimer import PerformanceTimer
 
-class BallFilter(Filter):
 
+class BallFilter(Filter):
+    """
+    deprecated
+    """
     previous_ball_positions = []
 
     def __init__(self):

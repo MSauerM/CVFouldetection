@@ -42,14 +42,5 @@ if __name__ == '__main__':
 
         executor = Executor()
         executor.execute(options)
-        #app = QCoreApplication([])
-        #thread = FoulDetectorThread(args.filename, args.video)
-        #thread.finished.connect(app.exit)
-        #thread.start()
-        #sys.exit(app.exec_())  # Konsolensteuerung funktioniert derzeit nicht mit Executor
-        #preProcessor = VideoPreProcessor(args.filename)
-        #foulDetector = FoulDetector(preProcessor)
-        #foulDetector.process()
-        #foulDetector.createVideo(args.video)
     else:
         start_GUI()

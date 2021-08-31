@@ -4,7 +4,9 @@ from Fouldetection.FoulDetector import FoulDetector
 
 
 class FoulDetectorThread(QThread):
-
+    """
+    deprecated
+    """
     def __init__(self, filename: str, createVideo: bool):
         super(QThread, self).__init__()
         self._filename = filename

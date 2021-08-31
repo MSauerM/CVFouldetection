@@ -9,7 +9,19 @@ from Fouldetection.Filter.Filter import Filter
 
 
 class PlayerFilter(Filter):
+    """
+        Class for ....
+        ......
 
+        Attributes
+        -----------------
+
+
+
+        Methods
+        -----------------
+
+        """
     def __init__(self):
         super().__init__()
 
@@ -17,8 +29,6 @@ class PlayerFilter(Filter):
         # canny Edge detection
         img = frame.get_pixels()
         frame_hsv = cv.cvtColor(frame.get_pixels(), cv.COLOR_BGR2HSV)
-        #frame_thresh = cv.cvtColor(preprocessed_frames, cv.Color_gray2)
-        #edges = cv.Canny(frame_hsv, 100, 200)
 
         kernel = np.ones( (5,5), np.uint8)
         greater_kernel = np.ones((11,11), np.uint8)
@@ -41,8 +51,8 @@ class PlayerFilter(Filter):
 
         boundingBoxInformation_list = []
 
-       # cv.imshow("player Image", player_img)
-       # cv.waitKey(0)
+        # cv.imshow("player Image", player_img)
+        # cv.waitKey(0)
         #utility.showResizedImage("Player Image", player_img, 0.4)
         font = cv.FONT_HERSHEY_PLAIN
 

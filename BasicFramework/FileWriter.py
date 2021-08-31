@@ -1,6 +1,20 @@
 from datetime import datetime
 
+
 class FileWriter:
+    """
+    Class for ....
+    ......
+
+    Attributes
+    -----------------
+
+
+
+    Methods
+    -----------------
+
+    """
 
     _filename = "testfile"
     _output_path = None

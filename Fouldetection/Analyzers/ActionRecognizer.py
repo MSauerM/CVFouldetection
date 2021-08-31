@@ -24,6 +24,19 @@ from BasicFramework.Sequence import Sequence
 
 
 class ActionRecognizer:
+    """
+    Class for ....
+    ......
+
+    Attributes
+    -----------------
+
+
+
+    Methods
+    -----------------
+
+    """
 
     def __init__(self, param_file=None):
         print("Init Action Recognizer")
@@ -118,15 +131,12 @@ class ActionRecognizer:
 
     # https://mxnet.apache.org/versions/1.8.0/api/python/docs/tutorials/packages/gluon/blocks/save_load_params.html
 
-    # maybe renaming it to get probabilities or something like that
     def classify(self, sequence: Sequence, frame_multiplier = 1):
         frame_id_list = range(0, 32 * frame_multiplier, 1 *frame_multiplier)
 
         if len(sequence.frame_list) < 32:
             for i in range(len(sequence.frame_list), 32):
                 sequence.frame_list.append(sequence.frame_list[-1])
-            #probabilities = {0: 1.0, 1: 0.0}
-            #return probabilities
 
         if len(sequence.frame_list) > 32:
             seq_frame_range = range(0, len(sequence.frame_list), 32)
@@ -172,11 +182,9 @@ class ActionRecognizer:
                 return probabilities
             except ValueError:
                 print("ValueError")
-        #else:
-        #    return None
+
 
     def classify_test(self, video_filename, frame_multiplier = 1):
-        #ctx = [mx.cpu()]
         vr = decord.VideoReader(video_filename)
         frame_id_list = range(0, 32 * frame_multiplier, 1*frame_multiplier) # range(0, 32, 1)
 
@@ -192,9 +200,6 @@ class ActionRecognizer:
         clip_input = np.stack(clip_input, axis=0)
         clip_input = clip_input.reshape((-1,) + (32, 3, 224, 224))
         clip_input = np.transpose(clip_input, (0, 2, 1, 3, 4))
-        #net = get_model(name='i3d_resnet50_v1_custom', nclass=2)
-        #net = get_model(name='i3d_resnet50_v1_kinetics400', nclass=2)
-        #net.load_parameters(params_filename, ctx=ctx)
         net_input = nd.array(clip_input)
 
         pred = self.net(net_input)

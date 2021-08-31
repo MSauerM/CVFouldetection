@@ -8,7 +8,9 @@ import numpy as np
 
 
 class CourtBoundsFilter(Filter):
-
+    """
+    deprecated
+    """
     def __init__(self):
         super().__init__()
         print("courtBounds")

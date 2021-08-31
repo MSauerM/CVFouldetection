@@ -3,6 +3,19 @@ from Fouldetection.DataStructures.BoundingBoxInformationChain import BoundingBox
 
 
 class ContactEvent:
+    """
+    Class for ....
+    ......
+
+    Attributes
+    -----------------
+
+
+
+    Methods
+    -----------------
+
+    """
     sequence: Sequence = None
     bounding_box_chain: BoundingBoxInformationChain = None
     isFoul = None
@@ -16,7 +29,6 @@ class ContactEvent:
                                    1: 0.00}   # stands for foul
 
     def __str__(self):
-        #print("Here goes something with the information about a contact event")
         return """ 
         sequence_info = {info}
         isFoul= {isFoul}

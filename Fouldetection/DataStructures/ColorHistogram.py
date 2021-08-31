@@ -4,18 +4,27 @@ from CVUtility import ImageUtility as utility
 from itertools import chain
 import numpy as np
 
+
 class ColorHistogram:
+    """
+    Class for ....
+    ......
+
+    Attributes
+    -----------------
+
+
+
+    Methods
+    -----------------
+
+    """
 
     _hist = None
     _main_color_list = None
 
     def __init__(self, img, mask=None, bins=180, range=180):
-        #print("HSV Color Histogram")
-        # Calculate Histogram
-        # cv.calcHist is faster than np.histogram
-        # (up to 40x - https://docs.opencv.org/master/d1/db7/tutorial_py_histogram_begins.html)
         hsv_img = cv.cvtColor(img, cv.COLOR_BGR2HSV)
-        #                   img,   channels, mask, histSize (180 for Hue), ranges
         utility.showResizedImage("Color Histogram Test - Image", img, 0.4)
         if mask is not None:
              utility.showResizedImage("Color Histogram Test - Mask", mask, 0.4)
@@ -50,20 +59,9 @@ class ColorHistogram:
 
     def get_main_colors(self, amount: int):
         if self._main_color_list is None:
-            #print(self._hist[0])
             self._main_color_list = []
 
             local_peaks = self._find_peaks(amount)
             local_peaks.sort(key=lambda x:x[1], reverse=True) # Theoretically unnecessary, because local peaks are always found from big to small
             self._main_color_list = local_peaks
-            #for value in self._hist:
-            #    if not self._main_color_list or len(self._main_color_list) < amount:
-            #        self._main_color_list.append([np.where(self._hist == value)[0], value])
-            #        self._main_color_list.sort(key = lambda x:x[1], reverse=True) # sorting by the second value which is the pixelamount
-            #    else:
-            #        if value > self._main_color_list[-1][1]:
-            #            index = np.where(self._hist == value)[0]
-            #            self._main_color_list.append([index, value])
-            #            self._main_color_list.sort(key=lambda x: x[1], reverse=True)
-            #            del self._main_color_list[-1]
         return self._main_color_list
