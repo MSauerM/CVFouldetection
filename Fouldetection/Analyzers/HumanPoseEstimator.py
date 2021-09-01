@@ -23,17 +23,23 @@ import appconfig
 
 class HumanPoseEstimator:
     """
-        Class for ....
+        Class for encapsulating the human pose network
         ......
 
         Attributes
         -----------------
-
-
+            ctx
+                context (mainly CPU or GPU usage)
+            detector
+                object detector for obtaining persons
+            pose_net
+                network for obtaining human pose information of the persons
 
         Methods
         -----------------
-
+            process_image(input_img)
+                processes the given input_img to obtain skeletal pose information of the
+                persons in the image
         """
     def __init__(self):
         self.ctx = mx.cpu()

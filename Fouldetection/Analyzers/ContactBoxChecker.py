@@ -4,34 +4,34 @@ from Fouldetection.Analyzers.TeamColorCalibration import TeamColorCalibration
 
 class ContactBoxChecker:
     """
-    Class for ....
+    Class for checking if a certain bounding box contains multiple players of different
+    teams and is relevant because of this
     ......
 
     Attributes
     -----------------
-
-
+        team_color_calibration : TeamColorCalibration
+            instance of the color calibration to get the main colors of the two contending
+            teams
+        pixel_amount_threshold
+            specified amount of pixels, which has to be exceeded by both team colors
+            inside a bounding box, to have a relevant contact bounding box
 
     Methods
     -----------------
-
+        check_for_contact(img, mask, boundingBox)
+            checks the given boundingBox based on img and mask for the relevant amount
+            of pixels for both team colors
     """
 
     team_color_calibration = None
     pixel_amount_threshold = 100
-    image_cache = dict()
+    #image_cache = dict()
 
     def __init__(self, team_color_calbration: TeamColorCalibration):
         self.team_color_calibration = team_color_calbration
 
     def check_for_contact(self, img, mask, boundingBox: BoundingBoxInformation):
-        """
-
-        :param img:
-        :param mask:
-        :param boundingBox:
-        :return: True, if counted pixel for both colors are above the threshold, else False
-        """
         x, y, w, h = boundingBox.get_bounds()
         # crop img & mask
         img_crop = img[y:y+h, x:x+w] #cutting_image[y:y+h, x:x+w]

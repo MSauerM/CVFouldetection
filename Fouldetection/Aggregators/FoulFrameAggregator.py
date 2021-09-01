@@ -7,17 +7,17 @@ from cv2 import cv2 as cv
 
 class FoulFrameAggregator:
     """
-    Class for ....
+    Class for reaggregating the foul information to a list of frames
     ......
 
     Attributes
     -----------------
 
-
-
     Methods
     -----------------
-
+        aggregate(events, frames)
+            iterates through the events which contains any necessary information and draws
+            these informations to the given frames
     """
 
     def __init__(self):

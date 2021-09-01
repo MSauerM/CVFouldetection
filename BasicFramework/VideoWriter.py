@@ -8,16 +8,26 @@ from BasicFramework.Frame import Frame
 
 class VideoWriter:
     """
-        Class for ....
+        Class for writing the output to a mp4 file
         ......
 
         Attributes
         -----------------
-
-
-
+            _video_name
+                name of the output mp4 file
+            _output_path
+                specified output path for the output file
+            _full_path
+                complete path of the output mp4 file
         Methods
         -----------------
+            set_output_directory(path)
+                specifies the output path
+            write_video(frames, framewidth, frameheight, fps)
+                writes the given frames with framewidth, frameheight and fps information
+                to an output mp4 file
+            get_current_date_time_string()
+                returns the current date time in %d-%m-%y_%H-%M-string format
 
         """
     _video_name = 'CVFouldetection.mp4'

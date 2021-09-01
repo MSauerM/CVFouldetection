@@ -3,16 +3,28 @@ from numpy import ndarray
 
 class Frame:
     """
-    Class for ....
+    Class for store information about a specific image inside a video
     ......
 
     Attributes
     -----------------
-
-
+        _timestamp
+            timestamp of the image inside the video
+        _pixels
+            image information
+        _frameindex
+            index of the image inside the video
 
     Methods
     -----------------
+        get_pixels()
+            returns the image information of the frame
+        get_dimensions()
+            returns the dimensions of image
+        get_frame_index()
+            returns the index of the frame
+        get_timestamp()
+            returns the timestamp of the frame
 
     """
 

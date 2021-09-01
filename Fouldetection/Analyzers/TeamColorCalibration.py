@@ -5,8 +5,30 @@ import appconfig
 from Fouldetection.DataStructures.ColorHistogram import ColorHistogram
 from CVUtility import ImageUtility as utility
 
-class TeamColorCalibration:
 
+class TeamColorCalibration:
+    """
+    Class for calibrating the colors of both teams
+    ......
+
+    Attributes
+    -----------------
+        isCalibrated
+            bool flag for checking if the calibration is already done
+        colors_list
+            list of the team colors
+        isBuli
+            bool flag for using approach for Bundesliga videos
+    Methods
+    -----------------
+        calibrate(img, mask)
+            uses the given img with the given mask for a color histogram to find
+            the most common color depending on the given strategy (isBuli leads
+            to directly accessing the image colors)
+        count_hue_pixel(img, hue, offset)
+            counts and the amount of pixels in a given img with a color, which is in
+            range of the interval [hue-offset, hue+offset]
+    """
     isCalibrated = False
     colors_list = []
 

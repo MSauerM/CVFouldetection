@@ -10,24 +10,22 @@ import CVUtility.ImageUtility as utility
 
 class GrassFilter(Filter):
     """
-        Class for ....
+        Class for filtering the pitch of the frames
         ......
 
         Attributes
         -----------------
 
-
-
         Methods
         -----------------
-
+            filter(frame, preprocessed_frames)
+                processes the frame and returns a grass filtered image and
+                a mask of the region of interest
         """
     def __init__(self):
         super().__init__()
 
     def filter(self, frame: Frame, preprocessed_frames=None):
-        #print("This is a grass filter for filtering the court of of the picture")
-        # option 1 (simple): filter green color
 
         blurred_image = cv.GaussianBlur(frame.get_pixels(), (5, 5), 0)
         utility.showResizedImage("Blurred Image", blurred_image, 0.4)
@@ -36,28 +34,9 @@ class GrassFilter(Filter):
         lower_green = np.array([30, 40, 40])
         upper_green = np.array([90, 255, 255])
 
-        #dst = cv.Canny(frame.getPixels(), 50, 200, None, 3)
-
-        #cv.imshow("Dst", dst)
-
-        #lines = cv.HoughLines(dst, 1 , np.pi/ 180, 150, None, 0, 0) # cv.HoughLinesP(dst, 1, np.pi / 180, 50, None, 50, 10) #
-        #if lines is not None:
-        #    for i in range(0, len(lines)):
-       #         rho = lines[i][0][0]
-        #        theta = lines[i][0][1]
-       #         a = math.cos(theta)
-       #         b = math.sin(theta)
-       #         x0 = a * rho
-       #         y0 = b * rho
-       #         pt1 = (int(x0 + 1000 * (-b)), int(y0 + 1000 * (a)))
-       #         pt2 = (int(x0 - 1000 * (-b)), int(y0 - 1000 * (a)))
-       #         cv.line(frame.getPixels(), pt1, pt2, (0, 0, 255), 3, cv.LINE_AA)
-
-        #cv.imshow("Lines", frame.getPixels())
         utility.showResizedImage("Lines", frame.get_pixels(), 0.4)
 
         mask = cv.inRange(frame_hsv, lower_green, upper_green)
-#        cv.imshow("mask", mask)
         utility.showResizedImage("Mask", mask, 0.4)
 
         res = cv.bitwise_and(frame.get_pixels(), frame.get_pixels(), mask=mask)
@@ -72,24 +51,17 @@ class GrassFilter(Filter):
         upper_white = np.array([255, 255, 255])
 
         white_mask = cv.inRange(res, lower_white, upper_white)
-        #white_mask = cv.inRange(frame_hsv, lower_white, upper_white)
         kernel = np.ones((5, 5), np.uint8)
 
         white_mask = cv.dilate(white_mask, kernel, iterations=2)
 
-        #white_mask_xor = cv.bitwise_xor()
         white_mask_inv = cv.bitwise_not(white_mask)
-        combined = cv.bitwise_and(thresh, white_mask_inv, mask=white_mask_inv)#cv.bitwise_not(thresh, mask=white_mask)
-        combined = cv.dilate(combined, kernel, iterations=1)#cv.morphologyEx(combined, cv.MORPH_CLOSE, kernel= kernel,iterations=5)
-       # cv.imshow("Res", res)
-       # cv.imshow("White Mask", white_mask)
-       # cv.imshow("White Mask Inverted", white_mask_inv)
-        #utility.showResizedImage("CVFouldetection GrassFilter", combined, 0.4)
+        combined = cv.bitwise_and(thresh, white_mask_inv, mask=white_mask_inv)
+        combined = cv.dilate(combined, kernel, iterations=1)
 
         green_mask = cv.erode(mask, kernel, iterations=15)
         utility.showResizedImage("GrassFilter - Eroded", green_mask, 0.4)
         green_mask = cv.morphologyEx(green_mask, cv.MORPH_CLOSE, kernel= kernel, iterations=5)
-        #utility.showResizedImage("GrassFilter - Opened Green Mask", green_mask, 0.4)
 
         contours, _ = cv.findContours(green_mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
         green_mask_copy = green_mask
@@ -121,5 +93,3 @@ class GrassFilter(Filter):
         utility.showResizedImage("GrassFilter - Combined Final", combined, 0.4)
 
         return (combined, fieldAreaDrawing)
-
-        # option 2 (complex): do it as the paper says

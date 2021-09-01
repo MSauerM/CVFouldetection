@@ -8,17 +8,22 @@ from cv2 import cv2 as cv
 
 class FoulAnalyzer:
     """
-    Class for ....
+    Class for encapsulating the different methods to analyze a foul
     ......
 
     Attributes
     -----------------
-
-
-
+        action_recognizer
+            instance of ActionRecognizer class for usage with action recognition
+            approach
     Methods
     -----------------
-
+        analyze_human_pose(joints)
+            uses the given joints to analyze the pose and obtain information to
+            decide whether the situations is a foul or is no foul
+        analyze_action(sequence)
+            uses the given sequence for calling the classify() method of the
+            action_recognizer and returns the probabilities calculated by the network
     """
 
     def __init__(self):

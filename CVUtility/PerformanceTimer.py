@@ -3,17 +3,26 @@ from timeit import default_timer as timer
 
 class PerformanceTimer:
     """
-        Class for ....
+        Class for measuring consumed time of a certain process
         ......
 
         Attributes
         -----------------
-
-
-
+            _startTime
+                timestamp at execution of start()
+            _endTime
+                timestamp at execution of end()
+            _usage_label
+                information for more specific print displaying
         Methods
         -----------------
-
+            start()
+                set _startTime to current time
+            end()
+                set _endTime to current time
+            get_time()
+                returns the time a specific part of code has consumed by
+                calculating the difference between _endTime and _startTime
         """
     def __init__(self, usage_label: str = None):
         self._startTime = None

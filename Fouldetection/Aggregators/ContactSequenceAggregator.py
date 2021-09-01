@@ -10,18 +10,27 @@ import numpy as np
 
 class ContactSequenceAggregator:
     """
-        Class for ....
+        Class for aggregation of contact sequences
         ......
 
         Attributes
         -----------------
-
-
-
+            maximal_distance
+                maximal distance for a chaining step between two bounding boxes
+            break_limit
+                limit for a interrupted chain before the chain is "closed"/done
         Methods
         -----------------
-
-        """
+            aggregate(frame_list, bounding_boxes)
+                builds sequences by first chaining the bounding boxes in the right sequential order
+                and then cropping the created chains out of the corresponding frames
+            _build_chains(bounding_boxes)
+                helper function for chaining the bounding boxes in sequential order and return the
+                created BoundingBoxInformationChains
+            _build_new_chain(frame_index, list_index, bounding_boxes)
+                helper function for creating a single new BoundingBoxInformationChain with the
+                bounding boxes and a specific frame_index and list_index
+    """
     maximal_distance = 250
     break_limit = 5
 
@@ -122,7 +131,7 @@ class ContactSequenceAggregator:
     def _build_chains(self, bounding_boxes: dict):
         bounding_boxes_range = range(len(bounding_boxes))
         chains = []
-        for i in bounding_boxes_range:  # 1. Schleife
+        for i in bounding_boxes_range:
             removal_list = []
             max_length = len(bounding_boxes[i])
             while bounding_boxes[i]:

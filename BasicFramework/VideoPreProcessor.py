@@ -7,17 +7,22 @@ from CVUtility.PerformanceTimer import PerformanceTimer
 
 class VideoPreProcessor:
     """
-        Class for ....
+        Class for preprocessing a given mp4 file to single frames
         ......
 
         Attributes
         -----------------
-
-
+            frame_list
+                list for storing frame instances
+            timer : PerformanceTimer
+                instance for measuring the consumed time
+            filepath
+                path of the preprocessed file
 
         Methods
         -----------------
-
+            preprocess(filename)
+                preprocess a mp4 file under the given filename
         """
     frame_list = []
     filepath = None

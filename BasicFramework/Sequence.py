@@ -5,17 +5,24 @@ from CVUtility import ImageUtility as utility
 
 class Sequence:
     """
-        Class for ....
+        Class for storing sequential frame objects
         ......
 
         Attributes
         -----------------
-
-
+            frame_list
+                List of frame instances
 
         Methods
         -----------------
-
+            get_frame_count()
+                returns length of the frame list
+            get_dimensions()
+                returns the dimensions of the first frame in the sequence (same for every frame in a sequence)
+            get_frames()
+                returns the frame_list
+            show_sequences()
+                shows the frame in sequential order with CVUtility showResizedImage()-function
         """
     frame_list: List[Frame] = []
 

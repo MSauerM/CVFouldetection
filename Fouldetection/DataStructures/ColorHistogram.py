@@ -7,17 +7,26 @@ import numpy as np
 
 class ColorHistogram:
     """
-    Class for ....
+    Class for storing color data of a histogram
     ......
 
     Attributes
     -----------------
-
+        _hist
+            list for storing the histogram information
+        _main_color_list
+            list for storing the most common color hues
 
 
     Methods
     -----------------
-
+        show_histogram()
+            display the histogram as a plot
+        _find_peaks(amount)
+            find <amount> maxima in the histogram by analyzing the histogram and masking
+            out previous maximum values
+        get_main_colors(amount)
+            uses _find_peaks to get the <amount> most common colors and returns the list
     """
 
     _hist = None
@@ -62,6 +71,6 @@ class ColorHistogram:
             self._main_color_list = []
 
             local_peaks = self._find_peaks(amount)
-            local_peaks.sort(key=lambda x:x[1], reverse=True) # Theoretically unnecessary, because local peaks are always found from big to small
+            local_peaks.sort(key=lambda x:x[1], reverse=True)
             self._main_color_list = local_peaks
         return self._main_color_list

@@ -8,17 +8,19 @@ from Fouldetection.Analyzers.HumanPoseEstimator import HumanPoseEstimator
 
 class FoulRecognizer:
     """
-        Class for ....
+        Class for foul recognition phase
         ......
 
         Attributes
         -----------------
-
-
+            foul_analyzer
+                instance of FoulAnalyzer
 
         Methods
         -----------------
-
+            analyze(contact_events)
+                processes the given contact events and put more information for later
+                aggregation
         """
     def __init__(self):
         print("FoulRecognizer")

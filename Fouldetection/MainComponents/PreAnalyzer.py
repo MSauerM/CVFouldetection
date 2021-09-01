@@ -17,17 +17,20 @@ from CVUtility import ImageUtility as utility
 
 class PreAnalyzer:
     """
-        Class for ....
+        Class for pre analysis phase
         ......
 
         Attributes
         -----------------
-
-
-
+            isInterrupted
+                flag for processing state
+            candidate_box_amount
+                info counter
         Methods
         -----------------
-
+            analyze
+                executes whole stage of pre analysis and returns sequences and
+                contact events for further processing
         """
     isInterrupted = False
     candidate_box_amount = 0
@@ -49,7 +52,6 @@ class PreAnalyzer:
         timer = PerformanceTimer("Frame Processing")
         timer.start()
         contactCheckTimer= PerformanceTimer("ContactBoxChecker")
-        # detect Players and Ball / extract basic game information
         print("Start Processing of Frames")
         for frame in frame_list:
             if self.isInterrupted:
@@ -62,7 +64,7 @@ class PreAnalyzer:
                 self.teamColorCalibration.calibrate(frame.get_pixels(), player_edges)
             else:
                 if not self.teamColorCalibration.isCalibrated:
-                    self.teamColorCalibration.calibrate(frame.get_pixels(), grassFilteredFrame)#player_edges)
+                    self.teamColorCalibration.calibrate(frame.get_pixels(), player_edges)#grassFilteredFrame)#player_edges)
 
             contact_boxes[frame.get_frame_index()] = []
             contactCheckTimer.start()

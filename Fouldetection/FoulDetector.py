@@ -24,20 +24,40 @@ class FoulDetector:
 
         Attributes
         -----------------
-
-
-
+            preProcessor
+                instance of initial VideoPreProcessor
+            isInterrupted
+                flag for interrupting processing
+            frame_list
+                list for saving the frame for final output
+            foulEvents
+                list of all contact events
+            evaluated_contact_events
+                list of all processed contact events with foul information
+            execution_start
+                date time for the execution start
+            preAnalyzer
+                instance for the execution of pre analysis
+            preAnalyzer_timer
+                measures time consumed for pre analysis
+            foulRecognizer
+                instance for the execution of foul recognition phase
+            foulRecognizer_timer
+                measures time consumed for foul recognition phase
+            foulDetection_timer
+                measures time consumed for whole foul detection
         Methods
         -----------------
-
+            process():
+                executes whole foul detection
+            createVideo(filename)
+                writes the final frames of frame_list to a mp4 file named by given filename
+                with VideoWriter instance
+            interruptProcessing()
+                interrupt the execution
         """
-    stateTracker = None
     preProcessor = None
-    grassFilter = None
-    playerFilter = None
-
     isInterrupted = False
-
     frame_list = []
     foulEvents = []
 

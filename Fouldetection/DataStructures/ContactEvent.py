@@ -4,13 +4,19 @@ from Fouldetection.DataStructures.BoundingBoxInformationChain import BoundingBox
 
 class ContactEvent:
     """
-    Class for ....
+    Class for aggregating information about a contact
     ......
 
     Attributes
     -----------------
-
-
+        sequence
+            the corresponding sequence instance
+        bounding_box_chain
+            the corresponding bounding box chaing
+        isFoul
+            flag for the decision foul or no foul
+        foul_probabilities
+            percentage dictionary for 0 (no foul) and 1 (foul)
 
     Methods
     -----------------

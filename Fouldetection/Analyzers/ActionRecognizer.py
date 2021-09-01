@@ -25,17 +25,37 @@ from BasicFramework.Sequence import Sequence
 
 class ActionRecognizer:
     """
-    Class for ....
+    Class for the encapsulation of the action recognition network
     ......
 
     Attributes
     -----------------
-
-
+        ctx
+            given context (CPU or GPU)
+        net
+            the neural network for action recognition itself
+        train_file_name
+            output file name to save the model parameters in case of training
 
     Methods
     -----------------
-
+        train(dataset_location, training_file, train_epochs)
+            trains/finetunes pretrained network by using the data at dataset_location
+            specified by the training_file with the amount of epochs specified by
+            train_epochs and finally saves the finetuned model parameters to a output file
+        classify(sequence, frame_multiplier)
+            analyzes the sequence by first using specific slicing technique for preparing
+            the input in the net and then using the net for returning the net output as
+            dictionary with 0 (no foul) and 1 (foul) as keys and probabilities for both
+            categories
+            frame_multiplier is optional and used if not every frame should be analyzed
+        classify_test(video_filename, frame_multiplier)
+            specific function for the test() method, which returns only the outcome with
+            the highest probability (in contrast to the previous classify function)
+        test(location, test_filename)
+            function for getting the test accuracy by using the classify_test() function
+            for each file at the given location specified inside the file named test_filename
+            and comparing the expected results with the real outputs of the given net
     """
 
     def __init__(self, param_file=None):
@@ -51,8 +71,6 @@ class ActionRecognizer:
     def train(self, dataset_location:str = '../Dataset_great', training_file:str = '../train_great 2 _ trim 3.txt', train_epochs: int = 5):
         print("Train")
         num_gpus = 1
-        # ctx = [mx.gpu(0)] #for i in range(num_gpus)]
-        #ctx = [mx.cpu()]
         transform_train = video.VideoGroupTrainTransform(size=(224, 224), scale_ratios=[1.0, 0.8],
                                                          mean=[0.485, 0.456, 0.406], std=[0.299, 0.224, 0.255])
         per_device_batch_size = 5
@@ -68,10 +86,7 @@ class ActionRecognizer:
                                        transform=transform_train)
         print('Load %d training samples.' % len(train_dataset))
         train_data = gluon.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-        # i3d_resnet50_v1_kinetics400
-        # net = get_model(name='i3d_resnet50_v1_custom', nclass=2)
-        #net = get_model(name='i3d_resnet50_v1_kinetics400', nclass=2) # not necessary, because init
-        self.net.collect_params().reset_ctx(self.ctx)  # self here
+        self.net.collect_params().reset_ctx(self.ctx)
         print(self.net)
 
         lr_decay = 0.1
@@ -105,7 +120,7 @@ class ActionRecognizer:
                     output = []
                     for _, X in enumerate(data):
                         X = X.reshape((-1,) + X.shape[2:])
-                        pred = self.net(X) # self.....
+                        pred = self.net(X)
                         output.append(pred)
                     loss = [loss_fn(yhat, y) for yhat, y in zip(output, label)]
 
@@ -127,9 +142,7 @@ class ActionRecognizer:
                   (epoch, acc, train_loss / (i + 1), time.time() - tic))
         train_history.plot()
 
-        self.net.save_parameters(self.train_file_name) # self....
-
-    # https://mxnet.apache.org/versions/1.8.0/api/python/docs/tutorials/packages/gluon/blocks/save_load_params.html
+        self.net.save_parameters(self.train_file_name)
 
     def classify(self, sequence: Sequence, frame_multiplier = 1):
         frame_id_list = range(0, 32 * frame_multiplier, 1 *frame_multiplier)
@@ -186,7 +199,7 @@ class ActionRecognizer:
 
     def classify_test(self, video_filename, frame_multiplier = 1):
         vr = decord.VideoReader(video_filename)
-        frame_id_list = range(0, 32 * frame_multiplier, 1*frame_multiplier) # range(0, 32, 1)
+        frame_id_list = range(0, 32 * frame_multiplier, 1*frame_multiplier)
 
         video_data = vr.get_batch(frame_id_list).asnumpy()
 
@@ -236,6 +249,6 @@ if __name__ == '__main__':
     #actionrecognizer.train(dataset_location='D:/SOCCER_FOUL_DATA/Dataset_master', training_file='D:/SOCCER_FOUL_DATA/Dataset_master/train_1.txt', train_epochs=5)
     #actionrecognizer.classify("i3d 27-06-21_12-02.params", "../Dataset/foul_012.mp4", frame_multiplier=1)#"../Dataset_great/fair_054.mp4")#foul_092_Trim.mp4") #fair_054
     #actionrecognizer.classify_test("i3d 12-08-21_11-04.params", "fair_271.mp4")
-    actionrecognizer.test("D:\SOCCER_FOUL_DATA\Dataset_master/", "D:/SOCCER_FOUL_DATA/Dataset_master/test_1.txt") # 0.555 Validation
-    #actionrecognizer.test("i3d 12-08-21_11-04.params", "../../../Dataset/", "../../../Dataset/test_1.txt") # 0.555 Validation
+    actionrecognizer.test("D:\SOCCER_FOUL_DATA\Dataset_master/", "D:/SOCCER_FOUL_DATA/Dataset_master/test_1.txt")
+    #actionrecognizer.test("i3d 12-08-21_11-04.params", "../../../Dataset/", "../../../Dataset/test_1.txt")
 

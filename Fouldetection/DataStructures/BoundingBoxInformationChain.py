@@ -6,17 +6,21 @@ import numpy as np
 
 class BoundingBoxInformationChain:
     """
-        Class for ....
+        Class for sequential chaining of BoundingBoxInformation instances
         ......
 
         Attributes
         -----------------
-
-
-
+            chain_members: List[BoundingBoxInformation]
+                list of the chained BoundingBoxInformation instances
         Methods
         -----------------
-
+            contains(bbInformation)
+                checks if the chain_members list contains the given bbInformation already
+            search_for_new_chain_link(bbInformation)
+                searches inside the given list (bbInformation) for a new chain link
+            add(box_info)
+                adds the box_info to the chain_members list
         """
 
     def __init__(self):

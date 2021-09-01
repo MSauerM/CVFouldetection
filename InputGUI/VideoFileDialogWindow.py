@@ -17,6 +17,7 @@ from cv2 import cv2 as cv
 
 from BasicFramework.Executor import Executor
 
+
 class VideoFileDialogWindow(QMainWindow):
     def __init__(self, app):
         global txts

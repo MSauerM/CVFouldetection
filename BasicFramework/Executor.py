@@ -16,19 +16,19 @@ class Executor:
 
     Attributes:
     --------------
-    timer : PerformanceTimer
-        measuring the time spent for the whole processing
-    preProcessor : VideoPreProcessor
-        container for processing the loaded video material
-    foulDetector : FoulDetector
-        process the input video to gain information about fouls
+        timer : PerformanceTimer
+            measuring the time spent for the whole processing
+        preProcessor : VideoPreProcessor
+            container for processing the loaded video material
+        foulDetector : FoulDetector
+            process the input video to gain information about fouls
 
     Methods:
     --------------
-    execute(options)
-        Starts the execution of all connected modules
-    interrupt()
-        Interrupts processing
+        execute(options)
+          Starts the execution of all connected modules
+        interrupt()
+          Interrupts processing
     """
     def __init__(self):
         self.timer = PerformanceTimer()
